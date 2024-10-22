@@ -1,0 +1,71 @@
+name: Trunk-Based CI/CD Workflow
+
+# Desencadenadores del flujo de trabajo
+on:
+  push:
+    branches:
+      - master
+      - release/*
+      - development
+      - 'feature/**'
+  pull_request:
+    branches:
+      - master
+      - release/*
+      - development
+  workflow_dispatch: # Activación manual (opcional)
+
+jobs:
+  # Trabajo de build y pruebas
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x] # Prueba en varias versiones de Node.js
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v3
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Instalar dependencias
+        run: npm install
+
+      - name: Ejecutar pruebas
+        run: npm test
+
+      - name: Construir la aplicación (solo en ramas master o release)
+        if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/heads/release/')
+        run: npm run build
+
+      - name: Guardar artefactos de compilación (si el build es exitoso)
+        if: success() && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/heads/release/'))
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts
+          path: dist/
+
+  # Trabajo de despliegue a Vercel
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    if: github.ref == 'refs/heads/master'
+
+    steps:
+      - name: Descargar artefactos de compilación
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts
+          path: ./dist
+
+      - name: Desplegar a Vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          npx vercel --prod --token $VERCEL_TOKEN
