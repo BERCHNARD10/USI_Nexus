@@ -294,7 +294,7 @@ const MateriasDocente = () => {
                 setMaterias(result.message);
                 return;
             }
-            
+
             const response = await fetch(`${apiUrl}/cargarMaterias.php`, 
             {
                 method: 'POST',
@@ -489,14 +489,12 @@ const MateriasDocente = () => {
     <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-4">
           <IconButton
-            className="flex items-center px-4 py-2 text-white rounded-lg shadow-md transition-all duration-300 ease-in-out"
             Icon={MdAdd}
             message="Añadir Materias con actividades"
             onClick={() => setOpenModal(true)}
           />
           
           <IconButton
-            className="flex items-center px-4 py-2 text-white rounded-lg shadow-md transition-all duration-300 ease-in-out"
             Icon={FaDownload}
             message="Descargar Formato FDA05"
             onClick={handleDownload}
