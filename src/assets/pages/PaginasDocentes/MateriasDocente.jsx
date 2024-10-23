@@ -306,8 +306,14 @@ const MateriasDocente = () => {
         } 
         catch (error) 
         {
-            console.error('Error 500', error);            
-            alert('Error 500: Ocurrió un problema en el servidor. Intenta nuevamente más tarde.');
+            if (!navigator.onLine) {
+                // Cuando no hay conexión
+                console.log('No tienes conexión a Internet. Intenta nuevamente más tarde.');
+            } else {
+                // Cuando es otro tipo de error (como un error en el servidor)
+                console.error('Error en la petición:', error);            
+                alert('Error: Ocurrió un problema en la comunicación con el servidor. Intenta nuevamente más tarde.');
+            }
         } 
         finally
         {

@@ -73,6 +73,7 @@ export default defineConfig({
             },
           },
           {
+            // Cache para assets estáticos (JS, CSS, imágenes)
             urlPattern: ({ request }) =>
               request.destination === 'script' || 
               request.destination === 'style' || 
@@ -83,6 +84,22 @@ export default defineConfig({
               expiration: {
                 maxEntries: 50, // Máximo 50 activos estáticos
                 maxAgeSeconds: 60 * 60 * 24 * 30, // Mantener en caché por 30 días
+              },
+            },
+          },
+          {
+            // Cache para tus APIs (Web Services)
+            urlPattern: /^https:\/\/robe.host8b.me\/WebServices\/.*\.php$/,
+            handler: 'NetworkFirst', // Intenta la red primero, si falla, busca en cache
+            options: {
+              cacheName: 'api-cache',
+              networkTimeoutSeconds: 10, // Tiempo de espera de la red antes de usar cache
+              expiration: {
+                maxEntries: 20, // Máximo 20 respuestas de API
+                maxAgeSeconds: 60 * 60 * 24 * 7, // Cache de 7 días
+              },
+              cacheableResponse: {
+                statuses: [0, 200], // Cachea solo respuestas con código 0 (offline) o 200 (OK)
               },
             },
           },
@@ -101,7 +118,7 @@ export default defineConfig({
     }
   },
   optimizeDeps: {
-    exclude: ['xlsx-style']
+    exclude: ['xlsx-style'] // Evitar que ciertos módulos sean pre-empacados
   }
 });
 
