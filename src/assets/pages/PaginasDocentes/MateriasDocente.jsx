@@ -284,6 +284,17 @@ const MateriasDocente = () => {
         try 
         {
             setIsLoading(true);
+
+            const cache = await caches.open('api-cache'); // Asegúrate de usar el nombre correcto de cache
+            const cachedResponse = await cache.match(`${apiUrl}/cargarMaterias.php`);
+    
+            if (!navigator.onLine && cachedResponse) {
+                const result = await cachedResponse.json();
+                console.log('Cargando materias desde la cache.');
+                setMaterias(result.message);
+                return;
+            }
+            
             const response = await fetch(`${apiUrl}/cargarMaterias.php`, 
             {
                 method: 'POST',
