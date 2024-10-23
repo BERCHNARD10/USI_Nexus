@@ -294,6 +294,9 @@ const MateriasDocente = () => {
                 setMaterias(result.message);
                 return;
             }
+            else{
+                console.error('No hay materias desde la cache.');
+            }
 
             const response = await fetch(`${apiUrl}/cargarMaterias.php`, 
             {
