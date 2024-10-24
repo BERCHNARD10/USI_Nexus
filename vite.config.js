@@ -119,6 +119,10 @@ export default defineConfig({
   },
   optimizeDeps: {
     exclude: ['xlsx-style'] // Evitar que ciertos módulos sean pre-empacados
+  },
+  build: {
+    outDir: 'dist', // La carpeta de salida debe ser 'dist'
   }
+
 });
 
