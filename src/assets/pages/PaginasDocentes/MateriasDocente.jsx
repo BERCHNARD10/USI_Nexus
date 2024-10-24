@@ -283,10 +283,20 @@ const MateriasDocente = () => {
     {
         try 
         {
+            caches.open('api-cache').then(cache => {
+                cache.keys().then(keys => {
+                  keys.forEach(request => {
+                    console.log("url: ",request.url);
+                  });
+                });
+              });
+              
             setIsLoading(true);
 
             const cache = await caches.open('api-cache'); // Asegúrate de usar el nombre correcto de cache
-            const cachedResponse = await cache.match(`${apiUrl}/cargarMaterias.php`);
+            console.log("url: ",cache);
+
+            const cachedResponse = await cache.match(`${apiUrl}cargarMaterias.php`);
     
             if (!navigator.onLine && cachedResponse) {
                 const result = await cachedResponse.json();
@@ -294,11 +304,11 @@ const MateriasDocente = () => {
                 setMaterias(result.message);
                 return;
             }
-            else{
+            else if(!cachedResponse){
                 console.error('No hay materias desde la cache.');
             }
 
-            const response = await fetch(`${apiUrl}/cargarMaterias.php`, 
+            const response = await fetch(`${apiUrl}cargarMaterias.php`, 
             {
                 method: 'POST',
                 headers: {

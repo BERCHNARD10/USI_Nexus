@@ -415,8 +415,8 @@ const PerfilUsuario = () => {
           {/* Sección de Alexa */}
           {/*
           <div className="md:w-1/d2 mb-4 md:mb-0 rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6 xl:p-8">
-            <div class="flex items-center justify-dcenter space-x-4">
-              <img class="w-24 h-24 mb-4" src={AlexaLogo} alt="Alexa Logo" />
+            <div clasclassNames="flex items-center justify-dcenter space-x-4">
+              <img className="w-24 h-24 mb-4" src={AlexaLogo} alt="Alexa Logo" />
                 <TitleSection label="Conectar con Alexa"/>
             </div>
             <Paragraphs label="Presiona el botón de abajo y te enviaremos un código de verificación para vincularte con Alexa."/>
