@@ -44,7 +44,7 @@ jobs:
         run: npm install
 
       - name: Ejecutar pruebas
-        run: npm test
+        run: npm test -- --coverage # Ejecuta las pruebas con cobertura
 
       - name: Construir la aplicación (solo en ramas master o release)
         if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/heads/release/')
