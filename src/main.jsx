@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {AuthProvider} from './assets/server/authUser'; // Importa el AuthProvider
 import NotificationHandler from './NotificationHandler'; // Importa el nuevo componente NotificationHandler
 
+
 /*
 if (process.env.NODE_ENV === 'production') {
 
