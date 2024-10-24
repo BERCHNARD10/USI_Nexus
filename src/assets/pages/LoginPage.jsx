@@ -20,7 +20,7 @@ const LoginPage = () => {
   const [intentosFallidos, setIntentosFallidos] = useState(0);
   const [bloquearBoton, setBloquearBoton] = useState(false);
   const [segundosRestantes, setSegundosRestantes] = useState(0);
-  const apiUrl = import.meta.env.VITE_API_URL;
+  //const apiUrl = import.meta.env.VITE_API_URL;
 
   const {
     register,
@@ -36,7 +36,7 @@ const LoginPage = () => {
   const handleLogin = async (data) => {
     setIsLoading(true);
     try {
-      const response = await fetch(`${apiUrl}/loginUser.php`, {
+      const response = await fetch(`https://robe.host8b.me/WebServices/loginUser.php`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...data, matriculaAlum: data.matriculaAlum.toString() }),
@@ -164,6 +164,7 @@ const LoginPage = () => {
               />
               <button
                 type="button"
+                data-testid="toggle-password-visibility"
                 onClick={togglePasswordVisibility}
                 className="absolute right-3 top-4 flex items-center"
               >
@@ -178,6 +179,7 @@ const LoginPage = () => {
               <a href="/recuperar-contrasena" style={{ color: '#23262d' }}>¿Olvidaste tu contraseña?</a>
             </div>
             <LoadingButton
+              data-testid="loading-button"
               isLoading={isLoading}
               loadingLabel="Cargando..."
               normalLabel={bloquearBoton ? `Bloqueado (${segundosRestantes}s)` : 'Iniciar Sesión'}
