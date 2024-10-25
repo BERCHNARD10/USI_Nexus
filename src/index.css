@@ -183,6 +183,27 @@
 {
   background-color: var(--secondaryColor);
 }
+
+.button {
+  background-color: var(--primaryColor);
+}
+.button:hover {
+  background-color: var(--secondaryColor);
+}
+.Fotter
+{
+  background-color: var(--secondaryColor);
+}
+.button {
+  background-color: var(--primaryColor);
+}
+.button:hover {
+  background-color: var(--secondaryColor);
+}
+.Fotter
+{
+  background-color: var(--secondaryColor);
+}
 /* styles.css */
 .sidebar-custom {
   background-color: white;
