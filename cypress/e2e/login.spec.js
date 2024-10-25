@@ -2,7 +2,7 @@ describe('Pruebas de LoginPage', () => {
   
     // Antes de cada prueba, visita la página de login
     beforeEach(() => {
-      cy.visit('/login'); // Asegúrate de que el URL "/login" sea correcto en tu aplicación
+      cy.visit('/inicio-sesion'); // Asegúrate de que el URL "/login" sea correcto en tu aplicación
     });
   
     it('Renderiza correctamente el formulario de inicio de sesión', () => {
