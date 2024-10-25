@@ -99,21 +99,79 @@ jobs:
         run: |
           npx vercel --prod --token $VERCEL_TOKEN --yes
 
-  # Notificaciones de éxito o error
+  # Notificaciones de éxito o fallo a Slack o correo electrónico
   notifications:
     runs-on: ubuntu-latest
     if: failure() || success()
-
+    
     steps:
-      - name: Enviar notificación de fallo
+      - name: Notificación de fallo a Slack
         if: failure()
-        run: echo "Error en el despliegue. Revisa el pipeline en GitHub Actions."
-      
-      - name: Enviar notificación de éxito
-        if: success()
-        run: echo "El despliegue fue exitoso."
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          payload: |
+            {
+              "channel": "#ci-notifications",
+              "attachments": [
+                {
+                  "color": "#ff0000",
+                  "blocks": [
+                    {
+                      "type": "header",
+                      "text": {
+                        "type": "plain_text",
+                        "text": ":x: Error en el pipeline CI/CD",
+                        "emoji": true
+                      }
+                    },
+                    {
+                      "type": "section",
+                      "text": {
+                        "type": "mrkdwn",
+                        "text": "*Pipeline:* PWA CI/CD Workflow UTHH_VIRTUAL\n*Estado:* :red_circle: Fallido\n*Ver detalles:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Ver Log>"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
-  # Notificaciones en los Pull Requests
+      - name: Notificación de éxito a Slack
+        if: success()
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          payload: |
+            {
+              "channel": "#ci-notifications",
+              "attachments": [
+                {
+                  "color": "#36a64f",
+                  "blocks": [
+                    {
+                      "type": "header",
+                      "text": {
+                        "type": "plain_text",
+                        "text": ":white_check_mark: Pipeline exitoso",
+                        "emoji": true
+                      }
+                    },
+                    {
+                      "type": "section",
+                      "text": {
+                        "type": "mrkdwn",
+                        "text": "*Pipeline:* PWA CI/CD Workflow UTHH_VIRTUAL\n*Estado:* :green_circle: Completado\n*Ver detalles:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Ver Log>"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
+  # Notificaciones en los Pull Requests con GitHub Script
   notify-pr:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
