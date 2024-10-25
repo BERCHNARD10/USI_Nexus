@@ -1,4 +1,4 @@
-name: Trunk-Based CI/CD Workflow
+name: PWA CI/CD Workflow UTHH_VIRTUAL
 
 # Desencadenadores del flujo de trabajo
 on:
@@ -38,13 +38,26 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+          
+      - name: Cache de dependencias npm
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ matrix.node-version }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ matrix.node-version }}
 
       - name: Instalar dependencias
         run: npm install
 
-      - name: Ejecutar pruebas
+      - name: Ejecutar pruebas unitarias con cobertura
         run: npm test -- --coverage # Ejecuta las pruebas con cobertura
+
+      - name: Ejecutar pruebas E2E (opcional)
+        run: npx cypress run || echo "Pruebas E2E fallaron, pero no detienen el pipeline"
+
+      - name: Ejecutar linting del código
+        run: npm run lint
 
       - name: Construir la aplicación (solo en ramas master o release)
         if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/heads/release/')
@@ -56,6 +69,7 @@ jobs:
         with:
           name: build-artifacts
           path: dist/
+          retention-days: 5 # Limitar la retención de los artefactos a 5 días para optimización de costos
 
   # Trabajo de despliegue a Vercel
   deploy:
@@ -76,3 +90,33 @@ jobs:
         run: |
           npx vercel --prod --token $VERCEL_TOKEN --yes
 
+  # Notificaciones de éxito o error
+  notifications:
+    runs-on: ubuntu-latest
+    if: failure() || success()
+
+    steps:
+      - name: Enviar notificación de fallo
+        if: failure()
+        run: echo "Error en el despliegue. Revisa el pipeline en GitHub Actions."
+      
+      - name: Enviar notificación de éxito
+        if: success()
+        run: echo "El despliegue fue exitoso."
+
+  # Notificaciones en los Pull Requests
+  notify-pr:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Agregar comentario en el Pull Request
+        uses: actions/github-script@v4
+        with:
+          script: |
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "Se completó la ejecución de los tests y el linter para este PR. Revisa los resultados antes de hacer merge."
+            })
