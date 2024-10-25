@@ -50,6 +50,18 @@ jobs:
       - name: Instalar dependencias
         run: npm install
 
+      # Paso para instalar Cypress si no está en la caché
+      - name: Cachear Cypress
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/Cypress
+          key: ${{ runner.os }}-cypress-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-cypress
+
+      - name: Instalar Cypress
+        run: npx cypress install
+
       - name: Ejecutar pruebas unitarias con cobertura
         run: npm test -- --coverage # Ejecuta las pruebas con cobertura
 
