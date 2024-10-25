@@ -96,7 +96,7 @@ export default defineConfig({
               networkTimeoutSeconds: 10, // Tiempo de espera de la red antes de usar cache
               expiration: {
                 maxEntries: 20, // Máximo 20 respuestas de API
-                maxAgeSeconds: 60 * 60 * 24 * 7, // Cache de 7 días
+                maxAgeSeconds: 60 * 60 * 24 * 9, // Cache de 7 días
               },
               cacheableResponse: {
                 statuses: [0, 200], // Cachea solo respuestas con código 0 (offline) o 200 (OK)
