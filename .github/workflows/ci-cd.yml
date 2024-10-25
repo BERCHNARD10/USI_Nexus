@@ -99,77 +99,21 @@ jobs:
         run: |
           npx vercel --prod --token $VERCEL_TOKEN 
 
-  # Notificaciones de éxito o fallo a Slack o correo electrónico
-  notifications:
+   # Notificaciones de éxito o fallo a Slack
+   notifications:
     runs-on: ubuntu-latest
     if: failure() || success()
-    
+
     steps:
       - name: Notificación de fallo a Slack
         if: failure()
-        uses: slackapi/slack-github-action@v1.23.0
-        with:
-          payload: |
-            {
-              "channel": "C07TG1RRC2H",
-              "attachments": [
-                {
-                  "color": "#ff0000",
-                  "blocks": [
-                    {
-                      "type": "header",
-                      "text": {
-                        "type": "plain_text",
-                        "text": ":x: Error en el pipeline CI/CD",
-                        "emoji": true
-                      }
-                    },
-                    {
-                      "type": "section",
-                      "text": {
-                        "type": "mrkdwn",
-                        "text": "*Pipeline:* PWA CI/CD Workflow UTHH_VIRTUAL\n*Estado:* :red_circle: Fallido\n*Ver detalles:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Ver Log>"
-                      }
-                    }
-                  ]
-                }
-              ]
-            }
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"❌ Error en el CI/CD en la rama ${{ github.ref }}. Revisa los detalles: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' ${{ secrets.SLACK_WEBHOOK_URL }}
 
       - name: Notificación de éxito a Slack
         if: success()
-        uses: slackapi/slack-github-action@v1.23.0
-        with:
-          payload: |
-            {
-              "channel": "C07TG1RRC2H",
-              "attachments": [
-                {
-                  "color": "#36a64f",
-                  "blocks": [
-                    {
-                      "type": "header",
-                      "text": {
-                        "type": "plain_text",
-                        "text": ":white_check_mark: Pipeline exitoso",
-                        "emoji": true
-                      }
-                    },
-                    {
-                      "type": "section",
-                      "text": {
-                        "type": "mrkdwn",
-                        "text": "*Pipeline:* PWA CI/CD Workflow UTHH_VIRTUAL\n*Estado:* :green_circle: Completado\n*Ver detalles:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Ver Log>"
-                      }
-                    }
-                  ]
-                }
-              ]
-            }
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"✅ CI/CD completado con éxito en la rama ${{ github.ref }}. Revisa los detalles: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' ${{ secrets.SLACK_WEBHOOK_URL }}
 
   # Notificaciones en los Pull Requests con GitHub Script
   notify-pr:
