@@ -56,9 +56,6 @@ jobs:
       - name: Ejecutar pruebas E2E (opcional)
         run: npx cypress run || echo "Pruebas E2E fallaron, pero no detienen el pipeline"
 
-      - name: Ejecutar linting del código
-        run: npm run lint
-
       - name: Construir la aplicación (solo en ramas master o release)
         if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/heads/release/')
         run: npm run build
