@@ -144,7 +144,7 @@ jobs:
         with:
           payload: |
             {
-              "channel": "#ci-notifications",
+              "channel": "D07TCHY2C9L",
               "attachments": [
                 {
                   "color": "#36a64f",
