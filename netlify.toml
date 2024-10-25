@@ -1,0 +1,19 @@
+[build]
+  publish = "dist" # Cambia esto si tu carpeta de publicación es diferente
+  command = "vite build" # Comando para construir tu app
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = true
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/manifest.webmanifest"
+  [headers.values]
+    Content-Type = "application/manifest+json"
