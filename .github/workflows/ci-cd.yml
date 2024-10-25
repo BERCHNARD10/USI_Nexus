@@ -111,7 +111,7 @@ jobs:
         with:
           payload: |
             {
-              "channel": "D07TCHY2C9L",
+              "channel": "C07TG1RRC2H",
               "attachments": [
                 {
                   "color": "#ff0000",
@@ -144,7 +144,7 @@ jobs:
         with:
           payload: |
             {
-              "channel": "#ci-notifications",
+              "channel": "C07TG1RRC2H",
               "attachments": [
                 {
                   "color": "#36a64f",
