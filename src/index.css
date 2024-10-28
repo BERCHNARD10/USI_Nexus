@@ -173,6 +173,12 @@
   justify-content: center;
   margin-top: 10px; /* Add margin for separation */
 }
+
+.reCaptcha.hhis {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px; /* Add margin for separation */
+}
 .button {
   background-color: var(--primaryColor);
 }
