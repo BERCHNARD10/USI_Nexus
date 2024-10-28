@@ -1,12 +1,12 @@
 // src/assets/pages/LoginPage.test.js
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import LoginPage from './LoginPage';
+import LoginPage from '../LoginPage';
 import { BrowserRouter } from 'react-router-dom';
-import { useAuth } from '../server/authUser';
+import { useAuth } from '../../server/authUser';
 
 // Mock del hook useAuth
-jest.mock('../server/authUser', () => ({
+jest.mock('../../server/authUser', () => ({
   useAuth: jest.fn(),
 }));
 
@@ -27,7 +27,7 @@ describe('LoginPage Component', () => {
     jest.clearAllMocks();
   });
 
-  test('renderiza correctamente el formulario de inicio de sesión', () => {
+  test('renderiza correctamente el formulario de Materias', () => {
     render(
       <BrowserRouter>
         <LoginPage />
@@ -66,7 +66,7 @@ describe('LoginPage Component', () => {
     });
   });*/
 
-  test('Mapea correctamente los datos de las materias', () => {
+  test('cambia la visibilidad de la contraseña al hacer clic en el icono', () => {
     render(
       <BrowserRouter>
         <LoginPage />
@@ -88,7 +88,7 @@ describe('LoginPage Component', () => {
   });
   
 
-  test('', async () => {
+  test('envía el formulario correctamente con datos válidos', async () => {
     render(
       <BrowserRouter>
         <LoginPage />
