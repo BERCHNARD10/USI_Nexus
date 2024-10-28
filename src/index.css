@@ -1,0 +1,417 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* styles.css o tu archivo CSS */
+
+
+/* Escala del 79% solo en dispositivos móviles */
+@media (max-width: 768px) { /* Tailwind's sm breakpoint is 640px */
+  .transform-w {
+    zoom: 0.7; /* Escala al 80% del tamaño original */
+  }
+
+}
+
+/* Define estilos específicos para móviles */
+@media only screen and (max-width: 768px) {
+  .Toastify__toast-container {
+    bottom: 171px !important;
+    right: 26px !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+  }
+}
+
+@media (max-width: 639px) {
+  .no-zoom {
+    transform: scale(1) !important; /* Revertir el escalado al tamaño original */
+    position: relative; /* Asegura que el elemento se posicione correctamente */
+    z-index: 1; /* Mantén el elemento encima de otros si es necesario */
+  }
+}
+
+:root {
+  --primaryColor: #00883e;
+  --secondaryColor: #02233a;
+  --header-height: 3.5rem;
+  --first-color: hsl(28, 88%, 62%);
+  --title-color: hsl(231, 15%, 9%);
+  --text-color: hsl(231, 10%, 13%);
+  --body-color: hsl(0, 0%, 6%);
+  --body-font: "Montserrat", sans-serif;
+  --second-font: "Dancing Script", cursive;
+  --h2-font-size: 1.25rem;
+  --small-font-size: 0.813rem;
+  --font-semi-bold: 600;
+  --z-tooltip: 10;
+  --z-fixed: 100;
+ }
+ body
+ {
+  background-color: #f7f7f7; 
+ }
+ ul {
+  list-style: none;
+ }
+ 
+ a {
+  text-decoration: none;
+ }
+.header {
+ position: fixed;
+ width: 100%;
+ top: 0;
+ left: 0;
+ background-color: #fff;
+ z-index: var(--z-fixed);
+}
+
+.nav {
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ position: relative;
+ height: var(--header-height);
+ margin: 1rem;
+}
+
+.nav__logo {
+ color: var(--first-color);
+ transition: color 0.4s;
+ font-size: var(--h2-font-size);
+ font-family: var(--second-font);
+}
+
+.nav__toggle,
+.nav__close {
+ font-size: 1.5rem;
+ color: var(--title-color);
+ cursor: pointer;
+}
+
+.nav__cta {
+ background-color: var(--first-color);
+ color: var(--title-color);
+ border: none;
+ border-radius: 4px;
+ cursor: pointer;
+ transition: background-color 0.3s ease;
+ padding: 0.75rem 1.5rem;
+}
+.nav__list {
+ display: flex;
+ flex-direction: column;
+ row-gap: 2.5rem;
+}
+
+.nav__link {
+ color: var(--title-color);
+ font-weight: var(--font-semi-bold);
+ transition: color 0.4s;
+}
+
+.nav__link:hover {
+ color: var(--primaryColor);
+}
+
+.nav__close {
+ position: absolute;
+ top: 1rem;
+ right: 1.5rem;
+}
+
+
+@media screen and (max-width: 1150px) {
+  
+  .nav__menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    background-color: hsla(0, 0%, 6%, 0.2);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    width: 80%;
+    height: 100%;
+    padding: 6rem 3rem 0;
+    transition: right 0.4s;
+  }
+  .show-menu {
+    right: 0; 
+  }
+  .button-menu-disable
+  {
+    display: none;
+  }
+  .button-menu-active
+  {
+    background-color: var(--primaryColor);
+    position: absolute;
+    top: 917%;
+    right: 49%;
+  }
+ }
+ 
+
+ @media screen and (min-width: 1150px) {
+  .nav {
+    height: calc(var(--header-height) + 1rem);
+  }
+  .nav__toggle,
+  .nav__close {
+    display: none;
+  }
+ 
+  .nav__list {
+    flex-direction: row;
+    column-gap: 2.5rem;
+  }
+ }
+.reCaptcha {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px; /* Add margin for separation */
+}
+.button {
+  background-color: var(--primaryColor);
+}
+.button:hover {
+  background-color: var(--secondaryColor);
+}
+.Fotter
+{
+  background-color: var(--secondaryColor);
+}
+
+.button {
+  background-color: var(--primaryColor);
+}
+.button:hover {
+  background-color: var(--secondaryColor);
+}
+.Fotter
+{
+  background-color: var(--secondaryColor);
+}
+.button {
+  background-color: var(--primaryColor);
+}
+.button:hover {
+  background-color: var(--secondaryColor);
+}
+.Fotter
+{
+  background-color: var(--secondaryColor);
+}
+/* styles.css */
+.sidebar-custom {
+  background-color: white;
+}
+@keyframes slideIn {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-10%);
+  }
+}
+
+
+.sidebar-enter {
+  animation: slideIn 0.3s forwards;
+}
+
+.sidebar-exit {
+  animation: slideOut 0.3s forwards;
+}
+
+/*
+@keyframes progress-animation {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+.progress-bar {
+  animation: progress-animation 4s linear forwards;
+}
+*/
+/* Estilos para hacer la alerta flotante */
+/*
+#alert-1 {
+  position: fixed;
+  top: 12%;
+  left: 80%;
+  transform: translateX(-0%);
+  z-index: 9999; // Asegura que esté por encima de todos los elementos 
+  width: auto;
+  max-width: 90%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}*/
+
+@keyframes slide-animation {
+  from {
+    transform: translateX(100%); /* Comienza fuera de la pantalla a la derecha */
+  }
+  to {
+    transform: translateX(-4%); /* Se detiene cuando está en un 30% desde el borde derecho */
+  }
+}
+
+@keyframes progress-animation {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+.alert-slide {
+  animation: slide-animation 0.2s ease-out forwards; /* Animación muy rápida, simulando un disparo (0.2 segundos) */
+  position: fixed;
+  top: 12%;
+  right: 0; /* Inicialmente oculta fuera de la pantalla */
+  z-index: 9999;
+  width: auto;
+  max-width: 90%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+/* styles.css */
+.myComponent {
+  max-width: 38rem;
+}
+
+@media (min-width: 768px) {
+  .myComponent {
+    max-width: 38rem;
+
+  }
+}
+
+@media (max-width: 768px) {
+  .myComponent {
+    max-width: 28rem;
+  }
+}
+
+.progress-bar {
+  animation: progress-animation 2s linear forwards; /* Mantener la duración de 4 segundos */
+}
+
+@media (max-width: 365px) {
+  .hidden-below-365 {
+    display: none;
+  }
+}
+
+/*
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+*/
+
+/* LoadingOverlay.css */
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Asegúrate de que esté por encima de otros elementos */
+}
+
+.loading-balls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ball {
+  font-size: 20px;
+  margin: 0 5px;
+  animation: bounce 0.6s infinite alternate;
+  color: #6b7280; /* Cambia este valor para el color deseado */
+}
+
+.ball:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.ball:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+  to {
+    transform: translateY(-10px);
+  }
+}
