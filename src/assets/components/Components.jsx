@@ -239,7 +239,7 @@ const DescriptionActivity = ({ label = "" }) => {
 
 const CardSkeleton = () => {
     return (
-        <div className="w-full rounded-lg overflow-hidden shadow-lg">
+        <div data-testid="skeleton" className="w-full rounded-lg overflow-hidden shadow-lg">
             <Skeleton height={160} /> {/* Placeholder principal */}
             <div className="pt-5 pb-6 px-4 flex justify-center items-center h-full">
                 <Skeleton height={30} width="60%" /> {/* Placeholder del título */}

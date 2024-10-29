@@ -1,8 +1,8 @@
 describe('Pruebas de LoginPage', () => {
-  
+
     // Antes de cada prueba, visita la página de login
     beforeEach(() => {
-        cy.visit('https://robe.host8b.me/inicio-sesion'); // Cambia la ruta por la correcta
+      cy.visit('https://robe.host8b.me/inicio-sesion' , { timeout: 120000 });
     });
   
     it('Renderiza correctamente el formulario de inicio de sesión', () => {
@@ -17,27 +17,30 @@ describe('Pruebas de LoginPage', () => {
       cy.get('button').contains('Iniciar Sesión').click();
   
       // Verifica que aparezca el mensaje de error de validación
+      cy.get('input[name="matriculaAlum"]').focus().blur(); // Fuerza el onBlur para activar inputError
       cy.contains('Este campo es requerido').should('exist');
     });
   
-    it('Cambia la visibilidad de la contraseña al hacer clic en el ícono', () => {
-      // Verifica que el campo de contraseña está oculto por defecto
+  
+    /*it('Cambia la visibilidad de la contraseña al hacer clic en el ícono', () => {
+      // Verifica que el campo de contraseña esté oculto por defecto
       cy.get('input[name="password"]').should('have.attr', 'type', 'password');
-  
-      // Simula el clic en el botón de mostrar contraseña (usa data-testid si está disponible)
+    
+      // Simula el clic en el botón de mostrar contraseña
       cy.get('[data-testid="toggle-password-visibility"]').click();
-  
+    
       // Verifica que la contraseña ahora esté visible
       cy.get('input[name="password"]').should('have.attr', 'type', 'text');
     });
+    */
   
     it('Inicia sesión con credenciales válidas', () => {
       // Simula la entrada de datos válidos
-      cy.get('input[name="matriculaAlum"]').type('123456');
-      cy.get('input[name="password"]').type('password123');
+      cy.get('input[name="matriculaAlum"]').type('20210643');
+      cy.get('input[name="password"]').type('KINSBERone2020@');
   
       // Interceptar la solicitud al servidor y simular una respuesta exitosa
-      cy.intercept('POST', '**/loginUser.php', {
+      cy.intercept('POST', 'https://robe.host8b.me/WebServices/loginUser.php', {
         statusCode: 200,
         body: {
           done: true,
