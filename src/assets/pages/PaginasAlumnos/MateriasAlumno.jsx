@@ -10,8 +10,9 @@ const MateriasAlumno = () => {
     const {userData} = useAuth(); // Obtén el estado de autenticación del contexto
     const [materias, setMaterias] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const apiUrl = import.meta.env.VITE_API_URL;
 
+    const apiUrl = "https://robe.host8b.me/WebServices/";
+    const webUrl = "https://robe.host8b.me/";
     const onloadNaterias = async () => {
         try {
             const response = await fetch(`${apiUrl}/cargarMaterias.php`, {
@@ -37,7 +38,7 @@ const MateriasAlumno = () => {
     } 
     catch (error) 
     {
-        console.error('Error 500', error);
+        console.error('Error 500 Error: API no disponible');
         alert('¡Ay caramba! Encontramos un pequeño obstáculo en el camino, pero estamos trabajando para superarlo. Gracias por tu paciencia mientras solucionamos este problemita.'); 
     } 
     finally 
@@ -56,7 +57,7 @@ const MateriasAlumno = () => {
         return (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {Array.from({ length: 3 }).map((_, index) => (
-                    <CardSkeleton key={index} />
+                    <CardSkeleton key={index} data-testid="skeleton" />
                 ))}
             </div>        
         )

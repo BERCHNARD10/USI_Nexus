@@ -12,8 +12,11 @@ import {useAuth } from '../../server/authUser'; // Importa el hook de autenticac
 import { AiOutlineQuestionCircle } from 'react-icons/ai';
 
 const MateriasDocente = () => { 
-    const apiUrl = import.meta.env.VITE_API_URL;
-    const webUrl = import.meta.env.VITE_URL;
+    //const apiUrl = import.meta.env.VITE_API_URL;
+    //const webUrl = import.meta.env.VITE_URL;
+    const apiUrl = "https://robe.host8b.me/WebServices/";
+    const webUrl = "https://robe.host8b.me/";
+
     const {userData} = useAuth(); // Obtén el estado de autenticación del contexto
     const [materias, setMaterias] = useState([]);
     const [actividades, setActividades] = useState([]);
