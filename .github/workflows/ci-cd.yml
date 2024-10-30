@@ -1,5 +1,5 @@
+# 1. Estructura del Archivo YAML
 name: PWA CI/CD Workflow UTHH_VIRTUAL
-
 # Desencadenadores del flujo de trabajo
 on:
   push:
@@ -19,8 +19,9 @@ on:
       - master
       - release/*
       - development
-  workflow_dispatch: # Activación manual (opcional)
+  workflow_dispatch: # Activación manual 
 
+# 2. Configuración del Entorno 
 jobs:
   # Trabajo de build y pruebas
   build-and-test:
@@ -38,7 +39,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          
+
+      # 10. Optimización y Control de Costos 
       - name: Cache de dependencias npm
         uses: actions/cache@v2
         with:
@@ -47,9 +49,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-${{ matrix.node-version }}
 
+      # 4. Etapa de Compilación 
       - name: Instalar dependencias
         run: npm install
-
       # Paso para instalar Cypress si no está en la caché
       - name: Cachear Cypress
         uses: actions/cache@v2
@@ -62,6 +64,7 @@ jobs:
       - name: Instalar Cypress
         run: npx cypress install
 
+      # 5. Etapa de Pruebas (React/
       - name: Ejecutar pruebas unitarias con cobertura
         run: npm test -- --coverage # Ejecuta las pruebas con cobertura
 
@@ -79,8 +82,9 @@ jobs:
           name: build-artifacts
           path: dist/
           retention-days: 5 # Limitar la retención de los artefactos a 5 días para optimización de costos
-
-  # Trabajo de despliegue a Vercel UWUA
+  
+  # 7. Despliegue 
+  # Trabajo de despliegue a Vercel
   deploy:
     runs-on: ubuntu-latest
     needs: build-and-test
@@ -98,6 +102,8 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
           npx vercel --prod --token $VERCEL_TOKEN 
+
+  # 8. Notificaciones y Reportes 
   # Notificaciones de éxito o fallo a Slack
   notifications:
     runs-on: ubuntu-latest
@@ -130,3 +136,24 @@ jobs:
               repo: context.repo.repo,
               body: "Se completó la ejecución de los tests y el linter para este PR. Revisa los resultados antes de hacer merge."
             })
+              
+  # Trabajo de control de calidad y auditoría
+  quality-control:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v3
+      
+      - name: Configurar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      
+      - name: Instalar dependencias
+        run: npm install
+      
+      - name: Ejecutar eslint para revisar errores de estilo
+        run: npm run lint # Asegúrate de tener un script "lint" en package.json para ejecutar eslint
+
+      - name: Ejecutar prettier para formateo de código
+        run: npx prettier --check . # Verifica el formateo en todos los archivos
