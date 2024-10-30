@@ -22,7 +22,7 @@ describe('Pruebas de LoginPage', () => {
     });
   
   
-    /*it('Cambia la visibilidad de la contraseña al hacer clic en el ícono', () => {
+    it('Cambia la visibilidad de la contraseña al hacer clic en el ícono', () => {
       // Verifica que el campo de contraseña esté oculto por defecto
       cy.get('input[name="password"]').should('have.attr', 'type', 'password');
     
@@ -32,7 +32,7 @@ describe('Pruebas de LoginPage', () => {
       // Verifica que la contraseña ahora esté visible
       cy.get('input[name="password"]').should('have.attr', 'type', 'text');
     });
-    */
+    
   
     it('Inicia sesión con credenciales válidas', () => {
       // Simula la entrada de datos válidos
