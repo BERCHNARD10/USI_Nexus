@@ -71,8 +71,8 @@ const DetalleActividadDocente = () => {
         }
     };
 
-    const fetchActividad = async () => 
-        {
+    /*const fetchActividad = async () => 
+    {
         const requestData = 
         {
             clvMateria: vchClvMateria,
@@ -114,7 +114,75 @@ const DetalleActividadDocente = () => {
             setIsLoading(false);
         }
 
+    };*/
+
+    const fetchActividad = async () => {
+        setIsLoading(true); // Activa el indicador de carga al inicio
+    
+        const requestData = {
+            clvMateria: vchClvMateria,
+            grupo: chrGrupo,
+            periodo: intPeriodo,
+            numeroActividad: intNumeroActi,
+            numeroActividadCurso: intIdActividadCurso
         };
+        console.log("Datos enviados:", requestData);
+    
+        try {
+            // Abrir el caché y buscar la respuesta en caché
+            const cache = await caches.open('api-cache');
+            const cachedResponse = await cache.match(`${apiUrl}cargarDetalleActividad.php`);
+    
+            // Si hay una respuesta en caché y el usuario está offline, usar los datos en caché
+            if (cachedResponse && !navigator.onLine) {
+                const data = await cachedResponse.json(); // Acceder a los datos del caché
+                console.log('Cargando actividad desde la caché:', data);
+                setActividad(data.message.detalleActividad);
+                setPracticas(data.message.practicasActividad);
+                return; // Terminar la función aquí si usamos el caché
+            }
+    
+            // Realizar la solicitud a la API
+            const response = await fetch(`${apiUrl}cargarMaterias.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData)
+            });
+    
+            // Verificar si la respuesta es exitosa
+            if (!response.ok) {
+                throw new Error(`Error en la respuesta del servidor: ${response.status} ${response.statusText}`);
+            }
+    
+            // Clonar la respuesta antes de leer el JSON para poder guardarla en el caché
+            const responseClone = response.clone();
+            const data = await response.json();
+            console.log("Respuesta", data);
+    
+            if (data.done) {
+                setActividad(data.message.detalleActividad);
+                setPracticas(data.message.practicasActividad);
+                console.log('Actividad cargada exitosamente desde la API.');
+    
+                // Guardar la respuesta clonada en el caché para uso futuro
+                await cache.put(`${apiUrl}cargarDetalleActividad.php`, responseClone);
+                console.log('Respuesta de la API almacenada en caché.');
+            } else {
+                console.log('Error en la respuesta:', data);
+            }
+        } catch (error) {
+            if (!navigator.onLine) {
+                console.log('No tienes conexión a Internet. Intenta nuevamente más tarde.');
+            } else {
+                console.error('Error en la petición:', error);
+                alert('Error: Ocurrió un problema en la comunicación con el servidor. Intenta nuevamente más tarde.');
+            }
+        } finally {
+            setIsLoading(false); // Desactiva el indicador de carga al finalizar
+        }
+    };    
         
     useEffect(() => {
         fetchActividad();

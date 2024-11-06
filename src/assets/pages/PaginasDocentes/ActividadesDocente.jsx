@@ -20,8 +20,20 @@ const ActividadesDocente = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [loadingParcial, setLoadingParcial] = useState(null);
 
-    const onloadActividades = async () => {
+    /*const onloadActividades = async () => {
         try {
+
+            const cache = await caches.open('api-cache');
+            const cachedResponse = await cache.match(`${apiUrl}cargarActividades.php`);
+
+            // Si hay una respuesta en caché y el usuario está offline, usar los datos en caché
+            if (cachedResponse && !navigator.onLine) {
+                const data = await cachedResponse.json(); // Acceder a los datos del caché
+                console.log('Cargando materias desde la caché:', data);
+                setMaterias(data.message);
+                return; // Terminar la función aquí si usamos el caché
+            }
+
             const response = await fetch(`${apiUrl}/cargarMaterias.php`, {
             method: 'POST',
             headers: {
@@ -60,15 +72,84 @@ const ActividadesDocente = () => {
             }
         }
         } catch (error) {
-        console.error('Error 500', error);
-
-        }
+            if (!navigator.onLine) {
+                console.log('No tienes conexión a Internet. Intenta nuevamente más tarde.');
+            } else {
+                console.error('Error en la petición:', error);
+                alert('Error: Ocurrió un problema en la comunicación con el servidor. Intenta nuevamente más tarde.');
+            }
+        } 
         finally{
             setIsLoading(false);
         }
-    };
+    };*/
 
-    const onloadAlumnos = async () => {
+    const onloadActividades = async () => {
+        setIsLoading(true); // Activa el indicador de carga al inicio
+        try {
+            // Abrir el caché y buscar la respuesta en caché
+            const cache = await caches.open('api-cache');
+            const cachedResponse = await cache.match(`${apiUrl}cargarActividades.php`);
+    
+            // Si hay una respuesta en caché y el usuario está offline, usar los datos en caché
+            if (cachedResponse && !navigator.onLine) {
+                const data = await cachedResponse.json(); // Acceder a los datos del caché
+                console.log('Cargando actividades desde la caché:', data);
+                setActividades(data.message);
+                return; // Terminar la función aquí si usamos el caché
+            }
+    
+            // Realizar la solicitud a la API
+            const requestData = {
+                clvMateria: vchClvMateria,
+                matriculaDocent: userData.vchMatricula,
+                chrGrupo: chrGrupo,
+                periodo: intPeriodo,
+            };
+    
+            console.log("Datos enviados:", requestData);
+    
+            const response = await fetch(`${apiUrl}/cargarMaterias.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestData),
+            });
+    
+            // Verificar si la respuesta es exitosa
+            if (!response.ok) {
+                throw new Error(`Error en la respuesta del servidor: ${response.status} ${response.statusText}`);
+            }
+    
+            // Clonar la respuesta antes de leer el JSON para poder guardarla en el caché
+            const responseClone = response.clone();
+            const result = await response.json();
+            console.log(result);
+    
+            if (result.done) {
+                setActividades(result.message);
+                console.log('Actividades cargadas exitosamente desde la API.');
+    
+                // Guardar la respuesta clonada en el caché para uso futuro
+                await cache.put(`${apiUrl}cargarActividades.php`, responseClone);
+                console.log('Respuesta de la API almacenada en caché.');
+            } else {
+                console.error('Error en el registro:', result.message);
+            }
+        } catch (error) {
+            if (!navigator.onLine) {
+                console.log('No tienes conexión a Internet. Intenta nuevamente más tarde.');
+            } else {
+                console.error('Error en la petición:', error);
+                alert('Error: Ocurrió un problema en la comunicación con el servidor. Intenta nuevamente más tarde.');
+            }
+        } finally {
+            setIsLoading(false); // Desactiva el indicador de carga al finalizar
+        }
+    };    
+
+    /*const onloadAlumnos = async () => {
         try {
             const response = await fetch(`${apiUrl}/accionesAlumnos.php`, {
             method: 'POST',
@@ -102,7 +183,78 @@ const ActividadesDocente = () => {
         console.error('Error 500', error);
 
         }
+    };*/
+    const onloadAlumnos = async () => {
+        try {
+            // Abrir el caché y buscar la respuesta en caché
+            const cache = await caches.open('api-cache');
+            const cachedResponse = await cache.match(`${apiUrl}accionesAlumnos.php`);
+    
+            // Si hay una respuesta en caché y el usuario está offline, usar los datos en caché
+            if (cachedResponse && !navigator.onLine) {
+                const data = await cachedResponse.json(); // Acceder a los datos del caché
+                console.log('Cargando alumnos desde la caché:', data);
+                setAlumnosMaterias(data.message);
+                return; // Terminar la función aquí si usamos el caché
+            }
+    
+            // Realizar la solicitud a la API
+            const requestData = {
+                clvMateria: vchClvMateria,
+                matriculaDocent: userData.vchMatricula,
+                chrGrupo: chrGrupo,
+                periodo: intPeriodo,
+            };
+    
+            console.log("Datos enviados:", requestData);
+    
+            const response = await fetch(`${apiUrl}accionesAlumnos.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestData),
+            });
+    
+            // Verificar si la respuesta es exitosa
+            if (!response.ok) {
+                throw new Error(`Error en la respuesta del servidor: ${response.status} ${response.statusText}`);
+            }
+    
+            // Clonar la respuesta antes de leer el JSON para poder guardarla en el caché
+            const responseClone = response.clone();
+            const result = await response.json();
+            console.log("Datos de alumnos:", result);
+    
+            if (result.done) {
+                setAlumnosMaterias(result.message);
+                console.log('Alumnos cargados exitosamente desde la API.');
+    
+                // Guardar la respuesta clonada en el caché para uso futuro
+                await cache.put(`${apiUrl}accionesAlumnos.php`, responseClone);
+                console.log('Respuesta de la API almacenada en caché.');
+            } else {
+                console.error('Error en el registro:', result.message);
+    
+                if (result.debug_info) {
+                    console.error('Información de depuración:', result.debug_info);
+                }
+                if (result.errors) {
+                    result.errors.forEach(error => {
+                        console.error('Error específico:', error);
+                    });
+                }
+            }
+        } catch (error) {
+            if (!navigator.onLine) {
+                console.log('No tienes conexión a Internet. Intenta nuevamente más tarde.');
+            } else {
+                console.error('Error en la petición:', error);
+                alert('Error: Ocurrió un problema en la comunicación con el servidor. Intenta nuevamente más tarde.');
+            }
+        }
     };
+    
 
     useEffect(() => {
         onloadActividades();

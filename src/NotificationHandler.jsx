@@ -32,6 +32,11 @@ const NotificationHandler = () => {
           const token = await getToken(messaging, { vapidKey: 'BMEGW6-IazTd7efdm7EibTQ0BzKZWKIMe_xBwCwQTdmzW-tKLYokd897CcONFbs6Dro2-w8wRRciCWv-YnVu0KM' });
           if (token) {
             console.log("nuevo",token)
+            if (!navigator.onLine) {
+              console.log('No tienes conexión a Internet. Intenta nuevamente más tarde.');
+              return; // Salir de la función si no hay conexión
+            }
+            
             try {
               const response = await fetch(`${apiUrl}/enviarToken.php`, {
                 method: 'POST',
@@ -51,10 +56,12 @@ const NotificationHandler = () => {
                 localStorage.setItem('authTokenFirebase', token);
               }
             } catch (error) {
-              console.error('Error 500', error);
-              setTimeout(() => {
-                alert('¡Ay caramba! Encontramos un pequeño obstáculo en el camino, pero estamos trabajando para superarlo. Gracias por tu paciencia mientras solucionamos este problemita.');
-              }, 2000);
+              if (!navigator.onLine) {
+                console.log('No tienes conexión a Internet. Intenta nuevamente más tarde.');
+              } else {
+                  console.error('Error en la petición:', error);
+                  alert('Error: Ocurrió un problema en la comunicación con el servidor. Intenta nuevamente más tarde.');
+              }
             }
           }
         } else {

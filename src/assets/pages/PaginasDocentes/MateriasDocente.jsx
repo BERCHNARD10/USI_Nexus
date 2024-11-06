@@ -282,72 +282,67 @@ const MateriasDocente = () => {
         }
     };
 
-    const onloadNaterias = async () => 
-    {
-        try 
-        {
-            caches.open('api-cache').then(cache => {
-                cache.keys().then(keys => {
-                  keys.forEach(request => {
-                    console.log("url: ",request.url);
-                  });
-                });
-              });
-              
-            setIsLoading(true);
+    const onloadNaterias = async () => {
+        try {
 
-            const cache = await caches.open('api-cache'); // Asegúrate de usar el nombre correcto de cache
-            console.log("url: ",cache);
+            const cache = await caches.open('api-cache');
+            const cachedResponse = await cache.match('https://robe.host8b.me/WebServices/cargarMaterias.php');
 
-            const cachedResponse = await cache.match(`${apiUrl}cargarMaterias.php`);
-    
-            if (!navigator.onLine && cachedResponse) {
-                const result = await cachedResponse.json();
+            if (cachedResponse && !navigator.onLine) {
+                const data = await cachedResponse.json();
                 console.log('Cargando materias desde la cache.');
-                setMaterias(result.message);
+                setMaterias(data.message);
                 return;
-            }
-            else if(!cachedResponse){
-                console.error('No hay materias desde la cache.');
-            }
-
-            const response = await fetch(`${apiUrl}cargarMaterias.php`, 
+            } 
+            else if (!cachedResponse) 
             {
+                console.error('No se encontró la respuesta en la caché.');
+            }
+            // Mostrar todas las URLs almacenadas en el caché (para depuración)
+            const keys = await cache.keys();
+            keys.forEach(request => {
+                console.log("URL en caché:", request.url);
+            });
+    
+            setIsLoading(true);
+    
+            // Hacer la solicitud a la API si no hay datos en la caché o si estamos online
+            const response = await fetch(`${apiUrl}cargarMaterias.php`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                matriculaDocent: userData.vchMatricula
+                    matriculaDocent: userData.vchMatricula
                 }),
             });
+    
+            // Clonar la respuesta antes de leer el JSON
+            const responseClone = response.clone();
             const result = await response.json();
-            if (result.done) 
-            {
+            
+            if (result.done) {
                 setMaterias(result.message);
-            } 
-            else 
-            {
-            console.log('Error en el registro:', result.message);
+    
+                // Guardar la respuesta clonada en el caché
+                await cache.put('https://robe.host8b.me/WebServices/cargarMaterias.php', responseClone);
+                console.log('Respuesta de la API almacenada en caché.');
+            } else {
+                console.log('Error en el registro:', result.message);
             }
-        } 
-        catch (error) 
-        {
+        } catch (error) {
             if (!navigator.onLine) {
-                // Cuando no hay conexión
                 console.log('No tienes conexión a Internet. Intenta nuevamente más tarde.');
             } else {
-                // Cuando es otro tipo de error (como un error en el servidor)
-                console.error('Error en la petición:', error);            
+                console.error('Error en la petición:', error);
                 alert('Error: Ocurrió un problema en la comunicación con el servidor. Intenta nuevamente más tarde.');
             }
-        } 
-        finally
-        {
+        } finally {
             setIsLoading(false);
         }
     };
-
+    
+    
     useEffect(() => 
     {
         {

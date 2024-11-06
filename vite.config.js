@@ -73,6 +73,18 @@ export default defineConfig({
             },
           },
           {
+            // Cache para imágenes (PNG, JPG, JPEG, SVG, GIF, WebP)
+            urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp)$/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'image-cache',
+              expiration: {
+                maxEntries: 50, // Limita el número de imágenes en el caché
+                maxAgeSeconds: 30 * 24 * 60 * 60, // Expira en 30 días
+              },
+            },
+          },
+          {
             // Cache para assets estáticos (JS, CSS, imágenes)
             urlPattern: ({ request }) =>
               request.destination === 'script' || 
@@ -89,7 +101,7 @@ export default defineConfig({
           },
           {
             // Cache para tus APIs (Web Services)
-            urlPattern: /^https:\/\/robe.host8b.me\/WebServices\/.*\.php$/,
+            urlPattern: /^https:\/\/robe\.host8b\.me\/WebServices\/.*\.php$/,
             handler: 'NetworkFirst', // Intenta la red primero, si falla, busca en cache
             options: {
               cacheName: 'api-cache',

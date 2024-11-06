@@ -29,7 +29,6 @@ import DetallePracticaDocente from './assets/pages/PaginasDocentes/DetallePracti
 import Notificaciones from './assets/pages/Notificaciones'
 // Importa los estilos de react-toastify
 import 'react-toastify/dist/ReactToastify.css';
-import './main'
 // Importa el ToastContainer y el método toast
 import { ToastContainer, toast } from 'react-toastify';
 import './App.css';
@@ -87,7 +86,7 @@ function App() {
           <Route path="/actividades/detalleActividad/:vchClvMateria/:chrGrupo/:intPeriodo/:intNumeroActi/:intIdActividadCurso" element={<PrivateRouteUser><Layout><DetalleActividadAlumno/></Layout></PrivateRouteUser>} />
           <Route path="/actividades/detalleActividad/detallePractica/:vchClvMateria/:chrGrupo/:intPeriodo/:intNumeroActi/:intNumeroPractica/:intIdActividadCurso" element={<PrivateRouteUser><Layout><DetallePracticaAlumno/></Layout></PrivateRouteUser>} />
           {/*PAGINAS PARA Docentes */}
-          
+          4
           <Route path="/alumnos" element={<PrivateRoute><Layout><Alumnos/></Layout></PrivateRoute>} />
           <Route path="/departamentos" element={<PrivateRoute><Layout><Departamentos/></Layout></PrivateRoute>} />
           <Route path="/carreras" element={<PrivateRoute><Layout><CarrerasCrud/></Layout></PrivateRoute>} />

@@ -10,57 +10,83 @@ const GruposMateriasDocente = () => {
     const {userData} = useAuth(); // Obtén el estado de autenticación del contexto
     const [materias, setMaterias] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const {vchClvMateria, chrGrupo, intPeriodo} = useParams();
+    const {vchClvMateria, intPeriodo} = useParams();
     const apiUrl = import.meta.env.VITE_API_URL;
 
-    const onloadNaterias = async () => {
+    const onloadGrupos = async () => {
+        setIsLoading(true); // Activa el indicador de carga al inicio
         try {
-        const response = await fetch(`${apiUrl}/cargarMaterias.php`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-
-            body: JSON.stringify({
-                clvMateria:vchClvMateria,
-                matriculaDocent: userData.vchMatricula,
-                chrGrupo: chrGrupo,
-                periodo:intPeriodo
-            }),
-        });
-
-        const result = await response.json();
-        if (result.done) {
-            setMaterias(result.message);
-
+            // Abrir el caché
+            const cache = await caches.open('api-cache');
+            const cachedResponse = await cache.match(`${apiUrl}cargarGrupos.php`);
+    
+            // Si hay una respuesta en caché y el usuario está offline, usar los datos en caché
+            if (cachedResponse && !navigator.onLine) {
+                const data = await cachedResponse.json(); // Acceder a los datos del caché
+                console.log('Cargando materias desde la caché:', data);
+                setMaterias(data.message);
+                return; // Terminar la función aquí si usamos el caché
+            }
+    
+            // Realizar la solicitud a la API
+            const response = await fetch(`${apiUrl}/cargarMaterias.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    clvMateria: vchClvMateria,
+                    matriculaDocent: userData.vchMatricula,
+                    periodo: intPeriodo
+                }),
+            });
+            
+            // Verificar si la respuesta es exitosa
+            if (!response.ok) {
+                throw new Error(`Error en la respuesta del servidor: ${response.status} ${response.statusText}`);
+            }
+    
+            // Clonar la respuesta antes de leer el JSON para poder guardarla en el caché
+            const responseClone = response.clone();
+            const result = await response.json();
+    
+            if (result.done) {
+                setMaterias(result.message);
+                console.log('Materias cargadas exitosamente desde la API.', result);
+    
+                // Guardar la respuesta clonada en el caché
+                await cache.put(`${apiUrl}cargarGrupos.php`, responseClone);
+                console.log('Respuesta de la API almacenada en caché.');
             } else {
-
-            console.error('Error en el registro:', result.message);
-
-            if (result.debug_info) {
-                console.error('Información de depuración:', result.debug_info);
+                // Manejo de errores en la respuesta de la API
+                console.error('Error en el registro:', result.message);
+    
+                if (result.debug_info) {
+                    console.error('Información de depuración:', result.debug_info);
+                }
+                if (result.errors) {
+                    result.errors.forEach(error => {
+                        console.error('Error específico:', error);
+                    });
+                }
+                setServerErrorMessage(result.message || 'Error en el servidor.');
             }
-            if (result.errors) {
-                result.errors.forEach(error => {
-                    console.error('Error específico:', error);
-                });
+        } catch (error) {
+            if (!navigator.onLine) {
+                console.log('No tienes conexión a Internet. Intenta nuevamente más tarde.');
+            } else {
+                console.error('Error en la petición:', error);
+                alert('Error: Ocurrió un problema en la comunicación con el servidor. Intenta nuevamente más tarde.');
             }
-            setServerErrorMessage(result.message || 'Error en el servidor.');
+        }  finally {
+            setIsLoading(false); // Desactiva el indicador de carga al finalizar
         }
-        
-    } catch (error) {
-        console.error('Error 500', error);
-        alert('Error 500: Ocurrió un problema en el servidor. Intenta nuevamente más tarde.');
-    }
-    finally{
-        setIsLoading(false);
-
-    }
     };
+    
 
     useEffect(() => {
         {
-        onloadNaterias()
+            onloadGrupos()
         }
     }, []);
 

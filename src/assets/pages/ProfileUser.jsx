@@ -174,7 +174,7 @@ const PerfilUsuario = () => {
     }
   }
 
-
+/*
   const onloadUserData = async () => 
   {
     try 
@@ -217,6 +217,74 @@ const PerfilUsuario = () => {
         setIsLoading(false);
     }
   };
+  */
+
+  const onloadUserData = async () => {
+    setIsLoading(true); // Activa el indicador de carga al inicio
+
+    try {
+        // Abrir el caché y buscar la respuesta en caché
+        const cache = await caches.open('api-cache');
+        const cachedResponse = await cache.match(`${apiUrl}sesionManager.php`);
+
+        // Si hay una respuesta en caché y el usuario está offline, usar los datos en caché
+        if (cachedResponse && !navigator.onLine) {
+            const result = await cachedResponse.json(); // Acceder a los datos del caché
+            console.log('Cargando datos de usuario desde la caché:', result);
+
+            if (result.done) {
+                const token = localStorage.getItem('authToken');
+                if (result.userData && typeof result.userData.dataEstudiante === 'string') {
+                    result.userData.dataEstudiante = JSON.parse(result.userData.dataEstudiante);
+                    console.log("Foto de perfil desde caché:", result.userData.vchFotoPerfil);
+                }
+                login(token, result.userData);
+            }
+            return; // Terminar la función aquí si usamos el caché
+        }
+
+        // Realizar la solicitud a la API
+        const response = await fetch(`${apiUrl}/sesionManager.php`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ matriculaUser: userData.vchMatricula }),
+        });
+
+        // Verificar si la respuesta es exitosa
+        if (!response.ok) {
+            throw new Error(`Error en la respuesta del servidor: ${response.status} ${response.statusText}`);
+        }
+
+        // Clonar la respuesta antes de leer el JSON para poder guardarla en el caché
+        const responseClone = response.clone();
+        const result = await response.json();
+
+        if (result.done) {
+            const token = localStorage.getItem('authToken');
+            if (result.userData && typeof result.userData.dataEstudiante === 'string') {
+                result.userData.dataEstudiante = JSON.parse(result.userData.dataEstudiante);
+                console.log("Foto de perfil desde la API:", result.userData.vchFotoPerfil);
+            }
+            login(token, result.userData);
+
+            // Guardar la respuesta clonada en el caché para uso futuro
+            await cache.put(`${apiUrl}sesionManager.php`, responseClone);
+            console.log('Datos de usuario almacenados en caché.');
+        } else {
+            console.log('Error en el registro:', result.message);
+        }
+    } catch (error) {
+      if (!navigator.onLine) {
+          console.log('No tienes conexión a Internet. Intenta nuevamente más tarde.');
+      } else {
+          console.error('Error en la petición:', error);
+          alert('Error: Ocurrió un problema en la comunicación con el servidor. Intenta nuevamente más tarde.');
+      }
+    } finally {
+        setIsLoading(false); // Desactiva el indicador de carga al finalizar
+    }
+  };
+
 
   const onSubmitUpdatePassword = async (data, event) => {
     event.preventDefault();
