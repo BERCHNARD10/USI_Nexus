@@ -14,42 +14,27 @@ const manifestForPlugin = {
     "manifest-icon-512.maskable.png",
   ],
   manifest: {
-    name: "UTHH Virtual",
-    short_name: "UTHH Virtual",
-    description: "Una plataforma de evaluacion educativa",
-    icons:[
+    name: 'UTHH Virtual',
+    short_name: 'UTHH',
+    start_url: '/',
+    display: 'standalone',
+    background_color: '#ffffff',
+    description: 'Una plataforma de evaluación educativa',
+    icons: [
       {
-          "src":"manifest-icon-192.maskable.png",
-          "sizes":"192x192",
-          "type":"image/png",
-          "purpose":"any"
+        src: '/manifest-icon-192.png',
+        sizes: '192x192',
+        type: 'image/png'
       },
       {
-          "src":"manifest-icon-192.maskable.png",
-          "sizes":"192x192",
-          "type":"image/png",
-          "purpose":"maskable"
-      },
-      {
-          "src":"manifest-icon-512.maskable.png",
-          "sizes":"512x512",
-          "type":"image/png",
-          "purpose":"any"
-      },
-      {
-          "src":"manifest-icon-512.maskable.png",
-          "sizes":"512x512",
-          "type":"image/png",
-          "purpose":"maskable"
+        src: '/manifest-icon-512.png',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'maskable'
       }
     ],
-    theme_color: "#171717",
-    background_color: "#e8ebf2",
-    display: "standalone",
-    scope: "/",
-    start_url: "/",
-    orientation: "portrait",
-  },
+    theme_color: '#ffffff'
+  }
 };
 
 export default defineConfig({
