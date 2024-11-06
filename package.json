@@ -9,7 +9,7 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "react-scripts test",
-    "serve": "vite preview"
+    "start": "vite preview"
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.14",
