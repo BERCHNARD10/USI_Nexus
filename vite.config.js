@@ -79,7 +79,6 @@ export default defineConfig({
     react(),
     VitePWA({
       manifest: manifestForPlugin,
-      registerType: 'autoUpdate',
       cleanupOutdatedCaches: true,  // Esto limpiará automáticamente las cachés obsoletas
       workbox: {
         runtimeCaching: [
