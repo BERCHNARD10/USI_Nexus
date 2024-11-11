@@ -14,26 +14,70 @@ const manifestForPlugin = {
     "manifest-icon-512.maskable.png",
   ],
   manifest: {
-    name: 'UTHH Virtual',
-    short_name: 'UTHH',
-    start_url: '/',
-    display: 'standalone',
-    background_color: '#ffffff',
-    description: 'Una plataforma de evaluación educativa',
+    name: "UTHH Virtual",
+    short_name: "UTHH Virtual",
+    start_url: "/",
+    display: "standalone",
+    background_color: "#ffffff",
+    lang: "en",
+    scope: "/",
+    registerType: "autoUpdate",
+    includeAssets: [
+      "favicon-196.ico",
+      "apple-icon-180.png",
+      "manifest-icon-192.maskable.png",
+      "manifest-icon-512.maskable.png",
+      "logo-pwa-resized-phone-192.png"
+  
+    ],
     icons: [
       {
-        src: '/manifest-icon-192.png',
-        sizes: '192x192',
-        type: 'image/png'
+        src: "manifest-icon-144.png",
+        sizes: "144x144",
+        type: "image/png",
+        purpose: "any"
       },
       {
-        src: '/manifest-icon-512.png',
-        sizes: '512x512',
-        type: 'image/png',
-        purpose: 'maskable'
+        src: "logo-pwa-resized-phone-192.png",
+        sizes: "192x192",
+        type: "image/png",
+        purpose: "any"
+      },
+      {
+        src: "logo-pwa-resized-phone-192.png",
+        sizes: "192x192",
+        type: "image/png",
+        purpose: "maskable"
+      },
+      {
+        src: "manifest-icon-512.maskable-pwa.png",
+        sizes: "512x512",
+        type: "image/png",
+        purpose: "any"
+      },
+      {
+        src: "manifest-icon-512.maskable-pwa.png",
+        sizes: "512x512",
+        type: "image/png",
+        purpose: "maskable"
       }
     ],
-    theme_color: '#ffffff'
+    theme_color: "#171717",
+    orientation: "portrait",
+    screenshots: [
+      {
+        src: "screenshot-wide.png",
+        sizes: "1280x720",
+        type: "image/png",
+        form_factor: "wide"
+      },
+      {
+        src: "screenshot-narrow.png",
+        sizes: "720x1280",
+        type: "image/png",
+        form_factor: "narrow"
+      }
+    ]
   }
 };
 
