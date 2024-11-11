@@ -7,7 +7,7 @@ const manifestForPlugin = {
   short_name: "UTHH Virtual",
   start_url: "/",
   display: "standalone",
-  background_color: "#ffffff",
+  background_color: "#02233a",
   lang: "en",
   scope: "/",
   includeAssets: [
@@ -91,7 +91,7 @@ export default defineConfig({
             urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp)$/,
             handler: 'CacheFirst',
             options: {
-              cacheName: 'image-cache',
+              cacheName: 'local-image-cache',
               expiration: {
                 maxEntries: 50,
                 maxAgeSeconds: 30 * 24 * 60 * 60,
@@ -121,6 +121,21 @@ export default defineConfig({
               expiration: {
                 maxEntries: 20,
                 maxAgeSeconds: 60 * 60 * 24 * 9,
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
+          {
+            // Nueva configuración para caché de imágenes externas
+            urlPattern: /^https?:\/\/.*\.(png|jpg|jpeg|svg|gif|webp)$/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'external-image-cache',
+              expiration: {
+                maxEntries: 30, // Limita el número de imágenes externas en caché
+                maxAgeSeconds: 30 * 24 * 60 * 60, // Expira en 30 días
               },
               cacheableResponse: {
                 statuses: [0, 200],
