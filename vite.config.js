@@ -6,13 +6,6 @@ import { VitePWA } from "vite-plugin-pwa";
   plugins: [react()],
 })*/
 const manifestForPlugin = {
-  registerType: "autoUpdate",
-  includeAssets: [
-    "favicon-196.ico",
-    "apple-icon-180.png",
-    "manifest-icon-192.maskable.png",
-    "manifest-icon-512.maskable.png",
-  ],
   manifest: {
     name: "UTHH Virtual",
     short_name: "UTHH Virtual",
