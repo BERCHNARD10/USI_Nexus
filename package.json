@@ -12,6 +12,7 @@
     "test": "react-scripts test"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.0",
     "@tailwindcss/typography": "^0.5.14",
     "autoprefixer": "^10.4.17",
     "axios": "^1.6.8",

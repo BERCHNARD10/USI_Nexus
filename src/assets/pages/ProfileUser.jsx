@@ -3,7 +3,7 @@ import { useAuth } from '../server/authUser'; // Importa el hook de autenticaci�
 import { FaUserTag, FaEdit, FaEye, FaEyeSlash, FaCheck, FaTimes, FaCamera, FaSpinner } from 'react-icons/fa';
 import { AiOutlineLoading } from "react-icons/ai";
 import { useForm } from 'react-hook-form';
-import { Card, Avatar } from 'flowbite-react';
+import { Button, Card, Avatar, Dropdown } from 'flowbite-react';
 import  Components from '../components/Components'
 import AlexaLogo from '../images/alexa-logo.png';
 
@@ -22,6 +22,11 @@ const PerfilUsuario = () => {
   const [newPhoneNumber, setNewPhoneNumber] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef(null);
+  const cameraInputRef = useRef(null);
+  const [profileImage, setProfileImage] = useState(null);
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [serverResponse, setServerResponse] = useState('');
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -29,47 +34,7 @@ const PerfilUsuario = () => {
 
   const profileImageUrl = isAuthenticated && userData?.vchFotoPerfil
   ? `${webUrl}assets/imagenes/${userData.vchFotoPerfil}`
-  : `${webUrl}assets/imagenes/userProfile.png`; // Enlace alternativo cuando vchFotoPerfil es null o usuario no está autenticado
-
-
-
-  const handleButtonClick = () => {
-    fileInputRef.current.click();
-  };
-
-  const handleFileChange = async(event) => {
-    const file = event.target.files[0];
-      if (file) {
-        setLoading(true);
-      // Crear un objeto FormData y agregar el archivo y los datos del usuario
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('user', userData.vchMatricula);
-      
-
-      try {
-        // Subir el archivo al servidor usando fetch
-        const response = await fetch(`${apiUrl}/UploadImagen.php`, {
-          method: 'POST',
-          body: formData,
-        });
-
-        const data = await response.json();
-
-        if(data.done)
-        {
-          console.log(data)
-          onloadUserData()
-        }
-        
-      } catch (error) {
-        setMessage('Error al subir la imagen');
-      } finally {
-        setLoading(false);
-      }
-    }
-   //window.location.reload(); // Recarga la página
-  }; 
+  : `${webUrl}assets/imagenes/userProfile.png`; // Enlace alternativo cuando vchFotoPerfil es null o usuario no está autenticado 
 
 
   const {
@@ -339,7 +304,111 @@ const PerfilUsuario = () => {
       }
   }, []);
 
+  // Función para abrir la cámara
+  const openCamera = async () => {
+    setIsCameraOpen(true);
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      videoRef.current.srcObject = stream;
+      videoRef.current.play();
+    } catch (error) {
+      console.error("No se pudo acceder a la cámara:", error);
+    }
+  };
 
+    // Función para capturar foto desde la cámara
+    const capturePhoto = () => {
+      const canvas = canvasRef.current;
+      const video = videoRef.current;
+      const context = canvas.getContext('2d');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      
+      const capturedImage = canvas.toDataURL('image/png');
+      setProfileImage(capturedImage); // Muestra la imagen capturada
+  
+      // Convertir la imagen capturada a archivo Blob para enviar al servidor
+      canvas.toBlob(async (blob) => {
+
+        // Generar un nombre de archivo único usando la matrícula y la fecha/hora
+        const timestamp = new Date().toISOString().replace(/[-:.]/g, ''); // Marca de tiempo única
+        const filename = `${userData.vchMatricula}_captured_${timestamp}.png`;
+
+        const formData = new FormData();
+        formData.append('file', blob, filename); // Asignar el nombre personalizado
+        formData.append('user', userData.vchMatricula); // Matrícula del usuario
+  
+        try {
+          setLoading(true);
+          const response = await fetch(`${apiUrl}/UploadImagen.php`, {
+            method: 'POST',
+            body: formData,
+          });
+  
+          const data = await response.json();
+          if (data.done) {
+            onloadUserData()
+            console.log('Imagen capturada subida con éxito:', data);
+          } else {
+            console.error('Error al subir la imagen capturada:', data.message);
+          }
+        } catch (error) {
+          console.error('Error de red al subir la imagen capturada:', error);
+        }
+        finally{
+          setLoading(false);
+        }
+      });
+  
+      closeCamera();
+    };
+      // Función para cerrar la cámara
+  const closeCamera = () => {
+    const stream = videoRef.current.srcObject;
+    if (stream) {
+      stream.getTracks().forEach(track => track.stop());
+    }
+    setIsCameraOpen(false);
+  };
+
+  const handleButtonClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = async(event) => {
+    const file = event.target.files[0];
+      if (file) {
+        setLoading(true);
+      // Crear un objeto FormData y agregar el archivo y los datos del usuario
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('user', userData.vchMatricula);
+      
+
+      try {
+        // Subir el archivo al servidor usando fetch
+        const response = await fetch(`${apiUrl}/UploadImagen.php`, {
+          method: 'POST',
+          body: formData,
+        });
+
+        const data = await response.json();
+
+        if(data.done)
+        {
+          console.log(data)
+          onloadUserData()
+        }
+        
+      } catch (error) {
+        setMessage('Error al subir la imagen');
+      } finally {
+        setLoading(false);
+      }
+    }
+   //window.location.reload(); // Recarga la página
+  };
 
   return (
     <section className='w-full flex flex-col'>
@@ -374,12 +443,27 @@ const PerfilUsuario = () => {
                         src={profileImageUrl}
                         className="mb-2 mr-2 h-20 w-20 rounded-lg object-cover"
                       />
+                    <Dropdown
+                      className="w-max" // Ajusta el ancho según lo necesites
+
+                      label={
+                        
                       <button
                         className="absolute bottom-0 right-0 mb-1 mr-1 bg-white p-1 rounded-full border border-gray-300"
-                        onClick={handleButtonClick}
                       >
                         <FaCamera size={14} className="text-gray-600" />
                       </button>
+                    }
+                      inline={true}
+                      arrowIcon={false}
+                    >
+                      <Dropdown.Item onClick={handleButtonClick}>
+                        Elegir de Archivos
+                      </Dropdown.Item>
+                      <Dropdown.Item onClick={openCamera}>
+                        Tomar Foto
+                      </Dropdown.Item>
+                    </Dropdown>
                       <input
                         type="file"
                         ref={fileInputRef}
@@ -387,7 +471,35 @@ const PerfilUsuario = () => {
                         accept="image/*"
                         onChange={handleFileChange}
                       />
+                      <input
+                        type="file"
+                        ref={cameraInputRef}
+                        className="hidden"
+                        accept="image/*"
+                        capture="user"
+                        onChange={handleFileChange}
+                      />
+                      {isCameraOpen && (
+                           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                           <div className="bg-white rounded-lg shadow-lg p-4 max-w-sm w-full">
+                             <video ref={videoRef} autoPlay className="rounded-lg border-2 border-gray-300 w-full" />
+                             <canvas ref={canvasRef} style={{ display: 'none' }} />
+                             <div className="flex justify-around mt-4">
+                                <div className="w-40">
+                                  <LoadingButton
+                                      onClick={capturePhoto} 
+                                      normalLabel="Tomar Foto"
+                                  />
+                                </div>
+                                <Button color="gray" onClick={closeCamera} >
+                                  Cancelar
+                                </Button>
+                             </div>
+                           </div>
+                         </div>
+                      )}
                     </div>
+                    
                   )
                 }
 
