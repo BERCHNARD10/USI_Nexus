@@ -99,6 +99,7 @@ export default defineConfig({
             },
           },
           {
+            // Cache para assets estáticos (JS, CSS, imágenes)
             urlPattern: ({ request }) =>
               request.destination === 'script' || 
               request.destination === 'style' || 
