@@ -30,6 +30,10 @@ jobs:
         run: |
           npm install
           npm run build
+    
+      - name: List files after build
+        run: ls -R # Listará todos los archivos y carpetas, incluyendo build
+
     # Instala ncftp para que el comando ncftpput esté disponible
       - name: Install ncftp
         run: sudo apt-get update && sudo apt-get install -y ncftp
