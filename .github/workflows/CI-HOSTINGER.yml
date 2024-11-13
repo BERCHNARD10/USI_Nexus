@@ -30,6 +30,9 @@ jobs:
         run: |
           npm install
           npm run build
+    # Instala ncftp para que el comando ncftpput esté disponible
+      - name: Install ncftp
+        run: sudo apt-get update && sudo apt-get install -y ncftp
 
       - name: Deploy to Hostinger
         env:
