@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",
+    "@sentry/react": "^8.38.0",
     "@tailwindcss/typography": "^0.5.14",
     "autoprefixer": "^10.4.17",
     "axios": "^1.6.8",
