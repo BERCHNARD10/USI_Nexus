@@ -1,12 +1,20 @@
-name: CI/CD Workflow HOSTINGER
+name: Hostinger Deployment Workflow
 
 on:
   push:
     branches:
         - master
-
+        - release/*
+        - 'feature/**'
+        - 'feature/pasarela-pagos'
+        - 'feature/suscripciones'
+        - 'feature/notificaciones-push'
+        - 'feature/notificaciones-push-backend'
+        - 'feature/apis-logica-negocio'
+        - 'feature/diseno-responsivo'
+        - 'feature/offline-pwa'
 jobs:
-  deploy:
+  deploy-to-hostinger:
     runs-on: ubuntu-latest
 
     steps:
@@ -30,4 +38,3 @@ jobs:
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
         run: |
             ncftpput -R -v -u "$FTP_USERNAME" -p "$FTP_PASSWORD" "$FTP_HOST" /public_robe/ build/*
-
