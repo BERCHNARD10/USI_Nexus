@@ -40,4 +40,4 @@ jobs:
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
         run: |
-            ncftpput -R -v -u "$FTP_USERNAME" -p "$FTP_PASSWORD" "$FTP_HOST" /public_html/public_robe/ build/*
+            ncftpput -R -v -u "$FTP_USERNAME" -p "$FTP_PASSWORD" "$FTP_HOST" / build/*
