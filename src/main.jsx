@@ -9,7 +9,7 @@ import {AuthProvider} from './assets/server/authUser'; // Importa el AuthProvide
 import NotificationHandler from './NotificationHandler'; // Importa el nuevo componente NotificationHandler
 
 
-
+/*
 if (process.env.NODE_ENV === 'production') {
 
   console.log = () => {};
@@ -17,7 +17,7 @@ if (process.env.NODE_ENV === 'production') {
   console.error = () => {};
   console.info = () => {};
   console.debug = () => {};
-}
+}*/
 
 Sentry.init({
   dsn: "https://[your_dsn_here].ingest.sentry.io/[project_id]",
