@@ -240,6 +240,7 @@ const DetallePracticaDocente = () => {
             tokenUser: selectedAlumnoTokenFirebase,
             url:`${webUrl}actividades/detalleActividad/detallePractica/${vchClvMateria}/${chrGrupo}/${intPeriodo}/${intNumeroActi}/${intNumeroPractica}/${intIdActividadCurso}`
         }
+
         console.log(notificacion)
         try {
             const response = await fetch(`${apiUrl}/accionesAlumnos.php`, {
@@ -309,7 +310,6 @@ const DetallePracticaDocente = () => {
     };
 */
     const onloadAlumnos = async () => {
-        setIsLoading(true); // Activa el indicador de carga al inicio
 
         try {
             // Abrir el caché y buscar la respuesta en caché
@@ -377,8 +377,6 @@ const DetallePracticaDocente = () => {
                 console.error('Error en la petición:', error);
                 alert('Error: Ocurrió un problema en la comunicación con el servidor. Intenta nuevamente más tarde.');
             }
-        } finally {
-            setIsLoading(false); // Desactiva el indicador de carga al finalizar
         }
     };
 
@@ -416,6 +414,8 @@ const DetallePracticaDocente = () => {
         console.log("Datos enviados:", requestData);
     
         try {
+            setIsLoading(true); // Activa el indicador de carga al inicio
+
             // Abrir el caché y buscar la respuesta en caché
             const cache = await caches.open('api-cache');
             const cachedResponse = await cache.match(`${apiUrl}DetallePractica.php`);
@@ -473,6 +473,9 @@ const DetallePracticaDocente = () => {
                 alert('Error: Ocurrió un problema en la comunicación con el servidor. Intenta nuevamente más tarde.');
             }
         }
+        finally {
+            setIsLoading(false); // Desactiva el indicador de carga al finalizar
+        }
     };
     
 
@@ -519,8 +522,8 @@ const DetallePracticaDocente = () => {
             />
         <TitlePage label={detalleActividad.vchNombre} />
         <Paragraphs className="ml-3" label={detalleActividad.vchDescripcion} />
-        <Tabs>
-            <Tabs.Item title="Instrucciones" icon={MdDescription}>
+        <Tabs aria-label="Tabs with underline" style="underline">
+            <Tabs.Item  active  title="Instrucciones" icon={MdDescription}>
                 <div className="flex flex-col md:flex-row gap-4">
                     <div className='md:w-full md:flex flex-col gap-y-4'>
                         <div className="mb-4 md:mb-0 rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6 xl:p-8">
@@ -607,7 +610,7 @@ const DetallePracticaDocente = () => {
                                     <Tooltip content="Agregar nuevo criterio">
                                     <button
                                         type="button"
-                                        className="bg-primary hover:bg-secondary p-3 bg-white rounded-full border border-bg-primary hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-300"
+                                        className="bg-primary hover:bg-secondary p-3 rounded-full border border-bg-primary focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-300"
                                         onClick={handleAddRubro}
                                     >
                                         <FaPlus className="text-lg" />
