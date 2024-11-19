@@ -29,6 +29,7 @@ Sentry.init({
   tracePropagationTargets: ["localhost", /^https:\/\/robe\.host8b\.me\//],
   replaysSessionSampleRate: 0.1,
   replaysOnErrorSampleRate: 1.0,
+  release: "my-app@1.0.0", // Versión de la aplicación
 });
 
 

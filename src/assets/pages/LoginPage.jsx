@@ -7,6 +7,7 @@ import Components from '../components/Components';
 import { useAuth } from '../server/authUser'; 
 import imagePanel from '../images/uthhPanel.png';
 import secondaryLogo from '../images/secondary-logo.png';
+import * as Sentry from "@sentry/react";
 
 const { TitlePage, Paragraphs, LoadingButton, CustomInput, CustomInputPassword, InfoAlert } = Components;
 
@@ -35,6 +36,8 @@ const LoginPage = () => {
 
   const handleLogin = async (data) => {
     setIsLoading(true);
+    const transaction = Sentry.startTransaction({ name: "User Login" }); // Monitorear transacción
+
     try {
       const response = await fetch(`https://robe.host8b.me/WebServices/loginUser.php`, {
         method: 'POST',
@@ -45,16 +48,27 @@ const LoginPage = () => {
       const result = await response.json();
 
       if (result.done) {
+        transaction.setStatus("ok"); // Marca la transacción como exitosa
+        Sentry.setUser({
+          id: result.userData.vchMatricula,
+          username: result.userData.vchNombre,
+          email: result.userData.vchEmail,
+        });
         login(result.userData.JWTUser, result.userData);
         navigate('/');
       } else {
+        transaction.setStatus("error"); // Marcar como error
+        Sentry.captureMessage(`Login failed for matricula: ${data.matriculaAlum} \n detalle: ${result.message}`);
+
         handleFailedLogin();
         setServerErrorMessage(result.message || 'Error en el servidor.');
       }
     } catch (error) {
+      Sentry.captureException(error); // Captura el error en Sentry
       console.error('Error 500', error);
       alert('Error 500: Ocurrió un problema en el servidor. Intenta nuevamente más tarde.');
     } finally {
+      transaction.finish(); // Finaliza la transacción
       setIsLoading(false);
     }
   };
