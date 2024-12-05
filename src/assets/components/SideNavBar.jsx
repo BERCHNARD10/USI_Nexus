@@ -4,6 +4,7 @@ import { Sidebar } from 'flowbite-react';
 import { HiUserGroup, HiBookOpen, HiOfficeBuilding, HiAcademicCap } from 'react-icons/hi';
 import { useAuth } from '../server/authUser'; // Importar el hook de autenticación
 import { FaUserGraduate, FaChalkboardTeacher } from 'react-icons/fa';
+import { BiCalendarEvent } from 'react-icons/bi';
 
 const SideNav = ({ isSidebarOpen, toggleSidebar }) => { 
   
@@ -27,14 +28,17 @@ const SideNav = ({ isSidebarOpen, toggleSidebar }) => {
                 </Sidebar.Item>
                 {userData.vchNombreRol === 'Administrador' && (
                   <>
+                    <Sidebar.Item href="/carreras" icon={HiAcademicCap}>
+                      Carreras
+                    </Sidebar.Item>
                     <Sidebar.Item href="/docentes" icon={FaChalkboardTeacher}>
                       Docentes
                     </Sidebar.Item>
                     <Sidebar.Item href="/departamentos" icon={HiOfficeBuilding}>
                       Departamentos
                     </Sidebar.Item>
-                    <Sidebar.Item href="/carreras" icon={HiAcademicCap}>
-                      Carreras
+                    <Sidebar.Item href="/periodos" icon={BiCalendarEvent}>
+                      Periodos
                     </Sidebar.Item>
                   </>
                 )}

@@ -173,7 +173,7 @@ const handleInstallClick = () => {
       {isAuthenticated ? 
         (
         <div className="flex items-center gap-4 md:order-2">
-        
+          {/*
           <Dropdown
             arrowIcon={false}
             inline
@@ -204,7 +204,6 @@ const handleInstallClick = () => {
               notifications.map((notification) => (
               <>
                 <Dropdown.Item href='/mi-perfil'>
-                  {/* Imagen de perfil del docente/alumno */}
                   <img 
                     src={notification.profileImageUrl} 
                     alt="Perfil" 
@@ -219,6 +218,7 @@ const handleInstallClick = () => {
             ))
           )}
           </Dropdown>
+          */}
           <Dropdown
             arrowIcon={false}
             inline

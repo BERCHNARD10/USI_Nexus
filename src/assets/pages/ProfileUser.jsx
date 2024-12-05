@@ -403,7 +403,7 @@ const PerfilUsuario = () => {
         }
         
       } catch (error) {
-        setMessage('Error al subir la imagen');
+        console.log(error)
       } finally {
         setLoading(false);
       }

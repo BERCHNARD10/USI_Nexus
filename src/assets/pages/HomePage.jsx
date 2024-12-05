@@ -33,7 +33,7 @@ const HomePage = () => {
                 <div className="absolute w-28 h-28 rounded-full bg-blue-300 opacity-40 animate-pulse top-12 left-12"></div>
               </div>
               <div className="text-center md:text-left">
-                <TitlePage label="Para los Alumnos PRUEBA HOSTINGER" />
+                <TitlePage label="Para los Alumnos" />
                 <p className="mt-4 text-gray-600 dark:text-gray-400 text-lg font-light leading-relaxed">
                   En esta plataforma, podrás consultar las calificaciones de las prácticas que te asignan tus docentes. Revisa tus avances, mantente al tanto de tus resultados en tiempo real y trabaja para mejorar en cada actividad.
                 </p>

@@ -1,47 +1,62 @@
+# Nombre del flujo de trabajo
 name: Hostinger Deployment Workflow
 
+# Eventos que activan el flujo de trabajo
 on:
   push:
     branches:
-        - master
-        - release/*
-        - 'feature/**'
-        - 'feature/pasarela-pagos'
-        - 'feature/suscripciones'
-        - 'feature/notificaciones-push'
-        - 'feature/notificaciones-push-backend'
-        - 'feature/apis-logica-negocio'
-        - 'feature/diseno-responsivo'
-        - 'feature/offline-pwa'
+        # Este flujo se activa cuando hay cambios en las ramas especificadas
+        - master # Rama principal para despliegue en producción
+        - release/* # Ramas de versiones de lanzamiento
+        - 'feature/**' # Todas las ramas de características (wildcard para subramas)
+        - 'feature/pasarela-pagos' # Rama específica para la pasarela de pagos
+        - 'feature/suscripciones' # Rama específica para el módulo de suscripciones
+        - 'feature/notificaciones-push' # Rama para las notificaciones push (frontend)
+        - 'feature/notificaciones-push-backend' # Rama para las notificaciones push (backend)
+        - 'feature/apis-logica-negocio' # Rama para las API de la lógica de negocio
+        - 'feature/diseno-responsivo' # Rama para el diseño responsivo
+        - 'feature/offline-pwa' # Rama para la funcionalidad offline de la PWA
+
+# Definición de trabajos dentro del flujo de trabajo
 jobs:
+  # Nombre del trabajo
   deploy-to-hostinger:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # El flujo de trabajo se ejecutará en un entorno Ubuntu más reciente
 
     steps:
+      # Paso 1: Descargar el código del repositorio
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2 # Acción oficial para clonar el repositorio
 
+      # Paso 2: Configurar el entorno Node.js
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v2 # Configura Node.js en la versión especificada
         with:
-          node-version: '16'
+          node-version: '16' # Versión de Node.js compatible con el proyecto
 
+      # Paso 3: Instalar dependencias y construir la aplicación
       - name: Install dependencies and build
         run: |
-          npm install
-          npm run build
-    
+          npm install # Instala las dependencias listadas en package.json
+          npm run build # Construye la aplicación para producción
+
+      # Paso 4: Mostrar los archivos generados después del build
       - name: List files after build
-        run: ls -R # Listará todos los archivos y carpetas, incluyendo build
+        run: ls -R # Muestra todos los archivos y carpetas, útil para verificar el contenido de build
 
-    # Instala ncftp para que el comando ncftpput esté disponible
+      # Paso 5: Instalar ncftp (necesario para la transferencia FTP)
       - name: Install ncftp
-        run: sudo apt-get update && sudo apt-get install -y ncftp
+        run: sudo apt-get update && sudo apt-get install -y ncftp # Instala el cliente ncftp para transferencias FTP
 
+      # Paso 6: Subir los archivos generados al servidor de Hostinger
       - name: Deploy to Hostinger
         env:
-          FTP_HOST: ${{ secrets.FTP_HOST }}
-          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
-          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          FTP_HOST: ${{ secrets.FTP_HOST }} # Dirección del servidor FTP (almacenada como secreto)
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }} # Nombre de usuario FTP (almacenado como secreto)
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }} # Contraseña FTP (almacenada como secreto)
         run: |
             ncftpput -R -v -u "$FTP_USERNAME" -p "$FTP_PASSWORD" "$FTP_HOST" / dist/*
+            # Sube los archivos generados en la carpeta 'dist' al servidor remoto
+
+
+            

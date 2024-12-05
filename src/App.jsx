@@ -22,6 +22,7 @@ import Docentes from './assets/pages/PaginasDocentes/Teachers';
 import Alumnos from './assets/pages/PaginasDocentes/Alumnos';
 import CarrerasCrud from './assets/pages/PaginasDocentes/Carreras';
 import Departamentos from './assets/pages/PaginasDocentes/Departamentos';
+import Periodos from './assets/pages/PaginasDocentes/Periodo';
 import GruposMateriasDocente from './assets/pages/PaginasDocentes/GruposMateriaDocente';
 import ActividadesDocente from './assets/pages/PaginasDocentes/ActividadesDocente';
 import DetalleActividadDocente from './assets/pages/PaginasDocentes/DetalleActividadDocente';
@@ -86,9 +87,10 @@ function App() {
           <Route path="/actividades/detalleActividad/:vchClvMateria/:chrGrupo/:intPeriodo/:intNumeroActi/:intIdActividadCurso" element={<PrivateRouteUser><Layout><DetalleActividadAlumno/></Layout></PrivateRouteUser>} />
           <Route path="/actividades/detalleActividad/detallePractica/:vchClvMateria/:chrGrupo/:intPeriodo/:intNumeroActi/:intNumeroPractica/:intIdActividadCurso" element={<PrivateRouteUser><Layout><DetallePracticaAlumno/></Layout></PrivateRouteUser>} />
           {/*PAGINAS PARA Docentes */}
-          4
+          
           <Route path="/alumnos" element={<PrivateRoute><Layout><Alumnos/></Layout></PrivateRoute>} />
           <Route path="/departamentos" element={<PrivateRoute><Layout><Departamentos/></Layout></PrivateRoute>} />
+          <Route path="/periodos" element={<PrivateRoute><Layout><Periodos/></Layout></PrivateRoute>} />
           <Route path="/carreras" element={<PrivateRoute><Layout><CarrerasCrud/></Layout></PrivateRoute>} />
           <Route path="/docentes" element={<PrivateRoute><Layout><Docentes/></Layout></PrivateRoute>} />
           <Route path="/Admin/Teachers" element={<Layout><Docentes/></Layout>} />
