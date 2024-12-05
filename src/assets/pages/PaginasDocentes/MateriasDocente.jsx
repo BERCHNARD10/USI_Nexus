@@ -323,7 +323,8 @@ const MateriasDocente = () => {
             
             if (result.done) {
                 setMaterias(result.message);
-    
+                console.log('Respuesta de la API. ', result.message);
+
                 // Guardar la respuesta clonada en el caché
                 await cache.put('https://robe.host8b.me/WebServices/cargarMaterias.php', responseClone);
                 console.log('Respuesta de la API almacenada en caché.');
@@ -512,14 +513,14 @@ const MateriasDocente = () => {
           />
         </div>
 
-        {/* Botón de Ayuda */}
+        {/* Botón de Ayuda 
         <button 
           onClick={handleHelpClick} 
           className=" bg-white rounded-full p-2 shadow-md transition-all duration-300 ease-in-out"
           aria-label="Ayuda"
         >
           <AiOutlineQuestionCircle size={24} />
-        </button>
+        </button>*/}
       </div>
 
  

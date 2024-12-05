@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { Checkbox, Table, Alert, Tooltip, Badge, ToggleSwitch, Card } from 'flowbite-react';
-import { FaUser, FaCog, FaRegUser, FaRegEdit, FaRegEye, FaRegTrashAlt, FaEnvelope, FaCheck, FaTimes, FaEye, FaEyeSlash } from 'react-icons/fa'; // Importa los iconos de FontAwesome
+import { FaDownload, FaUser, FaCog, FaRegUser, FaRegEdit, FaRegEye, FaRegTrashAlt, FaEnvelope, FaCheck, FaTimes, FaEye, FaEyeSlash } from 'react-icons/fa'; // Importa los iconos de FontAwesome
 import { IoMdAdd, IoMdCreate, IoMdTrash } from 'react-icons/io';
 import { HiOutlineSearch, HiOutlineExclamationCircle } from "react-icons/hi";
 
 import { Label, TextInput, Button, Select, Modal } from "flowbite-react"; // Importamos el componente Button
 import * as XLSX from 'xlsx';
 import Components from '../../components/Components'
-const { LoadingButton, CustomInput, CustomInputPassword, CustomRepeatPassword, SelectInput, CustomRepeatPassword2, newSelect,InfoAlert } = Components;
+const { LoadingButton, CustomInput, IconButton, SelectInput, newSelect,InfoAlert } = Components;
 const PasswordValidationItem = ({ isValid, text }) => (
   <li className="flex items-center mb-1">
     {isValid ? <FaCheck className="text-green-500" /> : <FaTimes className="text-red-500" />}
@@ -43,6 +43,7 @@ const Docentes = () => {
   const [selectedPeriodoManualEdit, setSelectedDepartamentoEdit] = useState(null);
   const [serverErrorMessage, setServerErrorMessage] = useState('');
   const apiUrl = import.meta.env.VITE_API_URL;
+  const webUrl = import.meta.env.VITE_URL;
 
   //const [selectedDocenteEdit, setSelectedDocenteEdit] = useState(null); //editar a un docente 
 
@@ -588,11 +589,29 @@ const Docentes = () => {
     }
   };
 
+  
+  const handleDownload = async () => {
+    const response = await fetch(`${webUrl}assets/archivos/Formato-Lista-Docente.xlsx`, {
+        method: 'GET',
+      headers: {
+        'Content-Type': 'application/octet-stream',
+      },
+    });
 
+    if (!response.ok) {
+      throw new Error('Error al descargar el archivo');
+    }
 
-
-
-
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'Formato-Lista-Docente.xlsx';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  };
 
   return (
     <section className='flex flex-col'>
@@ -871,19 +890,23 @@ const Docentes = () => {
         {/*<div className="mb-2 block">
           <Label htmlFor="email4" value="Buscar docente" />
         </div>*/}
-        <div className="flex items-center">
-          {/*<TextInput id="email4" type="email" icon={HiOutlineSearch} placeholder="Matricula del Docente" required />*/}
-          <Button icon={IoMdAdd} className="ml-2" onClick={() => setOpenModal(true)}>
-            <IoMdAdd className="mr-2 h-5 w-5" />
-            Añadir Docentes
-          </Button>
-          {/* Botón para abrir el modal de agregar docente */}
-          <Button icon={IoMdAdd} className="ml-2" onClick={() => setOpenModalAdd(true)}>
-            <IoMdAdd className="mr-2 h-5 w-5" />
-            Añadir Docente
-          </Button>
+        <div className="flex items-center space-x-4">
+          <IconButton
+            Icon={IoMdAdd}
+            message="Añadir Docentes"
+            onClick={() => setOpenModal(true)}
+          />
+          <IconButton
+            Icon={IoMdAdd}
+            message="Añadir Docente"
+            onClick={() => setOpenModalAdd(true)}
+          />
+          <IconButton
+            Icon={FaDownload}
+            message="Formato Lista de Docentes"
+            onClick={handleDownload}
+          />
         </div>
-
         <div>
           <h3 className="mb-2 text-base font-bold text-gray-900 dark:text-white">Consultar Docentes</h3>
 
@@ -961,6 +984,7 @@ const Docentes = () => {
                       labelSelect="Seleccionar Departamento"
                       label="Departamento"
                       name="vchDepartamento"
+                      value="vchDepartamento"
                       option=""
                       options={departamento}
                       errors={errors}

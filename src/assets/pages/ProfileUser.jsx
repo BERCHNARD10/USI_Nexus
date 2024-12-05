@@ -203,6 +203,7 @@ const PerfilUsuario = () => {
                     result.userData.dataEstudiante = JSON.parse(result.userData.dataEstudiante);
                     console.log("Foto de perfil desde caché:", result.userData.vchFotoPerfil);
                 }
+                console.log(result.userData); 
                 login(token, result.userData);
             }
             return; // Terminar la función aquí si usamos el caché
@@ -402,7 +403,7 @@ const PerfilUsuario = () => {
         }
         
       } catch (error) {
-        setMessage('Error al subir la imagen');
+        console.log(error)
       } finally {
         setLoading(false);
       }

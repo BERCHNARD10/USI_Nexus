@@ -8,10 +8,12 @@ import * as XLSX from 'xlsx';
 import Components from '../../components/Components'
 import ArrayIterator from '../../components/Clases/Iterador'
 const { LoadingButton, SelectInput, IconButton, CustomInput, InfoAlert } = Components;
-import { FaFileExcel, FaPencilAlt } from 'react-icons/fa';
+import { FaFileExcel, FaPencilAlt, FaDownload } from 'react-icons/fa';
+
 import { data } from 'autoprefixer';
 
 const Alumnos = () => {
+    
     const [periodos, setPeriodos] = useState([]);
     const [periodosTotal, setPeriodosTotal] = useState([]);
     const [carreras, setCarreras] = useState([]);
@@ -39,6 +41,7 @@ const Alumnos = () => {
     const [serverResponse, setServerResponse] = useState('');
     const [serverErrorMessage, setServerErrorMessage] = useState('');
     const apiUrl = import.meta.env.VITE_API_URL;
+    const webUrl = import.meta.env.VITE_URL;
 
     const {
         register,
@@ -463,7 +466,7 @@ const Alumnos = () => {
     const [selectAlumnos, setselectAlumnos] = useState();
     const editUser = (data) => {
         setOpenModalDelete(true)
-        console.log(data)
+        console.log("editar alumno: ",data)
         setselectAlumnos(data.vchMatricula)
 
     };
@@ -515,7 +518,7 @@ const Alumnos = () => {
     const [seleCuatri, setseleCuatri] = useState();
 
     const editAll = (data, carrera) => {
-        console.log(data)
+        console.log("editar: ", data)
         setValue('matriculaAlumEdit', data.vchMatricula);
         setValue('nombrEdit', data.vchNombre);
         setValue('apellidoPaternoEdit', data.vchAPaterno);
@@ -525,6 +528,8 @@ const Alumnos = () => {
         setValue('vchNomCuatriTo', data.intClvCuatrimestre);
         setValue('chrGrupoTo', data.chrGrupo);
         setValue('editEstado', data.enmEstadoCuenta);
+        setValue('editPeriodo', data.intPeriodo);
+        console.log("periodo editado", data.intPeriodo)
 
 
 
@@ -562,6 +567,7 @@ const Alumnos = () => {
         const apellidoP = (watch('apellidoPaternoEdit') || '').toUpperCase();
         const apellidoM = (watch('apellidoMaternoEdit') || '').toUpperCase();
         const correo = (watch('correoEdit') || '');
+        const periodo = (watch('editPeriodo') || '');
         const carrera = (watch('vchNomCarreraToEdit') || '');
         const cuatri = (watch('vchNomCuatriTo') || '');
         const grupo = (watch('chrGrupoTo') || '');
@@ -575,7 +581,8 @@ const Alumnos = () => {
             carrera: carrera,               // rol seleccionado
             cuatri: cuatri,          // estado seleccionado
             grupo: grupo,
-            estado: estatoCuenta          
+            estado: estatoCuenta, 
+            periodo: periodo       
         };
 
         console.log(datosDocente)
@@ -619,7 +626,28 @@ const Alumnos = () => {
       };
 
 
-
+      const handleDownload = async () => {
+        const response = await fetch(`${webUrl}assets/archivos/Formato-Lista-Alumnos.xlsx`, {
+            method: 'GET',
+          headers: {
+            'Content-Type': 'application/octet-stream',
+          },
+        });
+    
+        if (!response.ok) {
+          throw new Error('Error al descargar el archivo');
+        }
+    
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'Formato-Lista-Alumnos.xlsx';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+      };
 
     return (
         <section className='flex flex-col'>
@@ -858,13 +886,20 @@ const Alumnos = () => {
                     <Label htmlFor="email4" value="Buscar alumno" />
                 </div>
                 <div className="flex items-center">
-                    <TextInput id="email4" type="email" icon={HiOutlineSearch} placeholder="Matricula del Alumno" required />
+                    {/*<TextInput id="email4" type="email" icon={HiOutlineSearch} placeholder="Matricula del Alumno" required />*/}
+                    <div className="flex items-center space-x-4">
                     <IconButton
                         className="ml-2"
                         Icon={IoMdAdd} // Pasa el componente de ícono
                         message="Añadir Estudiantes"
                         onClick={() => setOpenModal(true)}
                     />
+                    <IconButton
+                        Icon={FaDownload}
+                        message="Formato Lista de Alumnos"
+                        onClick={handleDownload}
+                    />
+                    </div>
                 </div>
                 <div>
                     <h3 className="mb-2 text-base font-bold text-gray-900 dark:text-white">Consultar Alumnos</h3>
@@ -948,7 +983,7 @@ const Alumnos = () => {
                     onClose={() => setOpenModalEdit(false)}
                     className="fixed inset-0 flex items-center justify-center z-50" // Asegura que el overlay cubra toda la pantalla y el modal esté centrado
                 >
-                    <Modal.Header>Editar Alumnossss</Modal.Header>
+                    <Modal.Header>Editar Alumnos</Modal.Header>
                     <Modal.Body>
                         <div className="relative w-full max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg"> {/* Estilo para el contenido del modal */}
                             <form>
@@ -1007,6 +1042,26 @@ const Alumnos = () => {
                                 </div>
 
                                 <div className="info-academic grid grid-cols-2 gap-6 mt-6"> {/* Más espacio entre las secciones */}
+                                    
+                                <div className="w-full">
+                                        <div className="mb-2 block">
+                                            <Label htmlFor="editPeriodo" value="Periodo" />
+                                        </div>
+                                        <select
+                                            name="editPeriodo"
+                                            id="editPeriodo"
+                                            {...register('editPeriodo')}
+                                            className="block w-full px-3 py-2 mt-1 text-sm text-gray-900 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                                            onChange={(e) => setSelectedPeriodo(e.target.value)}
+                                        >
+                                            {periodos.map((dep) => (
+                                                <option key={dep.intIdPeriodo} value={dep.intIdPeriodo}>
+                                                    {dep.vchPeriodo}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+
                                     <div className="w-full">
                                         <div className="mb-2 block">
                                             <Label htmlFor="vchNomCarreraToEdit" value="Carrera" />

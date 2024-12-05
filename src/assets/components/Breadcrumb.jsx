@@ -54,7 +54,10 @@ const BreadcrumbNav = () => {
             if (path.includes('/carreras')) {
                 breadcrumbs.push({ path: '/carreras', alias: 'Carreras' });
             }
-
+            if (path.includes('/periodos')) {
+                breadcrumbs.push({ path: '/periodos', alias: 'Periodos' });
+            }
+            
             if (path.includes('/departamentos')) {
                 breadcrumbs.push({ path: '/departamentos', alias: 'Departamentos' });
             }
