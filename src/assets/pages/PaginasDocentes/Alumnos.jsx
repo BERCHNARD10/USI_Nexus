@@ -238,8 +238,9 @@ const Alumnos = () => {
             const response = await fetch(`${apiUrl}/obtener-periodos.php`);
             const result = await response.json();
 
+            console.log("resultado", result);
             if (!result.done) {
-                throw new Error('Error al obtener las carreras');
+                throw new Error('Error al obtener', result.message);
             }
             console.log(result);
 

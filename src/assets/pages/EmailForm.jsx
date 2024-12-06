@@ -32,10 +32,17 @@ const EmailForm = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
+        body: JSON.stringify({           
           correo: data.correo,
         }),
       });
+
+        // Verifica si la respuesta es exitosa
+        if (!response.ok) {
+          const text = await response.text();
+          console.error("Respuesta de error del servidor:", text); // Aquí puedes ver si el servidor envió HTML
+          throw new Error(`Error en la solicitud: ${response.statusText}`);
+        }
 
       const result = await response.json();
       console.log("RESULTADO DEL SERVIDOR" ,result);
