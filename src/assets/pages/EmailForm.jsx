@@ -38,7 +38,8 @@ const EmailForm = () => {
       });
 
       const result = await response.json();
-      console.log(result);
+      console.log("RESULTADO DEL SERVIDOR" ,result);
+      
       if (result.done) {
         setServerError(`Solicitud de recuperación de contraseña enviada con éxito. ${result.message}`);
         setEmailSent(true);

@@ -20,7 +20,7 @@ const LoginPage = () => {
   const [intentosFallidos, setIntentosFallidos] = useState(0);
   const [bloquearBoton, setBloquearBoton] = useState(false);
   const [segundosRestantes, setSegundosRestantes] = useState(0);
-  //const apiUrl = import.meta.env.VITE_API_URL;
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const {
     register,
@@ -36,14 +36,14 @@ const LoginPage = () => {
   const handleLogin = async (data) => {
     setIsLoading(true);
     try {
-      const response = await fetch(`https://robe.host8b.me/WebServices/loginUser.php`, {
+      const response = await fetch(`${apiUrl}/loginUser.php`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...data, matriculaAlum: data.matriculaAlum.toString() }),
       });
 
       const result = await response.json();
-
+      console.log("Resultado del login", result);
       if (result.done) {
         login(result.userData.JWTUser, result.userData);
         navigate('/');

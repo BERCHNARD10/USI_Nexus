@@ -28,6 +28,8 @@ const DetalleActividadDocente = () => {
     const [serverResponse, setServerResponse] = useState('');
     const [selectedPracticeForEdit, setSelectedPracticeForEdit] = useState({});
     const [isLoading, setIsLoading] = useState(true);
+    const [isLoadingPrat, setIsLoadingPract] = useState(true);
+    const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
     const handleConfirmDelete = async () => {
         try {
@@ -235,6 +237,7 @@ const DetalleActividadDocente = () => {
     const sendDataToServer = async (data) => {
         try 
         {
+            setIsLoadingPract(true);
             const response = await fetch(`${apiUrl}/InsertarActividades.php`, {
                 method: 'POST',
                 headers: {
@@ -264,6 +267,10 @@ const DetalleActividadDocente = () => {
         catch (error) 
         {
             console.error('Error al enviar los datos', error);
+        }
+        finally
+        {
+            setIsLoadingPract(false);
         }
     };
 
@@ -622,6 +629,7 @@ const DetalleActividadDocente = () => {
                                 loadingLabel="Cargando..."
                                 normalLabel="Agregar"
                                 onClick={handleAddData}
+                                isLoading={isLoadingPrat}
                             />
                             </div>
                             </>
