@@ -5,11 +5,11 @@ import { VitePWA } from "vite-plugin-pwa";
 const manifestForPlugin = {
   name: "UTHH Virtual",
   short_name: "UTHH Virtual",
-  start_url: "/",
+  start_url: "/UTHH_VIRTUAL",
   display: "standalone",
   background_color: "#02233a",
   lang: "en",
-  scope: "/",
+  scope: "/UTHH_VIRTUAL/",
   includeAssets: [
     "favicon-196.ico",
     "apple-icon-180.png",
@@ -161,5 +161,7 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
+    base: '/UTHH_VIRTUAL/', // Esto indica que la base de los archivos generados estará bajo "/UTHH_VIRTUAL/"
+    assetsDir: 'assets',  // Los archivos estáticos como JS y CSS estarán en esta carpeta dentro de 'dist'
   }
 });
