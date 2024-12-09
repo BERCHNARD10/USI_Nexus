@@ -15,7 +15,8 @@ const NotificationHandler = () => {
 
   const requestPermission = async () => {
     try {
-      if ('serviceWorker' in navigator) {
+      if ('serviceWorker' in navigator && window.location.protocol === 'https:')
+      {
         navigator.serviceWorker.register('../firebase-messaging-sw.js', { scope: '/firebase/' })
           .then(function(registration) {
             console.log('Service Worker registrado con éxito:', registration);
@@ -74,26 +75,39 @@ const NotificationHandler = () => {
   };
 
   useEffect(() => {
-    requestPermission();
-    onMessage(messaging, message => {
-      console.log('Mensaje recibido en primer plano:', message);
-      toast(
-        <div className="flex flex-col gap-1">
-          <div className="flex items-center gap-2">
-            <span role="img" aria-label="notification-icon">🔔</span>
-            <TitleSection label={message.notification.title}/>
-          </div>
-          <Paragraphs label={message.notification.body}/>
-        </div>,
-        {
-          className: 'custom-toast', // Clase personalizada para dispositivos móviles
-          position: "bottom-right",
-          progressStyle: {
-            background: '#02233a', // Color personalizado
-          },
-        }
-      );
-    });
+    const initializeMessagingListener = () => {
+      // Validar que el navegador soporte Service Workers y esté en HTTPS
+      if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
+        console.log('Service Worker disponible y protocolo HTTPS activo.');
+        requestPermission();
+        // Listener para mensajes en primer plano
+        onMessage(messaging, (message) => {
+          console.log('Mensaje recibido en primer plano:', message);
+
+          // Mostrar notificación con el mensaje recibido
+          toast(
+            <div className="flex flex-col gap-1">
+              <div className="flex items-center gap-2">
+                <span role="img" aria-label="notification-icon">🔔</span>
+                <TitleSection label={message.notification?.title || 'Notificación'} />
+              </div>
+              <Paragraphs label={message.notification?.body || 'No hay contenido disponible.'} />
+            </div>,
+            {
+              className: 'custom-toast',
+              position: 'bottom-right',
+              progressStyle: {
+                background: '#02233a',
+              },
+            }
+          );
+        });
+      } else {
+        console.warn('Service Worker no disponible o protocolo no seguro (no HTTPS).');
+      }
+    };
+
+    initializeMessagingListener();
   }, []);
 
   return <ToastContainer />;
