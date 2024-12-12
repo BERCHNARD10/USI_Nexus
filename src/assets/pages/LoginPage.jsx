@@ -1,5 +1,5 @@
 import React, { useState, useEffect  } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate, Link  } from 'react-router-dom'; 
 import { useForm } from 'react-hook-form';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { Checkbox, Label } from 'flowbite-react';
@@ -176,8 +176,8 @@ const LoginPage = () => {
                 <Checkbox id="remember" />
                 <label htmlFor="remember" className="text-sm text-gray-600">Acuérdate de mí</label>
               </div>
-              <a href="/recuperar-contrasena" style={{ color: '#23262d' }}>¿Olvidaste tu contraseña?</a>
-            </div>
+              <Link to="/recuperar-contrasena" style={{ color: '#23262d' }}>¿Olvidaste tu contraseña?</Link>
+              </div>
             <LoadingButton
               data-testid="loading-button"
               isLoading={isLoading}

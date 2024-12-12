@@ -161,7 +161,7 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    base: '/', // Esto indica que la base de los archivos generados estará bajo "/UTHH_VIRTUAL/"
+    base: '/UTHH_VIRTUAL/', // Esto indica que la base de los archivos generados estará bajo "/UTHH_VIRTUAL/"
     assetsDir: 'assets',  // Los archivos estáticos como JS y CSS estarán en esta carpeta dentro de 'dist'
   }
 });
