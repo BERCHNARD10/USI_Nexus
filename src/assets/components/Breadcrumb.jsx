@@ -24,6 +24,10 @@ const BreadcrumbNav = () => {
         if (path.includes('/recuperar-contrasena')) {
             breadcrumbs.push({ path: '/recuperar-contrasena', alias: 'Recuperar Contraseña' });
         }
+        
+        if (path.includes('/Terminos')) {
+            breadcrumbs.push({ path: '/Terminos', alias: 'Terminos y Condiciones' });
+        }
 
         if (isAuthenticated && !userData.intRol) {
 

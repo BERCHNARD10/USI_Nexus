@@ -70,7 +70,7 @@ function App() {
 
   return (
     <AuthProvider>
-      <BrowserRouter basename="/UTHH_VIRTUAL">
+      <BrowserRouter basename="/">
         <Routes>
           {/*PAGINAS PARA TODOS */}
 

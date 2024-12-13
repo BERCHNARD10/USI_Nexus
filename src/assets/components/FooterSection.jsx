@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Footer } from 'flowbite-react';
-import SecondaryLogo from '../images/main-logo.png';
-import logoPwa from '../images/logo-pwa.png'
+import { Link } from 'react-router-dom';
 import  Components from './Components'
 const {LoadingButton} = Components;
 
@@ -71,7 +70,7 @@ function FooterSection() {
             {/* Logo */}
             <div className="flex justify-center sm:justify-start">
               <img
-                src={SecondaryLogo}
+                src={`${import.meta.env.VITE_URL}assets/main-logo-Dgm6DqGM.png`}
                 alt="Company Logo"
                 className="h-24 w-24"
               />
@@ -92,7 +91,9 @@ function FooterSection() {
               <div className="flex flex-col items-center sm:items-start">
                 <Footer.Title title="Términos Legales" />
                 <Footer.LinkGroup col>
-                  <Footer.Link href="/Terminos">Términos &amp; Condiciones</Footer.Link>
+                  <Footer.Link as={Link} to="/Terminos">
+                    Términos & Condiciones
+                  </Footer.Link>
                 </Footer.LinkGroup>
               </div>
             </div>
@@ -101,7 +102,7 @@ function FooterSection() {
             {showSnackbar && (
             <div className="flex flex-col sm:flex-row items-center justify-center bg-gradient-to-r from-gray-50 to-gray-100 py-4 px-6 shadow-lg rounded-xl">
               <div className="flex items-center mb-4 sm:mb-0 sm:mr-4">
-                <img src={logoPwa} alt="Logo UTHH Virtual" className="w-12 h-12" />
+                <img src={`${import.meta.env.VITE_URL}assets/logo-pwa-D7m3SRGY.png`} alt="Logo UTHH Virtual" className="w-12 h-12" />
                 <div className="ml-4">
                   <h2 className="text-lg font-semibold text-gray-800">App de UTHH Virtual</h2>
                   <p className="text-gray-600 text-sm">Descarga la app para un acceso rápido</p>
