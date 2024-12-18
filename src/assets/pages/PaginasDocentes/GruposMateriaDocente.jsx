@@ -1,7 +1,7 @@
 // SideNav.js
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../server/authUser'; // Importa el hook de autenticación
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Card} from 'flowbite-react';
 import  Components from '../../components/Components'
 const {TitlePage, CardSkeleton } = Components;
@@ -16,6 +16,7 @@ const GruposMateriasDocente = () => {
     const onloadGrupos = async () => {
         setIsLoading(true); // Activa el indicador de carga al inicio
         try {
+            /*
             // Abrir el caché
             const cache = await caches.open('api-cache');
             const cachedResponse = await cache.match(`${apiUrl}cargarGrupos.php`);
@@ -27,7 +28,7 @@ const GruposMateriasDocente = () => {
                 setMaterias(data.message);
                 return; // Terminar la función aquí si usamos el caché
             }
-    
+    */
             // Realizar la solicitud a la API
             const response = await fetch(`${apiUrl}/cargarMaterias.php`, {
                 method: 'POST',
@@ -101,7 +102,6 @@ const GruposMateriasDocente = () => {
             : materias.map((materia) => (                    
                 <Card
                     key={materia.chrGrupo}
-                    href={`/gruposMaterias/actividades/${vchClvMateria}/${materia.chrGrupo}/${intPeriodo}`}
                     className="w-full rounded-lg overflow-hidden shadow-lg transform transition duration-300 hover:scale-105"
                     theme={{
                     root: {
@@ -109,11 +109,16 @@ const GruposMateriasDocente = () => {
                     }
                     }}
                 >
-                    <div className="relative h-40">
-                    <div className="pt-5 pb-6 px-4 flex justify-center items-center h-full">
-                        <h3 className="text-xl font-bold text-gray-900 text-center">{materia.chrGrupo}</h3>
-                    </div>
-                    </div>
+                    <Link
+                        to={`/gruposMaterias/actividades/${vchClvMateria}/${materia.chrGrupo}/${intPeriodo}`}
+                        className="block"
+                    >
+                        <div className="relative h-40">
+                        <div className="pt-5 pb-6 px-4 flex justify-center items-center h-full">
+                            <h3 className="text-xl font-bold text-gray-900 text-center">{materia.chrGrupo}</h3>
+                        </div>
+                        </div>
+                    </Link>
                 </Card>
                 ))}
             </div>

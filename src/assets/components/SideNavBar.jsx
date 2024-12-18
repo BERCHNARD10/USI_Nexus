@@ -1,5 +1,6 @@
 // SideNav.js
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Sidebar } from 'flowbite-react';
 import { HiUserGroup, HiBookOpen, HiOfficeBuilding, HiAcademicCap } from 'react-icons/hi';
 import { useAuth } from '../server/authUser'; // Importar el hook de autenticación
@@ -23,37 +24,52 @@ const SideNav = ({ isSidebarOpen, toggleSidebar }) => {
             {isAuthenticated && userData.intRol !=null? 
             (
               <div>
-                <Sidebar.Item href="/alumnos" icon={FaUserGraduate}>
-                  Alumnos
-                </Sidebar.Item>
+                <Link to="/alumnos">
+                  <Sidebar.Item icon={FaUserGraduate}>
+                    Alumnos
+                  </Sidebar.Item>
+                </Link>
                 {userData.vchNombreRol === 'Administrador' && (
-                  <>
-                    <Sidebar.Item href="/carreras" icon={HiAcademicCap}>
+                <>
+                  <Link to="/carreras">
+                    <Sidebar.Item icon={HiAcademicCap}>
                       Carreras
                     </Sidebar.Item>
-                    <Sidebar.Item href="/docentes" icon={FaChalkboardTeacher}>
+                  </Link>
+                  <Link to="/docentes">
+                    <Sidebar.Item icon={FaChalkboardTeacher}>
                       Docentes
                     </Sidebar.Item>
-                    <Sidebar.Item href="/departamentos" icon={HiOfficeBuilding}>
+                  </Link>
+                  <Link to="/departamentos">
+                    <Sidebar.Item icon={HiOfficeBuilding}>
                       Departamentos
                     </Sidebar.Item>
-                    <Sidebar.Item href="/periodos" icon={BiCalendarEvent}>
+                  </Link>
+                  <Link to="/periodos">
+                    <Sidebar.Item icon={BiCalendarEvent}>
                       Periodos
                     </Sidebar.Item>
-                  </>
+                  </Link>
+                </>
                 )}
 
-                <Sidebar.Item href="/" icon={HiBookOpen}>
+              <Link to="/">
+                <Sidebar.Item icon={HiBookOpen}>
                   Materias
                 </Sidebar.Item>
+              </Link>
               </div>
             )
             :
-            (<div>
-              <Sidebar.Collapse icon={HiBookOpen} label="Materias Inscritas">
-                <Sidebar.Item href="/">Materias</Sidebar.Item>
-              </Sidebar.Collapse>
-            </div>
+            (
+              <div>
+                <Link to="/">
+                  <Sidebar.Item icon={HiBookOpen}>
+                    Materias
+                  </Sidebar.Item>
+                </Link>
+              </div>
             )}
             </Sidebar.ItemGroup>
         </Sidebar.Items>

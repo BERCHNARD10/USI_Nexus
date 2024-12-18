@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import {Link, useParams } from 'react-router-dom';
 import Components from '../../components/Components';
 const { TitlePage, ContentTitle, Paragraphs, TitleSection, DescriptionActivity, DetailedActivitySkeleton} = Components;
 import { Card } from 'flowbite-react';
@@ -171,23 +171,27 @@ const DetalleActividadAlumno = () => {
                         {prácticasConCalificaciones.length > 0 ? (
                             <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 {prácticasConCalificaciones.map((practica) => (
-                              <Card
-                              key={practica.idPractica}
-                              href={`/actividades/detalleActividad/detallePractica/${vchClvMateria}/${chrGrupo}/${intPeriodo}/${intNumeroActi}/${practica.idPractica}/${intIdActividadCurso}`}
-                              className="relative rounded-lg overflow-hidden shadow-lg p-0"
-                              theme={{ root: { children: "p-0" } }}
-                          >
-                              <div className="absolute top-2 right-2 bg-gray-800 text-white text-xs px-2 py-1 rounded-full">
-                                  {practica.calificacionObtenidaAlumno}/{practica.calificacionPractica}
-                              </div>
-                              <div className="relative h-36">
-                                  <div className="pt-5 pb-6 px-4">
-                                      <h3 className="text-xl font-bold text-gray-900 text-center">{practica.vchNombre}</h3>
-                                      <p className="text-sm text-gray-500 text-center">{practica.vchDescripcion}</p>
-                                  </div>
-                              </div>
-                          </Card>
-                          
+                                <Link
+                                    to={`/actividades/detalleActividad/detallePractica/${vchClvMateria}/${chrGrupo}/${intPeriodo}/${intNumeroActi}/${practica.idPractica}/${intIdActividadCurso}`}
+                                    className="block"
+                                >
+                                <Card
+                                    key={practica.idPractica}
+                                    //href={`/actividades/detalleActividad/detallePractica/${vchClvMateria}/${chrGrupo}/${intPeriodo}/${intNumeroActi}/${practica.idPractica}/${intIdActividadCurso}`}
+                                    className="relative rounded-lg overflow-hidden shadow-lg p-0"
+                                    theme={{ root: { children: "p-0" } }}
+                                >
+                                    <div className="absolute top-2 right-2 bg-gray-800 text-white text-xs px-2 py-1 rounded-full">
+                                        {practica.calificacionObtenidaAlumno}/{practica.calificacionPractica}
+                                    </div>
+                                    <div className="relative h-36">
+                                        <div className="pt-5 pb-6 px-4">
+                                            <h3 className="text-xl font-bold text-gray-900 text-center">{practica.vchNombre}</h3>
+                                            <p className="text-sm text-gray-500 text-center">{practica.vchDescripcion}</p>
+                                        </div>
+                                    </div>
+                                </Card>
+                                </Link>
                                 ))}
                             </section>
                         ) : (

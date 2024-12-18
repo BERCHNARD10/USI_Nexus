@@ -312,7 +312,7 @@ const DetallePracticaDocente = () => {
     const onloadAlumnos = async () => {
 
         try {
-            // Abrir el caché y buscar la respuesta en caché
+            /*// Abrir el caché y buscar la respuesta en caché
             const cache = await caches.open('api-cache');
             const cachedResponse = await cache.match(`${apiUrl}accionesAlumnosPractica.php`);
 
@@ -325,7 +325,7 @@ const DetallePracticaDocente = () => {
                     setAlumnosMaterias(data.message);
                 }
                 return; // Terminar la función aquí si usamos el caché
-            }
+            }*/
 
             // Realizar la solicitud a la API
             const requestData = {
@@ -348,7 +348,7 @@ const DetallePracticaDocente = () => {
             }
 
             // Clonar la respuesta antes de leer el JSON para poder guardarla en el caché
-            const responseClone = response.clone();
+            //const responseClone = response.clone();
             const result = await response.json();
             console.log("Alumnos calificados", result);
 
@@ -357,8 +357,8 @@ const DetallePracticaDocente = () => {
                 console.log('Alumnos calificados cargados exitosamente desde la API.');
 
                 // Guardar la respuesta clonada en el caché para uso futuro
-                await cache.put(`${apiUrl}accionesAlumnosPractica.php`, responseClone);
-                console.log('Respuesta de la API almacenada en caché.');
+                //await cache.put(`${apiUrl}accionesAlumnosPractica.php`, responseClone);
+                //console.log('Respuesta de la API almacenada en caché.');
             } else {
                 console.error('Error en el registro:', result.message);
                 if (result.debug_info) {

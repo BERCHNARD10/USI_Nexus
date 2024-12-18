@@ -20,10 +20,10 @@ const ActividadesDocente = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [loadingParcial, setLoadingParcial] = useState(null);
 
-    /*const onloadActividades = async () => {
+    const onloadActividades = async () => {
         try {
 
-            const cache = await caches.open('api-cache');
+            /*const cache = await caches.open('api-cache');
             const cachedResponse = await cache.match(`${apiUrl}cargarActividades.php`);
 
             // Si hay una respuesta en caché y el usuario está offline, usar los datos en caché
@@ -32,7 +32,7 @@ const ActividadesDocente = () => {
                 console.log('Cargando materias desde la caché:', data);
                 setMaterias(data.message);
                 return; // Terminar la función aquí si usamos el caché
-            }
+            }*/
 
             const response = await fetch(`${apiUrl}/cargarMaterias.php`, {
             method: 'POST',
@@ -82,8 +82,8 @@ const ActividadesDocente = () => {
         finally{
             setIsLoading(false);
         }
-    };*/
-
+    };
+/*
     const onloadActividades = async () => {
         setIsLoading(true); // Activa el indicador de carga al inicio
         try {
@@ -147,7 +147,7 @@ const ActividadesDocente = () => {
         } finally {
             setIsLoading(false); // Desactiva el indicador de carga al finalizar
         }
-    };    
+    };   */ 
 
     /*const onloadAlumnos = async () => {
         try {
