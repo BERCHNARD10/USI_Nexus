@@ -1,6 +1,6 @@
 // SideNav.js
 import React, { useState, useEffect } from 'react';
-
+import { Link } from "react-router-dom";
 import {Table, Alert, Card} from 'flowbite-react';
 import { MdAdd } from 'react-icons/md';
 import {FaRegFrown, FaDownload } from 'react-icons/fa';
@@ -12,10 +12,9 @@ import {useAuth } from '../../server/authUser'; // Importa el hook de autenticac
 import { AiOutlineQuestionCircle } from 'react-icons/ai';
 
 const MateriasDocente = () => { 
-    //const apiUrl = import.meta.env.VITE_API_URL;
-    //const webUrl = import.meta.env.VITE_URL;
-    const apiUrl = "https://robe.host8b.me/WebServices/";
-    const webUrl = "https://robe.host8b.me/";
+    
+    const apiUrl = import.meta.env.VITE_API_URL;
+    const webUrl = import.meta.env.VITE_URL;
 
     const {userData} = useAuth(); // Obtén el estado de autenticación del contexto
     const [materias, setMaterias] = useState([]);
@@ -284,7 +283,7 @@ const MateriasDocente = () => {
 
     const onloadNaterias = async () => {
         try {
-
+            /*
             const cache = await caches.open('api-cache');
             const cachedResponse = await cache.match('https://robe.host8b.me/WebServices/cargarMaterias.php');
 
@@ -303,7 +302,7 @@ const MateriasDocente = () => {
             keys.forEach(request => {
                 console.log("URL en caché:", request.url);
             });
-    
+    */
             setIsLoading(true);
     
             // Hacer la solicitud a la API si no hay datos en la caché o si estamos online
@@ -544,7 +543,7 @@ const MateriasDocente = () => {
                         {materias.map((materia) => (
                             <Card
                                 key={materia.vchClvMateria}
-                                href={`/gruposMaterias/${materia.vchClvMateria}/${materia.intPeriodo}`}
+                                //href={`/gruposMaterias/${materia.vchClvMateria}/${materia.intPeriodo}`}
                                 className="rounded-lg overflow-hidden shadow-lg transform transition duration-300 hover:scale-105"
                                 theme={{
                                     root: {
@@ -552,27 +551,32 @@ const MateriasDocente = () => {
                                     }
                                 }}
                             >
-                                <div className="relative h-60">
-                                    <div className="bg-gray-200 p-2 h-1/2 flex flex-col items-center justify-center">
-                                        <div className="relative w-full flex justify-center">
-                                            {/* Puedes agregar algo aquí si lo necesitas */}
+                                <Link
+                                    to={`/gruposMaterias/${materia.vchClvMateria}/${materia.intPeriodo}`}
+                                    className="block"
+                                >
+                                    <div className="relative h-60">
+                                        <div className="bg-gray-200 p-2 h-1/2 flex flex-col items-center justify-center">
+                                            <div className="relative w-full flex justify-center">
+                                                {/* Puedes agregar algo aquí si lo necesitas */}
+                                            </div>
+                                        </div>
+                                        <div className="pt-5 pb-6 px-4">
+                                            <h3 className="text-xl font-bold text-gray-900 text-center">
+                                                {materia.vchNomMateria}
+                                            </h3>
+                                            <p className="text-sm text-gray-500 text-center">
+                                                {materia.vchClvMateria}: {materia.vchNomMateria} {materia.intHoras}
+                                            </p>
+                                            <p className="text-sm text-gray-500 text-center">
+                                                {materia.NombreCuatrimestre}
+                                            </p>
+                                            <p className="mt-1 text-sm text-gray-500 text-center">
+                                                <strong>Periodo:</strong> {materia.NombrePeriodo}
+                                            </p>
                                         </div>
                                     </div>
-                                    <div className="pt-5 pb-6 px-4">
-                                        <h3 className="text-xl font-bold text-gray-900 text-center">
-                                            {materia.vchNomMateria}
-                                        </h3>
-                                        <p className="text-sm text-gray-500 text-center">
-                                            {materia.vchClvMateria}: {materia.vchNomMateria} {materia.intHoras}
-                                        </p>
-                                        <p className="text-sm text-gray-500 text-center">
-                                            {materia.NombreCuatrimestre}
-                                        </p>
-                                        <p className="mt-1 text-sm text-gray-500 text-center">
-                                            <strong>Periodo:</strong> {materia.NombrePeriodo}
-                                        </p>
-                                    </div>
-                                </div>
+                                </Link>
                             </Card>
                         ))}
                     </div>

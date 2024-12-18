@@ -139,7 +139,7 @@ const PerfilUsuario = () => {
     }
   }
 
-/*
+
   const onloadUserData = async () => 
   {
     try 
@@ -182,8 +182,8 @@ const PerfilUsuario = () => {
         setIsLoading(false);
     }
   };
-  */
-
+  
+  /*
   const onloadUserData = async () => {
     setIsLoading(true); // Activa el indicador de carga al inicio
 
@@ -249,7 +249,7 @@ const PerfilUsuario = () => {
     } finally {
         setIsLoading(false); // Desactiva el indicador de carga al finalizar
     }
-  };
+  };*/
 
 
   const onSubmitUpdatePassword = async (data, event) => {

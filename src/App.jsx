@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './assets/server/authUser';
 import Layout from './assets/components/Layout';
 import HomePage from './assets/pages/HomePage';
@@ -70,7 +70,7 @@ function App() {
 
   return (
     <AuthProvider>
-      <Router>
+      <BrowserRouter basename="/UTHH_VIRTUAL">
         <Routes>
           {/*PAGINAS PARA TODOS */}
 
@@ -102,7 +102,7 @@ function App() {
           <Route path="/Terminos" element={<Layout><PrivacyPolicy/></Layout>} />
           <Route path="/*"element={<Layout><Error404/></Layout>}/>
         </Routes>
-      </Router>
+      </BrowserRouter>
     </AuthProvider>
   );
 }

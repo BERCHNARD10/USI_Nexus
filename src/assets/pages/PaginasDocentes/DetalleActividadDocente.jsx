@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import {Link , useParams } from 'react-router-dom';
 import  Components from '../../components/Components'
 const {DetailedActivitySkeleton, TitlePage, ContentTitle, Paragraphs, TitleSection, LoadingButton, SelectInput, FloatingLabelInput, ConfirmDeleteModal, InfoAlert, IconButton, DescriptionActivity, LoadingOverlay} = Components;
-import {Card} from 'flowbite-react';
 import * as XLSX from 'xlsx';
 import { useForm } from 'react-hook-form';
 import { FaRegFrown, FaEllipsisV, FaEdit, FaDownload, FaTrash } from 'react-icons/fa';
@@ -28,8 +27,9 @@ const DetalleActividadDocente = () => {
     const [serverResponse, setServerResponse] = useState('');
     const [selectedPracticeForEdit, setSelectedPracticeForEdit] = useState({});
     const [isLoading, setIsLoading] = useState(true);
-    const [isLoadingPrat, setIsLoadingPract] = useState(true);
+    const [isLoadingPrat, setIsLoadingPract] = useState(false);
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+
 
     const handleConfirmDelete = async () => {
         try {
@@ -131,6 +131,7 @@ const DetalleActividadDocente = () => {
         console.log("Datos enviados:", requestData);
     
         try {
+            /*
             // Abrir el caché y buscar la respuesta en caché
             const cache = await caches.open('api-cache');
             const cachedResponse = await cache.match(`${apiUrl}cargarDetalleActividad.php`);
@@ -142,7 +143,7 @@ const DetalleActividadDocente = () => {
                 setActividad(data.message.detalleActividad);
                 setPracticas(data.message.practicasActividad);
                 return; // Terminar la función aquí si usamos el caché
-            }
+            }*/
     
             // Realizar la solicitud a la API
             const response = await fetch(`${apiUrl}cargarMaterias.php`, {
@@ -159,7 +160,7 @@ const DetalleActividadDocente = () => {
             }
     
             // Clonar la respuesta antes de leer el JSON para poder guardarla en el caché
-            const responseClone = response.clone();
+            //const responseClone = response.clone();
             const data = await response.json();
             console.log("Respuesta", data);
     
@@ -168,9 +169,9 @@ const DetalleActividadDocente = () => {
                 setPracticas(data.message.practicasActividad);
                 console.log('Actividad cargada exitosamente desde la API.');
     
-                // Guardar la respuesta clonada en el caché para uso futuro
-                await cache.put(`${apiUrl}cargarDetalleActividad.php`, responseClone);
-                console.log('Respuesta de la API almacenada en caché.');
+                //// Guardar la respuesta clonada en el caché para uso futuro
+                //await cache.put(`${apiUrl}cargarDetalleActividad.php`, responseClone);
+                //console.log('Respuesta de la API almacenada en caché.');
             } else {
                 console.log('Error en la respuesta:', data);
             }
@@ -188,7 +189,7 @@ const DetalleActividadDocente = () => {
         
     useEffect(() => {
         fetchActividad();
-    }, [vchClvMateria, chrGrupo, intPeriodo, intNumeroActi, intIdActividadCurso]);
+    }, [ vchClvMateria, chrGrupo, intPeriodo, intNumeroActi, intIdActividadCurso]);
 
     const handleFileUpload = (event) => {
         const uploadedFile = event.target.files[0];
@@ -252,11 +253,12 @@ const DetalleActividadDocente = () => {
 
             if (result.done) 
             {
-                fetchActividad()
+                fetchActividad();
                 setServerResponse(`Éxito: ${result.message}`);
-                if(!file)
+                if(file)
                 {
-                    setFile(null)
+                    setFile(null);
+                    resetPracticas();
                 }
             } 
             else 
@@ -282,6 +284,7 @@ const DetalleActividadDocente = () => {
 
         try {
         const data = await processFile(file);
+        console.log("Practicas servidor: ", data);
         // Validar que los datos no estén vacíos y tengan descripción
         const allPracticasValid = data.practicasServer.every(practice =>
             practice.descripcion.trim() !== '' 
@@ -351,6 +354,11 @@ const DetalleActividadDocente = () => {
     const onPageChange = (page) => {
         setCurrentPage(page);
     };
+
+    const resetPracticas = () => {
+        setArregloPracticas([]); // Reinicia el estado a un array vacío
+    };
+    
     // Obtener los elementos de la página actual
     const currentItems = arregloPracticas.slice(
         (currentPage - 1) * itemsPerPage,
@@ -539,6 +547,7 @@ const DetalleActividadDocente = () => {
                             <div className="w-full">
                             <input
                                 type="file"
+                                accept=".xls, .xlsx" // Solo permite archivos .xls y .xlsx
                                 className="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400"
                                 onChange={handleFileUpload}
                             />
@@ -724,8 +733,8 @@ const DetalleActividadDocente = () => {
                                 </div>
                             )}
                         </div>
-                        <a
-                            href={`/gruposMaterias/actividades/detalleActividad/detallePractica/${vchClvMateria}/${chrGrupo}/${intPeriodo}/${intNumeroActi}/${practica.idPractica}/${intIdActividadCurso}`}
+                        <Link
+                            to={`/gruposMaterias/actividades/detalleActividad/detallePractica/${vchClvMateria}/${chrGrupo}/${intPeriodo}/${intNumeroActi}/${practica.idPractica}/${intIdActividadCurso}`}
                             className="block h-36"
                         >
                             <div className="relative h-full">
@@ -734,7 +743,7 @@ const DetalleActividadDocente = () => {
                                     <p className="text-sm text-gray-500 text-center">{practica.vchDescripcion}</p>
                                 </div>
                             </div>
-                        </a>
+                        </Link>
                     </div>
                     ))}
                     </section>

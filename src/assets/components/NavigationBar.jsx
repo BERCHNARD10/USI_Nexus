@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { IoNotifications, IoMenu, IoClose } from 'react-icons/io5';
 import { HiUserCircle } from 'react-icons/hi';
 import { FaUser, FaSignOutAlt } from 'react-icons/fa';
@@ -166,7 +166,7 @@ const handleInstallClick = () => {
           <IoMenu />
         </div>
         <Navbar.Brand as={NavLink} to="/">
-          <img className="h-8 mr-2" src={secondaryLogo} alt="" />
+          <img className="h-8 mr-2" src={`${webUrl}assets/imagenes/userProfile.png`} alt="" />
           UTHH Virtual
         </Navbar.Brand>
       </div>
@@ -230,9 +230,11 @@ const handleInstallClick = () => {
               />
             }
           >
-            <Dropdown.Item href='/mi-perfil'>
-              <FaUser className="mr-2" />
-              Mi Perfil
+            <Dropdown.Item as="div">
+              <Link to="/mi-perfil" className="flex items-center">
+                <FaUser className="mr-2" />
+                Mi Perfil
+              </Link>
             </Dropdown.Item>
             <Dropdown.Item onClick={logout}>
               <FaSignOutAlt className="mr-2" />

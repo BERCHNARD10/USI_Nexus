@@ -1,12 +1,10 @@
 import React, { useState, useEffect  } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate, Link  } from 'react-router-dom'; 
 import { useForm } from 'react-hook-form';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { Checkbox, Label } from 'flowbite-react';
 import Components from '../components/Components';
 import { useAuth } from '../server/authUser'; 
-import imagePanel from '../images/uthhPanel.png';
-import secondaryLogo from '../images/secondary-logo.png';
 
 const { TitlePage, Paragraphs, LoadingButton, CustomInput, CustomInputPassword, InfoAlert } = Components;
 
@@ -133,11 +131,18 @@ const LoginPage = () => {
       />
 
       <section className="min-h-screen flex flex-col lg:flex-row">
-        <div className="lg:w-1/2 bg-gradient-to-r from-gray-900 to-black flex items-center justify-center">
-          <img className="w-full h-auto lg:h-full object-cover object-center" src={imagePanel} alt="illustration" />
+        <div className="lg:w-1/2 bg-gradient-to-r flex items-center justify-center">
+          <img 
+            className="w-full h-auto lg:h-full object-cover object-center" 
+            src={`${import.meta.env.VITE_URL}assets/uthhPanel-Cz40pBIq.png`}
+            alt="illustration" 
+          />
         </div>
         <div className="lg:w-1/2 bg-white p-8 flex-col flex items-center justify-center">
-          <img className="w-20 mb-4" src={secondaryLogo} alt="logo" />
+          <img className="w-20 mb-4" 
+              src={`${import.meta.env.VITE_URL}assets/secondary-logo-BL9o4fsR.png`}
+              alt="logo" 
+          />
           <TitlePage label={"Bienvenido de vuelta"} />
           <Paragraphs label={"Empieza donde lo dejaste, inicia sesión para continuar."} />
 
@@ -171,13 +176,7 @@ const LoginPage = () => {
                 {showPassword ? <FaEyeSlash className="text-gray-500" /> : <FaEye className="text-gray-500" />}
               </button>
             </div>
-            <div className="mb-4 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Checkbox id="remember" />
-                <label htmlFor="remember" className="text-sm text-gray-600">Acuérdate de mí</label>
-              </div>
-              <a href="/recuperar-contrasena" style={{ color: '#23262d' }}>¿Olvidaste tu contraseña?</a>
-            </div>
+
             <LoadingButton
               data-testid="loading-button"
               isLoading={isLoading}
@@ -185,6 +184,16 @@ const LoginPage = () => {
               normalLabel={bloquearBoton ? `Bloqueado (${segundosRestantes}s)` : 'Iniciar Sesión'}
               disabled={bloquearBoton}
             />
+            <div className="mt-4 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                {/*<Checkbox id="remember" />
+                <label htmlFor="remember" className="text-sm text-gray-600">Acuérdate de mí</label>*/}
+              </div>
+              <Link to="/recuperar-contrasena" 
+                className="text-sm font-medium text-gray-900 dark:text-white"
+              >¿Olvidaste tu contraseña? 
+              </Link>
+            </div>
           </form>
         </div>
       </section>

@@ -20,7 +20,7 @@ const HomePage = () => {
         <div>
           <div className="h-56 sm:h-64 xl:h-80 2xl:h-96">
             <Carousel>
-              <img src={imagePanel} alt="..." />
+              <img src={`${import.meta.env.VITE_URL}assets/uthhPanel-Cz40pBIq.png`} alt="Company Logo" />
             </Carousel>
           </div>
           <section className="bg-white dark:bg-gray-900">
