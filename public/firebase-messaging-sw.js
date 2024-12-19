@@ -17,7 +17,10 @@ const firebaseConfig = {
   measurementId: "G-RDQCGEV699"
 };
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> f651f8f (Cambios en la pwa)
 // Initialize Firebase
 const app = firebase.initializeApp(firebaseConfig);
 //const messaging = firebase.messaging(app);
@@ -29,7 +32,11 @@ messaging.onBackgroundMessage(function(payload) {
   const notificationTitle = payload.notification.title;
   const notificationOptions = {
     body: payload.notification.body,
+<<<<<<< HEAD
     icon: 'http://localhost/UTHH_VIRTUAL/assets/main-logo.png', // Reemplaza con la ruta a tu ícono si lo deseas
+=======
+    icon: 'https://robe.host8b.me/assets/main-logo-Dgm6DqGM.png', // Reemplaza con la ruta a tu ícono si lo deseas
+>>>>>>> f651f8f (Cambios en la pwa)
     data: { // Aquí puedes almacenar datos adicionales
       url: payload.data.url || '/' // El enlace al que se redirigirá al hacer clic, por defecto la raíz
     }

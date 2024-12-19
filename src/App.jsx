@@ -77,8 +77,6 @@ function App() {
         //<BrowserRouter basename="/">
 
       }
-      
-        
         <Routes>
           {/*PAGINAS PARA TODOS */}
 
