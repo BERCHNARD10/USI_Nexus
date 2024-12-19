@@ -501,7 +501,7 @@ const MateriasDocente = () => {
         <div className="flex items-center space-x-4">
           <IconButton
             Icon={MdAdd}
-            message="Añadir Materias con actividades"
+            message="Añadir Materias con actividades UWU"
             onClick={() => setOpenModal(true)}
           />
           
