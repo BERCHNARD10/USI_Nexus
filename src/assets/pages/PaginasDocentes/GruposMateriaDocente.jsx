@@ -56,7 +56,7 @@ const GruposMateriasDocente = () => {
                 console.log('Materias cargadas exitosamente desde la API.', result);
     
                 // Guardar la respuesta clonada en el caché
-                await cache.put(`${apiUrl}cargarGrupos.php`, responseClone);
+               // await cache.put(`${apiUrl}cargarGrupos.php`, responseClone);
                 console.log('Respuesta de la API almacenada en caché.');
             } else {
                 // Manejo de errores en la respuesta de la API

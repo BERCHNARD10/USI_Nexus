@@ -323,9 +323,9 @@ const MateriasDocente = () => {
             if (result.done) {
                 setMaterias(result.message);
                 console.log('Respuesta de la API. ', result.message);
-
+                
                 // Guardar la respuesta clonada en el caché
-                await cache.put(`${apiUrl}cargarMaterias.php`, responseClone);
+                //await cache.put(`${apiUrl}cargarMaterias.php`, responseClone);
                 console.log('Respuesta de la API almacenada en caché.');
             } else {
                 console.log('Error en el registro:', result.message);

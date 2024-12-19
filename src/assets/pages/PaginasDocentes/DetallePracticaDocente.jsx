@@ -177,7 +177,7 @@ const DetallePracticaDocente = () => {
         setRubricaCalAlumno(updatedRubricas);
     
         // Calcular el puntaje total y el puntaje obtenido
-        const totalMaximo = updatedRubricas.reduce((acc, rubrica) => acc + rubrica.valorMaximo, 0);
+        const totalMaximo = updatedRubricas.reduce((acc, rubrica) => acc + parseFloat(rubrica.valorMaximo), 0);
         const totalObtenido = updatedRubricas.reduce((acc, rubrica) => acc + (parseFloat(rubrica.calificacionObtenida) || 0), 0);
     
         setPuntajeTotalCal(totalMaximo);
@@ -499,7 +499,7 @@ const DetallePracticaDocente = () => {
     }, [rubricaData, editedData, isEditing]);
 
     useEffect(() => {
-        const totalMaximo = rubricaCalAlumno.reduce((acc, rubrica) => acc + rubrica.valorMaximo, 0);
+        const totalMaximo = rubricaCalAlumno.reduce((acc, rubrica) => acc + parseFloat(rubrica.valorMaximo), 0);
         const totalObtenido = rubricaCalAlumno.reduce((acc, rubrica) => acc + (parseFloat(rubrica.calificacionObtenida) || 0), 0);
         setPuntajeTotalCal(totalMaximo);
         setPuntajeObtenido(totalObtenido);
@@ -657,7 +657,7 @@ const DetallePracticaDocente = () => {
                                         </p>
                                     </div>
                                     </div>
-                                    {alumno.TieneCalificacion ? (
+                                    {alumno.TieneCalificacion>0 ? (
                                     <FaCheckCircle className="text-lg text-green-600" />
                                     ) : (
                                     <FaTimesCircle className="text-lg text-red-600" />
