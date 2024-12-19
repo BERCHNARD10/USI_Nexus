@@ -167,7 +167,7 @@ const handleInstallClick = () => {
         </div>
         <Navbar.Brand as={NavLink} to="/">
           <img className="h-8 mr-2" src={`${webUrl}assets/imagenes/logo.png`} alt="" />
-          UTHH Virtual cambio xd
+          UTHH Virtual
         </Navbar.Brand>
       </div>
       {isAuthenticated ? 
