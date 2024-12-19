@@ -71,7 +71,7 @@ function App() {
   return (
     <AuthProvider>
       
-        <BrowserRouter basename="/UTHH_VIRTUAL">
+        <BrowserRouter basename="/">
       
       {
         //<BrowserRouter basename="/">
