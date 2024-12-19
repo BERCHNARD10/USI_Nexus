@@ -5,6 +5,7 @@ import { Tabs, Accordion } from "flowbite-react";
 import { HiClipboardList, HiUserGroup } from "react-icons/hi"; // Actualiza aquí
 import Components from '../../components/Components';
 const { TitlePage, ContentTitle, Paragraphs, Link, TitleSection, DescriptionActivity, ActivitiesSkeleton} = Components;
+//esto es un prueba para ver si jala en github
 
 const ActividadesAlumno = () => {
     const { userData } = useAuth(); // Obtén el estado de autenticación del contexto
