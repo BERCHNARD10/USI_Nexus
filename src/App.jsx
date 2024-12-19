@@ -1,3 +1,10 @@
+// Obtener el idioma del navegador
+const userLang = navigator.language || navigator.userLanguage; // 'es' para español, 'en' para inglés, etc.
+
+if (userLang !== "es") {
+  document.documentElement.lang = "es"; // Establecer el idioma a español si no está configurado en español
+}
+
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './assets/server/authUser';
@@ -33,6 +40,7 @@ import 'react-toastify/dist/ReactToastify.css';
 // Importa el ToastContainer y el método toast
 import { ToastContainer, toast } from 'react-toastify';
 import './App.css';
+
 import Components from './assets/components/Components'
 const { LoadingOverlay, OfflineAlert } = Components;
 

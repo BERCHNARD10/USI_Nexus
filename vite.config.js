@@ -157,7 +157,8 @@ export default defineConfig({
     }
   },
   optimizeDeps: {
-    exclude: ['xlsx-style']
+    exclude: ['xlsx-style'],
+    
   },
   build: {
     outDir: 'dist',

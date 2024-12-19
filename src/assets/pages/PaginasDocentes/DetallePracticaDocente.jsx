@@ -645,7 +645,7 @@ const DetallePracticaDocente = () => {
                                     <div className="flex items-center space-x-3">
                                     <img
                                         className="w-10 h-10 rounded-full object-cover"
-                                        src={alumno.FotoPerfil ? `${webUrl}assets/imagenes/${alumno.FotoPerfil}` : `${webUrl}assets/imagenes/userProfile.png`}
+                                        src={alumno.FotoPerfil ? decodeURIComponent(`${webUrl}assets/imagenes/${alumno.FotoPerfil}`) : `${webUrl}assets/imagenes/userProfile.png`}
                                         alt={`Foto de ${alumno.AlumnoNombre}`}
                                     />
                                     <div>
@@ -678,7 +678,7 @@ const DetallePracticaDocente = () => {
                             <div className="flex items-center space-x-4 mt-4">
                                 <img
                                     className="w-10 h-10 rounded-full object-cover"
-                                    src={selectedAlumno.FotoPerfil ? `${webUrl}assets/imagenes/${selectedAlumno.FotoPerfil}` : `${webUrl}assets/imagenes/userProfile.png`}
+                                    src={selectedAlumno.FotoPerfil ? decodeURIComponent(`${webUrl}assets/imagenes/${selectedAlumno.FotoPerfil}`) : `${webUrl}assets/imagenes/userProfile.png`}
                                     alt={`Foto de ${selectedAlumno.AlumnoNombre}`}
                                 />
                                 <div>
