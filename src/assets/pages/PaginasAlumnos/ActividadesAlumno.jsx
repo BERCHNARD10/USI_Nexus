@@ -166,7 +166,7 @@ const ActividadesAlumno = () => {
                         <img
                             className="w-12 h-12 rounded-full object-cover"
                             src={alumnos[0].DocenteFotoPerfil
-                                ? `${webUrl}assets/imagenes/${alumnos[0].DocenteFotoPerfil}`
+                                ? decodeURIComponent (`${webUrl}assets/imagenes/${alumnos[0].DocenteFotoPerfil}`)
                                 : `${webUrl}assets/imagenes/userProfile.png`}
                             alt={`Foto de ${alumnos[0].DocenteNombre}`}
                         />
