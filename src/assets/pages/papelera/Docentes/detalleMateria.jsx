@@ -17,11 +17,13 @@ const DetalleMateria = () => {
   const [alumnos, setAlumnosMaterias] = useState([]);
   const { vchClvMateria, chrGrupo, intPeriodo } = useParams();
   const [loading, setLoading] = useState(false);
+  const webUrl = import.meta.env.VITE_URL;
+  const apiUrl = import.meta.env.VITE_API_URL;
  
 
   const onloadActividades = async () => {
     try {
-      const response = await fetch('https://robe.host8b.me/WebServices/cargarMaterias.php', {
+      const response = await fetch(`${apiUrl}cargarMaterias.php`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -68,7 +70,7 @@ const DetalleMateria = () => {
 
   const onloadAlumnos = async () => {
     try {
-      const response = await fetch('https://robe.host8b.me/WebServices/accionesAlumnos.php', {
+      const response = await fetch(`${apiUrl}accionesAlumnos.php`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -151,7 +153,7 @@ const DetalleMateria = () => {
         console.log("server ",requestData)
 
 
-      const responseInit = await fetch('https://robe.host8b.me/WebServices/obtenerCalificacionesParcial.php', 
+      const responseInit = await fetch(`${apiUrl}obtenerCalificacionesParcial.php`, 
         {
           method: 'POST',
           headers: 
@@ -166,7 +168,7 @@ const DetalleMateria = () => {
       if (resultInit.done) {
         console.log(resultInit.message)
 
-        const response = await fetch('https://robe.host8b.me/WebServices/obtenerCalificacionesParcial.php', 
+        const response = await fetch(`${apiUrl}obtenerCalificacionesParcial.php`, 
           {
             method: 'POST',
             headers: 

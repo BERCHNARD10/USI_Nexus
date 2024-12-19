@@ -33,8 +33,8 @@ import 'react-toastify/dist/ReactToastify.css';
 // Importa el ToastContainer y el método toast
 import { ToastContainer, toast } from 'react-toastify';
 import './App.css';
-import  Components from './assets/components/Components'
-const {LoadingOverlay, OfflineAlert} = Components;
+import Components from './assets/components/Components'
+const { LoadingOverlay, OfflineAlert } = Components;
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
@@ -70,46 +70,54 @@ function App() {
 
   return (
     <AuthProvider>
-      <BrowserRouter basename="/UTHH_VIRTUAL">
+      
+        <BrowserRouter basename="/UTHH_VIRTUAL">
+      
+      {
+        //<BrowserRouter basename="/">
+
+      }
+      
+        
         <Routes>
           {/*PAGINAS PARA TODOS */}
 
           <Route path="/" element={<Layout><HomePage /></Layout>} />
-          <Route path="/inicio-sesion" element={<IsAuthenticated><LoginPage/></IsAuthenticated>} />
+          <Route path="/inicio-sesion" element={<IsAuthenticated><LoginPage /></IsAuthenticated>} />
           <Route path="/registro" element={<IsAuthenticated><RegisterPage /></IsAuthenticated>} />
           <Route path="/recuperar-contrasena" element={<IsAuthenticated><Layout><EmailForm /></Layout></IsAuthenticated>} />
           <Route path="/restablecer-contrasena/:matricula/:token/" element={<IsAuthenticated><Layout><ResetPassword /></Layout></IsAuthenticated>} />
-          <Route path="/mi-perfil/" element={<PrivateRouteUser><Layout><ProfilePage/></Layout></PrivateRouteUser>} />
-          <Route path="/reset-password-code/:codigo/" element={<Layout><ResetPasswordCode/></Layout>} />
+          <Route path="/mi-perfil/" element={<PrivateRouteUser><Layout><ProfilePage /></Layout></PrivateRouteUser>} />
+          <Route path="/reset-password-code/:codigo/" element={<Layout><ResetPasswordCode /></Layout>} />
 
           {/*PAGINAS PARA Alumnos */}
-          <Route path="/actividades/:vchClvMateria/:chrGrupo/:intPeriodo" element={<PrivateRouteUser><Layout><ActividadesAlumno/></Layout></PrivateRouteUser>} />
-          <Route path="/actividades/detalleActividad/:vchClvMateria/:chrGrupo/:intPeriodo/:intNumeroActi/:intIdActividadCurso" element={<PrivateRouteUser><Layout><DetalleActividadAlumno/></Layout></PrivateRouteUser>} />
-          <Route path="/actividades/detalleActividad/detallePractica/:vchClvMateria/:chrGrupo/:intPeriodo/:intNumeroActi/:intNumeroPractica/:intIdActividadCurso" element={<PrivateRouteUser><Layout><DetallePracticaAlumno/></Layout></PrivateRouteUser>} />
+          <Route path="/actividades/:vchClvMateria/:chrGrupo/:intPeriodo" element={<PrivateRouteUser><Layout><ActividadesAlumno /></Layout></PrivateRouteUser>} />
+          <Route path="/actividades/detalleActividad/:vchClvMateria/:chrGrupo/:intPeriodo/:intNumeroActi/:intIdActividadCurso" element={<PrivateRouteUser><Layout><DetalleActividadAlumno /></Layout></PrivateRouteUser>} />
+          <Route path="/actividades/detalleActividad/detallePractica/:vchClvMateria/:chrGrupo/:intPeriodo/:intNumeroActi/:intNumeroPractica/:intIdActividadCurso" element={<PrivateRouteUser><Layout><DetallePracticaAlumno /></Layout></PrivateRouteUser>} />
           {/*PAGINAS PARA Docentes */}
-          
-          <Route path="/alumnos" element={<PrivateRoute><Layout><Alumnos/></Layout></PrivateRoute>} />
-          <Route path="/departamentos" element={<PrivateRoute><Layout><Departamentos/></Layout></PrivateRoute>} />
-          <Route path="/periodos" element={<PrivateRoute><Layout><Periodos/></Layout></PrivateRoute>} />
-          <Route path="/carreras" element={<PrivateRoute><Layout><CarrerasCrud/></Layout></PrivateRoute>} />
-          <Route path="/docentes" element={<PrivateRoute><Layout><Docentes/></Layout></PrivateRoute>} />
-          <Route path="/Admin/Teachers" element={<Layout><Docentes/></Layout>} />
-          <Route path="/gruposMaterias/:vchClvMateria/:intPeriodo" element={<PrivateRoute><Layout><GruposMateriasDocente/></Layout></PrivateRoute>} />
-          <Route path="/gruposMaterias/actividades/:vchClvMateria/:chrGrupo/:intPeriodo" element={<PrivateRoute><Layout><ActividadesDocente/></Layout></PrivateRoute>} />
-          <Route path="/gruposMaterias/actividades/detalleActividad/:vchClvMateria/:chrGrupo/:intPeriodo/:intNumeroActi/:intIdActividadCurso" element={<PrivateRoute><Layout><DetalleActividadDocente/></Layout></PrivateRoute>} />
-          <Route path="/gruposMaterias/actividades/detalleActividad/detallePractica/:vchClvMateria/:chrGrupo/:intPeriodo/:intNumeroActi/:intNumeroPractica/:intIdActividadCurso" element={<PrivateRoute><Layout><DetallePracticaDocente/></Layout></PrivateRoute>} />
 
-          <Route path="/Terminos" element={<Layout><PrivacyPolicy/></Layout>} />
-          <Route path="/*"element={<Layout><Error404/></Layout>}/>
+          <Route path="/alumnos" element={<PrivateRoute><Layout><Alumnos /></Layout></PrivateRoute>} />
+          <Route path="/departamentos" element={<PrivateRoute><Layout><Departamentos /></Layout></PrivateRoute>} />
+          <Route path="/periodos" element={<PrivateRoute><Layout><Periodos /></Layout></PrivateRoute>} />
+          <Route path="/carreras" element={<PrivateRoute><Layout><CarrerasCrud /></Layout></PrivateRoute>} />
+          <Route path="/docentes" element={<PrivateRoute><Layout><Docentes /></Layout></PrivateRoute>} />
+          <Route path="/Admin/Teachers" element={<Layout><Docentes /></Layout>} />
+          <Route path="/gruposMaterias/:vchClvMateria/:intPeriodo" element={<PrivateRoute><Layout><GruposMateriasDocente /></Layout></PrivateRoute>} />
+          <Route path="/gruposMaterias/actividades/:vchClvMateria/:chrGrupo/:intPeriodo" element={<PrivateRoute><Layout><ActividadesDocente /></Layout></PrivateRoute>} />
+          <Route path="/gruposMaterias/actividades/detalleActividad/:vchClvMateria/:chrGrupo/:intPeriodo/:intNumeroActi/:intIdActividadCurso" element={<PrivateRoute><Layout><DetalleActividadDocente /></Layout></PrivateRoute>} />
+          <Route path="/gruposMaterias/actividades/detalleActividad/detallePractica/:vchClvMateria/:chrGrupo/:intPeriodo/:intNumeroActi/:intNumeroPractica/:intIdActividadCurso" element={<PrivateRoute><Layout><DetallePracticaDocente /></Layout></PrivateRoute>} />
+
+          <Route path="/Terminos" element={<Layout><PrivacyPolicy /></Layout>} />
+          <Route path="/*" element={<Layout><Error404 /></Layout>} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
   );
 }
 
-function IsAuthenticated({children}) {
+function IsAuthenticated({ children }) {
   const { isAuthenticated } = useAuth();
-  
+
   return isAuthenticated ? <Navigate to="/" /> : children;
 }
 
@@ -121,7 +129,7 @@ function PrivateRoute({ children }) {
   if (!isAuthenticated) {
     return <Navigate to="/" />;
   }
-  
+
   // Validación: Usuario autenticado pero sin rol
   if (isAuthenticated && !userData.intRol) {
     return <Navigate to="/" />;
@@ -139,9 +147,9 @@ function PrivateRouteAdmin({ children }) {
   if (!isAuthenticated) {
     return <Navigate to="/" />;
   }
-  
+
   // Validación: Usuario autenticado pero sin rol
-  if (isAuthenticated && userData.vchNombreRol!="Administrador") {
+  if (isAuthenticated && userData.vchNombreRol != "Administrador") {
     return <Navigate to="/" />;
   }
 

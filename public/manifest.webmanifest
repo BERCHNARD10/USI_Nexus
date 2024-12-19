@@ -3,7 +3,7 @@
   "short_name": "UTHH Virtual",
   "start_url": "/",
   "display": "standalone",
-  "lang": "en",
+  "lang": "es",
   "scope": "/",
   "registerType": "autoUpdate",
   "includeAssets": [
@@ -51,13 +51,13 @@
   "orientation": "portrait",
   "screenshots": [
     {
-      "src": "screenshot-wide.png",
+      "src": "/logo.png",
       "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide"
     },
     {
-      "src": "screenshot-narrow.png",
+      "src": "/logo.png",
       "sizes": "720x1280",
       "type": "image/png",
       "form_factor": "narrow"

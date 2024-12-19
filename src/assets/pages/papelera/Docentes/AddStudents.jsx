@@ -29,6 +29,9 @@ const AgregarAlumnos = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [alertMessage, setAlertMessage] = useState(null);
   const [activeMenu, setActiveMenu] = useState(null);
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const webUrl = import.meta.env.VITE_URL;
+  
 
   const {
     register,
@@ -112,7 +115,7 @@ const registrarEstudiantes = async (alumnosData) =>
   {
     setIsLoading(true);
     // Hacer solicitud para obtener las carreras
-    const response = await fetch('https://robe.host8b.me/WebServices/registerStudents.php',
+    const response = await fetch(`${apiUrl}registerStudents.php`,
       {
         method: 'POST',
         headers: 
@@ -179,7 +182,7 @@ const registrarEstudiantes = async (alumnosData) =>
   {
     try
     {
-      const response = await fetch('https://robe.host8b.me/WebServices/obtener-periodos.php');
+      const response = await fetch(`${apiUrl}obtener-periodos.php`);
       const result = await response.json();
 
       if (!result.done) 
@@ -243,7 +246,7 @@ const registrarEstudiantes = async (alumnosData) =>
       try 
       {
         // Hacer solicitud para obtener las carreras
-        const response = await fetch('https://robe.host8b.me/WebServices/obtenerCarreras.php',
+        const response = await fetch(`${apiUrl}obtenerCarreras.php`,
         {
           method: 'POST',
           headers: 
@@ -276,7 +279,7 @@ const registrarEstudiantes = async (alumnosData) =>
       try 
       {
         // Hacer solicitud para obtener las carreras
-        const response = await fetch('https://robe.host8b.me/WebServices/obtenerCuatrimestres.php',
+        const response = await fetch(`${apiUrl}obtenerCuatrimestres.php`,
         {
           method: 'POST',
           headers: 
@@ -312,7 +315,7 @@ const registrarEstudiantes = async (alumnosData) =>
       try 
       {
         // Hacer solicitud para obtener las carreras
-        const response = await fetch('https://robe.host8b.me/WebServices/obtenerGrupos.php',
+        const response = await fetch(`${apiUrl}obtenerGrupos.php`,
         {
           method: 'POST',
           headers: 
@@ -353,7 +356,7 @@ const registrarEstudiantes = async (alumnosData) =>
         console.log('Cuerpo de la solicitud:', requestBody);
     
         // Hacer solicitud para obtener las carreras
-        const response = await fetch('https://robe.host8b.me/WebServices/obtenerResultados.php',
+        const response = await fetch(`${apiUrl}obtenerResultados.php`,
         {
           method: 'POST',
           headers: 

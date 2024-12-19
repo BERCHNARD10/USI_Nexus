@@ -4,10 +4,11 @@ import { Link, useLocation} from 'react-router-dom';
 function ResultadosCalificacioness() {
   const [matriculaAlumno, setMatriculaAlumno] = useState('');
   const [resultados, setResultados] = useState([]);
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const obtenerResultados = async () => {
     try {
-      const response = await fetch('https://robe.host8b.me/WebServices/buscarAlumno.php', {
+      const response = await fetch(`${apiUrl}buscarAlumno.php`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -487,7 +487,7 @@ const LoginPage = () =&gt; {
   const handleLogin = async (data) =&gt; {
     setIsLoading(true);
     try {
-      const response = await fetch(`https://robe.host8b.me/WebServices/loginUser.php`, {
+      const response = await fetch(`http://localhost/WebServices/loginUser.php`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...data, matriculaAlum: data.matriculaAlum.toString() }),

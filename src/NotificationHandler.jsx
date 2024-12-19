@@ -39,7 +39,7 @@ const NotificationHandler = () => {
             }
             
             try {
-              const response = await fetch(`${apiUrl}/enviarToken.php`, {
+              const response = await fetch(`${apiUrl}enviarToken.php`, {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',

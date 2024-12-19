@@ -7,6 +7,8 @@ import { useNavigate} from 'react-router-dom';
 import  Components from '../components/Components'
 const { LoadingButton, CustomInput, CustomInputPassword, CustomRepeatPassword} = Components;
 import imagePanel from '../images/uthhPanel.png';
+const webUrl = import.meta.env.VITE_URL;
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const PasswordValidationItem = ({ isValid, text }) => (
   <li className="flex items-center mb-1">
@@ -116,7 +118,7 @@ const RegisterPage = () => {
       setIsLoading(true);
       console.log('Datos enviados:', JSON.stringify(data));
 
-      const response = await fetch('https://robe.host8b.me/WebServices/createUser.php', {
+      const response = await fetch(`${apiUrl}createUser.php`, {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',

@@ -19,7 +19,7 @@ const ActividadesDocente = () => {
     const [serverResponse, setServerResponse] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [loadingParcial, setLoadingParcial] = useState(null);
-
+    
     const onloadActividades = async () => {
         try {
 
@@ -34,7 +34,7 @@ const ActividadesDocente = () => {
                 return; // Terminar la función aquí si usamos el caché
             }*/
 
-            const response = await fetch(`${apiUrl}/cargarMaterias.php`, {
+            const response = await fetch(`${apiUrl}cargarMaterias.php`, {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
@@ -109,7 +109,7 @@ const ActividadesDocente = () => {
     
             console.log("Datos enviados:", requestData);
     
-            const response = await fetch(`${apiUrl}/cargarMaterias.php`, {
+            const response = await fetch(`${apiUrl}cargarMaterias.php`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -151,7 +151,7 @@ const ActividadesDocente = () => {
 
     /*const onloadAlumnos = async () => {
         try {
-            const response = await fetch(`${apiUrl}/accionesAlumnos.php`, {
+            const response = await fetch(`${apiUrl}accionesAlumnos.php`, {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
@@ -307,7 +307,7 @@ const ActividadesDocente = () => {
             };
             console.log("server ",requestData)
 
-        const responseInit = await fetch(`${apiUrl}/obtenerCalificacionesParcial.php`, 
+        const responseInit = await fetch(`${apiUrl}obtenerCalificacionesParcial.php`, 
         {
             method: 'POST',
             headers: 
@@ -322,7 +322,7 @@ const ActividadesDocente = () => {
         if (resultInit.done) {
             console.log(resultInit.message)
             
-            const response = await fetch(`${apiUrl}/obtenerCalificacionesParcial.php`, 
+            const response = await fetch(`${apiUrl}obtenerCalificacionesParcial.php`, 
             {
                 method: 'POST',
                 headers: 
@@ -802,8 +802,8 @@ const ActividadesDocente = () => {
                         <img
                             className="w-12 h-12 rounded-full object-cover"
                             src={alumno.FotoPerfil
-                            ? `https://robe.host8b.me/assets/imagenes/${alumno.FotoPerfil}`
-                            : 'https://robe.host8b.me/assets/imagenes/userProfile.png'}
+                            ? `${webUrl}assets/imagenes/${alumno.FotoPerfil}`
+                            : `${webUrl}assets/imagenes/userProfile.png`}
                             alt={`Foto de ${alumno.AlumnoNombre}`}
                         />
                         <div className="ml-3">

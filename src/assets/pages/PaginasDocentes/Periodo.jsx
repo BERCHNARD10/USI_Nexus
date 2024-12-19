@@ -44,7 +44,7 @@ const PeriodosCrud = () => {
 
     const fetchPeriodos = async () => {
         try {
-            const response = await fetch(`${apiUrl}/periodos.php`);
+            const response = await fetch(`${apiUrl}periodos.php`);
             const data = await response.json();
             if (data.done) {
                 setPeriodos(data.message);
@@ -72,7 +72,7 @@ const PeriodosCrud = () => {
     const handleDelete = async () => {
         setIsLoading(true);
         try {
-            const response = await fetch(`${apiUrl}/periodosCrud.php`, {
+            const response = await fetch(`${apiUrl}periodosCrud.php`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -100,7 +100,7 @@ const PeriodosCrud = () => {
         console.log("periodo", idPeriodo);
 
         try {
-            const url = `${apiUrl}/periodosCrud.php`;
+            const url = `${apiUrl}periodosCrud.php`;
             const method = 'POST';
             console.log("es edicion", isEditing);
             console.log("formData", formData);

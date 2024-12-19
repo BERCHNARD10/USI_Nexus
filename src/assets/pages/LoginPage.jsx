@@ -34,7 +34,7 @@ const LoginPage = () => {
   const handleLogin = async (data) => {
     setIsLoading(true);
     try {
-      const response = await fetch(`${apiUrl}/loginUser.php`, {
+      const response = await fetch(`${apiUrl}loginUser.php`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...data, matriculaAlum: data.matriculaAlum.toString() }),

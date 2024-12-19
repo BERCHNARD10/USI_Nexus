@@ -5,17 +5,18 @@ import { Card, Button } from 'flowbite-react';
 import { FaRegFrown } from 'react-icons/fa';
 import  Components from '../../components/Components'
 const {TitlePage, CardSkeleton} = Components;
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const MateriasAlumno = () => { 
     const {userData} = useAuth(); // Obtén el estado de autenticación del contexto
     const [materias, setMaterias] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    const apiUrl = "https://robe.host8b.me/WebServices/";
-    const webUrl = "https://robe.host8b.me/";
+    const apiUrl = import.meta.env.VITE_API_URL;
+    const webUrl = import.meta.env.VITE_URL;
     const onloadNaterias = async () => {
         try {
-            const response = await fetch(`${apiUrl}/cargarMaterias.php`, {
+            const response = await fetch(`${apiUrl}cargarMaterias.php`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -79,8 +80,8 @@ return (
                         <img
                             alt={`Foto de perfil de ${materia.vchNombre}`}
                             src={materia.vchFotoPerfil 
-                                ? `https://robe.host8b.me/assets/imagenes/${materia.vchFotoPerfil}`
-                                : 'https://robe.host8b.me/assets/imagenes/userProfile.png'}
+                                ? `${webUrl}assets/imagenes/${materia.vchFotoPerfil}`
+                                : `${webUrl}assets/imagenes/userProfile.png`}
                             className="w-24 h-24 rounded-full shadow-lg mb-3 object-cover"
                         />
                         <h3 className="text-xl font-medium text-gray-900">

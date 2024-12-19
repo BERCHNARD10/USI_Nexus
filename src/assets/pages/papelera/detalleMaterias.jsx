@@ -11,11 +11,12 @@ const DetalleMateria = () => {
   const {userData} = useAuth(); // Obtén el estado de autenticación del contexto
   const [actividades, setMaterias] = useState([]);
   const { vchClvMateria, chrGrupo, intPeriodo } = useParams();
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const onloadNaterias = async () => {
     try {
 
-      const response = await fetch('https://robe.host8b.me/WebServices/cargarMaterias.php', {
+      const response = await fetch(`${apiUrl}cargarMaterias.php`, {
           method: 'POST',
           headers: 
           {

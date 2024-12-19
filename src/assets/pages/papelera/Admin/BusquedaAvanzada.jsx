@@ -8,12 +8,13 @@ const BusquedaAvanzada = () => {
   const [cuatrimestreSeleccionado, setCuatrimestreSeleccionado] = useState('');
   const [grupoSeleccionado, setGrupoSeleccionado] = useState('');
   const [resultados, setResultados] = useState([]);
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   // Función para cargar las carreras
   const cargarCarreras = async () => {
     try {
       // Hacer solicitud para obtener las carreras
-      const response = await fetch('https://robe.host8b.me/WebServices/obtenerCarreras.php');
+      const response = await fetch(`${apiUrl}obtenerCarreras.php`);
   
       if (!response.ok) {
         throw new Error('Error al obtener las carreras');
@@ -33,7 +34,7 @@ const BusquedaAvanzada = () => {
 const cargarCuatrimestres = async () => {
     if (carreraSeleccionada) {
       try {
-        const response = await fetch('https://robe.host8b.me/WebServices/obtenerCuatrimestres.php', {
+        const response = await fetch(`${apiUrl}obtenerCuatrimestres.php`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -66,7 +67,7 @@ const cargarCuatrimestres = async () => {
 const cargarGrupos = async () => {
     if (cuatrimestreSeleccionado) {
       try {
-        const response = await fetch('https://robe.host8b.me/WebServices/obtenerGrupos.php', {
+        const response = await fetch(`${apiUrl}obtenerGrupos.php`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -90,7 +91,7 @@ const cargarGrupos = async () => {
   const cargarResultados = async () => {
     if (grupoSeleccionado) {
       try {
-        const response = await fetch('https://robe.host8b.me/WebServices/buscarCalificaciones.php', {
+        const response = await fetch(`${apiUrl}buscarCalificaciones.php`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

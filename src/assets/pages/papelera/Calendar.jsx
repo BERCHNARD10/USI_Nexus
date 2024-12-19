@@ -31,6 +31,7 @@ const localizer = dateFnsLocalizer({
 const MyCalendar = () => {
   const { userData } = useAuth();
   const [calendarData, setCalendarData] = useState(null);
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   // Configura moment en español
 
@@ -39,7 +40,7 @@ const MyCalendar = () => {
     
     const fetchData = async () => {
       try {
-        const response = await fetch('https://robe.host8b.me/WebServices/calendario.php', {
+        const response = await fetch(`${apiUrl}calendario.php`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

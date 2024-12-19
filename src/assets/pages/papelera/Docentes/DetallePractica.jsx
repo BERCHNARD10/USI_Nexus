@@ -26,6 +26,8 @@ const DetallePractica = () => {
   const [selectedAlumnoMatricula, setSelectedAlumnoMatricula] = useState(null);
   const [selectedAlumno, setSelectedAlumno] = useState(null);
   const [puntajeObtenido, setPuntajeObtenido] = useState(0);
+  const webUrl = import.meta.env.VITE_URL;
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const { register, handleSubmit, watch, trigger, formState: { errors } } = useForm();
 
@@ -45,7 +47,7 @@ const DetallePractica = () => {
     }
 
     try {
-      const response = await fetch('https://robe.host8b.me/WebServices/cargarMaterias.php', {
+      const response = await fetch(`${apiUrl}cargarMaterias.php`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ updatedRubrica: editedData }),
@@ -118,7 +120,7 @@ const DetallePractica = () => {
 
   const fetchCalificacionesAlumno = async (matricula) => {
     try {
-      const response = await fetch('https://robe.host8b.me/WebServices/accionesAlumnos.php', {
+      const response = await fetch(`${apiUrl}accionesAlumnos.php`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
@@ -149,7 +151,7 @@ const DetallePractica = () => {
     console.log(rubricaCalAlumno)
 
     try {
-      const response = await fetch('https://robe.host8b.me/WebServices/accionesAlumnos.php', {
+      const response = await fetch(`${apiUrl}accionesAlumnos.php`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -174,7 +176,7 @@ const DetallePractica = () => {
 
   const onloadAlumnos = async () => {
     try {
-      const response = await fetch('https://robe.host8b.me/WebServices/accionesAlumnos.php', {
+      const response = await fetch(`${apiUrl}accionesAlumnos.php`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -218,7 +220,7 @@ const DetallePractica = () => {
     const fetchActividad = async () => {
       const requestData = { idPracticaDetalle: intNumeroPractica };
       try {
-        const response = await fetch('https://robe.host8b.me/WebServices/cargarMaterias.php', {
+        const response = await fetch(`${apiUrl}cargarMaterias.php`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(requestData),

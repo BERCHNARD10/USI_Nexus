@@ -30,7 +30,7 @@ const GruposMateriasDocente = () => {
             }
     */
             // Realizar la solicitud a la API
-            const response = await fetch(`${apiUrl}/cargarMaterias.php`, {
+            const response = await fetch(`${apiUrl}cargarMaterias.php`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

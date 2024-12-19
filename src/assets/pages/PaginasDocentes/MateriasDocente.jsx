@@ -241,7 +241,7 @@ const MateriasDocente = () => {
         try 
         {
             setIsLoading(true);
-                const response = await fetch(`${apiUrl}/InsertarActividades.php`,
+                const response = await fetch(`${apiUrl}InsertarActividades.php`,
                 {
                 method: 'POST',
                 headers: 
@@ -285,7 +285,7 @@ const MateriasDocente = () => {
         try {
             /*
             const cache = await caches.open('api-cache');
-            const cachedResponse = await cache.match('https://robe.host8b.me/WebServices/cargarMaterias.php');
+            const cachedResponse = await cache.match(`${webUrl}cargarMaterias.php`);
 
             if (cachedResponse && !navigator.onLine) {
                 const data = await cachedResponse.json();
@@ -325,7 +325,7 @@ const MateriasDocente = () => {
                 console.log('Respuesta de la API. ', result.message);
 
                 // Guardar la respuesta clonada en el caché
-                await cache.put('https://robe.host8b.me/WebServices/cargarMaterias.php', responseClone);
+                await cache.put(`${apiUrl}cargarMaterias.php`, responseClone);
                 console.log('Respuesta de la API almacenada en caché.');
             } else {
                 console.log('Error en el registro:', result.message);

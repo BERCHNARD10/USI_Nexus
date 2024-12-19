@@ -11,14 +11,17 @@ import SideNav from '../../components/Admin/SideNavBar'
 import  Components from '../../components/Components'
 const {IconButton} = Components;
 
+
 const NavigationBar = ({ isSidebarOpen, toggleSidebar }) => {
   const navigate = useNavigate(); 
   const { isAuthenticated, userData, logout } = useAuth(); // Obtén el estado de autenticación del contexto
   const [showMenu, setShowMenu] = useState(false);
+  const webUrl = import.meta.env.VITE_URL;
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const profileImageUrl = isAuthenticated && userData?.vchFotoPerfil
-    ? `https://robe.host8b.me/assets/imagenes/${userData.vchFotoPerfil}`
-    : 'https://robe.host8b.me/assets/imagenes/userProfile.png'; // Enlace alternativo cuando vchFotoPerfil es null o usuario no está autenticado
+    ? decodeURIComponent(`${webUrl}/assets/imagenes/${userData.vchFotoPerfil}`)
+    : `${webUrl}/assets/imagenes/userProfile.png`; // Enlace alternativo cuando vchFotoPerfil es null o usuario no está autenticado
 
 // Usar profileImageUrl para el src de la imagen
 <img src={profileImageUrl} alt="Perfil" />

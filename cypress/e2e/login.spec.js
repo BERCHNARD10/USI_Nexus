@@ -2,7 +2,7 @@ describe('Pruebas de LoginPage', () => {
 
     // Antes de cada prueba, visita la página de login
     beforeEach(() => {
-      cy.visit('https://robe.host8b.me/inicio-sesion' , { timeout: 120000 });
+      cy.visit('http://localhost/UTHH_VIRTUAL/inicio-sesion' , { timeout: 120000 });
     });
   
     it('Renderiza correctamente el formulario de inicio de sesión', () => {
@@ -40,7 +40,7 @@ describe('Pruebas de LoginPage', () => {
       cy.get('input[name="password"]').type('KINSBERone2020@');
   
       // Interceptar la solicitud al servidor y simular una respuesta exitosa
-      cy.intercept('POST', 'https://robe.host8b.me/WebServices/loginUser.php', {
+      cy.intercept('POST', 'http://localhost/WebServices/loginUser.php', {
         statusCode: 200,
         body: {
           done: true,

@@ -1,5 +1,5 @@
 import React from 'react';
-import image from '../images/Error 404.png'
+import image from '../images/Error404.png'
 
 
 const Error404 = () => {

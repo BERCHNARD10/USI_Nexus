@@ -25,7 +25,7 @@ const DetallePracticaAlumno = () => {
 
     const fetchCalificacionesAlumno = async () => {
         try {
-            const response = await fetch(`${apiUrl}/accionesAlumnos.php`, {
+            const response = await fetch(`${apiUrl}accionesAlumnos.php`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 
@@ -55,7 +55,7 @@ const DetallePracticaAlumno = () => {
         const fetchActividad = async () => {
         const requestData = { idPracticaDetalle: intNumeroPractica };
         try {
-            const response = await fetch(`${apiUrl}/cargarMaterias.php`, {
+            const response = await fetch(`${apiUrl}cargarMaterias.php`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(requestData),

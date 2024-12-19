@@ -104,7 +104,7 @@ const NavigationBar = ({ isSidebarOpen, toggleSidebar }) => {
     };
   
   const profileImageUrl = isAuthenticated && userData?.vchFotoPerfil
-    ? `${webUrl}assets/imagenes/${userData.vchFotoPerfil}`
+    ? decodeURIComponent(`${webUrl}assets/imagenes/${userData.vchFotoPerfil}`)
     : `${webUrl}assets/imagenes/userProfile.png`; // Enlace alternativo cuando vchFotoPerfil es null o usuario no está autenticado
 
 // Usar profileImageUrl para el src de la imagen
@@ -166,7 +166,7 @@ const handleInstallClick = () => {
           <IoMenu />
         </div>
         <Navbar.Brand as={NavLink} to="/">
-          <img className="h-8 mr-2" src={`${webUrl}assets/imagenes/userProfile.png`} alt="" />
+          <img className="h-8 mr-2" src={`${webUrl}assets/imagenes/logo.png`} alt="" />
           UTHH Virtual
         </Navbar.Brand>
       </div>

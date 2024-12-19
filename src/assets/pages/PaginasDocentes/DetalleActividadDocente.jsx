@@ -33,7 +33,7 @@ const DetalleActividadDocente = () => {
 
     const handleConfirmDelete = async () => {
         try {
-            const response = await fetch(`${apiUrl}/accionesPracticas.php`, {
+            const response = await fetch(`${apiUrl}accionesPracticas.php`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -87,7 +87,7 @@ const DetalleActividadDocente = () => {
 
         try 
         {
-            const response = await fetch(`${apiUrl}/cargarMaterias.php`, 
+            const response = await fetch(`${apiUrl}cargarMaterias.php`, 
             {
             method: 'POST',
             headers: 
@@ -239,7 +239,7 @@ const DetalleActividadDocente = () => {
         try 
         {
             setIsLoadingPract(true);
-            const response = await fetch(`${apiUrl}/InsertarActividades.php`, {
+            const response = await fetch(`${apiUrl}InsertarActividades.php`, {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json'
@@ -399,7 +399,7 @@ const DetalleActividadDocente = () => {
             return;
         }
         try {
-            const response = await fetch(`${apiUrl}/accionesPracticas.php`, {
+            const response = await fetch(`${apiUrl}accionesPracticas.php`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

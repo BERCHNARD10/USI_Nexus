@@ -19,6 +19,8 @@ const DetalleActividad = () => {
   const [practicasCount, setPracticasCount] = useState(0);
   const [arregloPracticas, setArregloPracticas] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const webUrl = import.meta.env.VITE_URL;
+  const apiUrl = import.meta.env.VITE_API_URL;
   
 
   const fetchActividad = async () => 
@@ -33,7 +35,7 @@ const DetalleActividad = () => {
 
       try 
       {
-        const response = await fetch('https://robe.host8b.me/WebServices/cargarMaterias.php', 
+        const response = await fetch(`${apiUrl}cargarMaterias.php`, 
         {
           method: 'POST',
           headers: 
@@ -123,7 +125,7 @@ const DetalleActividad = () => {
 
   const sendDataToServer = async (data) => {
     try {
-      const response = await fetch('https://robe.host8b.me/WebServices/InsertarActividades.php', {
+      const response = await fetch(`${apiUrl}InsertarActividades.php`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

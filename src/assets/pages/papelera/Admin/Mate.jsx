@@ -5,6 +5,7 @@ import { Card, Button } from 'flowbite-react';
 import { FaRegFrown } from 'react-icons/fa';
 import  Components from '../../components/Components'
 const {TitlePage} = Components;
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const MateriasAlum = () => { 
   const {userData} = useAuth(); // Obtén el estado de autenticación del contexto
@@ -13,7 +14,7 @@ const MateriasAlum = () => {
   const onloadNaterias = async () => {
     try {
 
-      const response = await fetch('https://robe.host8b.me/WebServices/cargarMaterias.php', {
+      const response = await fetch(`${apiUrl}cargarMaterias.php`, {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',

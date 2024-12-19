@@ -33,7 +33,7 @@ const PerfilUsuario = () => {
   const webUrl = import.meta.env.VITE_URL;
 
   const profileImageUrl = isAuthenticated && userData?.vchFotoPerfil
-  ? `${webUrl}assets/imagenes/${userData.vchFotoPerfil}`
+  ? decodeURIComponent(`${webUrl}assets/imagenes/${userData.vchFotoPerfil}`)
   : `${webUrl}assets/imagenes/userProfile.png`; // Enlace alternativo cuando vchFotoPerfil es null o usuario no está autenticado 
 
 
@@ -100,7 +100,7 @@ const PerfilUsuario = () => {
     try 
     {
       setIsLoading(true);
-      const response = await fetch(`${apiUrl}/correo.php`, 
+      const response = await fetch(`${apiUrl}correo.php`, 
       {
         method: 'POST',
         headers: 
@@ -144,7 +144,7 @@ const PerfilUsuario = () => {
   {
     try 
     {
-      const response = await fetch(`${apiUrl}/sesionManager.php`, 
+      const response = await fetch(`${apiUrl}sesionManager.php`, 
         {
             method: 'POST',
             headers: {
@@ -210,7 +210,7 @@ const PerfilUsuario = () => {
         }
 
         // Realizar la solicitud a la API
-        const response = await fetch(`${apiUrl}/sesionManager.php`, {
+        const response = await fetch(`${apiUrl}sesionManager.php`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ matriculaUser: userData.vchMatricula }),
@@ -260,7 +260,7 @@ const PerfilUsuario = () => {
     try {
       setIsLoading(true);
       console.log('Datos enviados:', JSON.stringify(data));
-      const response = await fetch(`${apiUrl}/updatePassword.php`, {
+      const response = await fetch(`${apiUrl}updatePassword.php`, {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
@@ -342,7 +342,7 @@ const PerfilUsuario = () => {
   
         try {
           setLoading(true);
-          const response = await fetch(`${apiUrl}/UploadImagen.php`, {
+          const response = await fetch(`${apiUrl}UploadImagen.php`, {
             method: 'POST',
             body: formData,
           });
@@ -389,7 +389,7 @@ const PerfilUsuario = () => {
 
       try {
         // Subir el archivo al servidor usando fetch
-        const response = await fetch(`${apiUrl}/UploadImagen.php`, {
+        const response = await fetch(`${apiUrl}UploadImagen.php`, {
           method: 'POST',
           body: formData,
         });

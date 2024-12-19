@@ -26,7 +26,7 @@ const DetalleActividadAlumno = () => {
         };
 
         try {
-            const response = await fetch(`${apiUrl}/cargarMaterias.php`, {
+            const response = await fetch(`${apiUrl}cargarMaterias.php`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -63,7 +63,7 @@ const DetalleActividadAlumno = () => {
         console.log("datos", dataAlumnCal);
     
         try {
-            const response = await fetch(`${apiUrl}/cargarMaterias.php`, {
+            const response = await fetch(`${apiUrl}cargarMaterias.php`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

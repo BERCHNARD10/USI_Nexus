@@ -46,7 +46,7 @@ const DepartmentsCrud = () => {
 
     const fetchDepartments = async () => {
         try {
-            const response = await fetch(`${apiUrl}/departamentos.php`);
+            const response = await fetch(`${apiUrl}departamentos.php`);
             const data = await response.json();
             if (data.done) {
                 setDepartments(data.message);
@@ -83,7 +83,7 @@ const DepartmentsCrud = () => {
     const handleDelete = async () => {
             setIsLoading(true);
             try {
-                const response = await fetch(`${apiUrl}/departamentos.php`, {
+                const response = await fetch(`${apiUrl}departamentos.php`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -111,7 +111,7 @@ const DepartmentsCrud = () => {
     const onSubmit = async (formData) => {
         setIsLoading(true);
         try {
-            const url = `${apiUrl}/departamentos.php`;
+            const url = `${apiUrl}departamentos.php`;
             const method = isEditing ? 'POST' : 'POST';
             const body = isEditing 
                 ? { departamentoID: idDepartment.IdDepartamento, nuevoNombre: formData.departamento } 

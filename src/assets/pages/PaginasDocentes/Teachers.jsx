@@ -138,7 +138,7 @@ const Docentes = () => {
 
   const cargarDocentes = async () => {
     try {
-      const response = await fetch(`${apiUrl}/buscarDocentes.php`);
+      const response = await fetch(`${apiUrl}buscarDocentes.php`);
 
       const result = await response.json();
 
@@ -220,7 +220,7 @@ const Docentes = () => {
       // Hacer solicitud para obtener las carreras
       console.log(JSON.stringify(alumnosData, null, 2));
 
-      const response = await fetch(`${apiUrl}/registerTeachers.php`,
+      const response = await fetch(`${apiUrl}registerTeachers.php`,
         {
           method: 'POST',
           headers:
@@ -292,7 +292,7 @@ const Docentes = () => {
   ///cargar departamentos
   const cargarDepartamentos = async () => {
     try {
-      const response = await fetch(`${apiUrl}/seeDepartamento.php`);
+      const response = await fetch(`${apiUrl}seeDepartamento.php`);
       const result = await response.json();
 
       if (!result.done) {
@@ -310,7 +310,7 @@ const Docentes = () => {
   const cargarDocentesSelec = async (periodo) => {
     try {
       // Hacer solicitud para obtener las carreras
-      const response = await fetch(`${apiUrl}/oneDocente.php`,
+      const response = await fetch(`${apiUrl}oneDocente.php`,
         {
           method: 'POST',
           headers:
@@ -559,7 +559,7 @@ const Docentes = () => {
 
   const update = async  (data) => {
     try {
-      const response = await fetch(`${apiUrl}/UpdateTeachers.php`, {
+      const response = await fetch(`${apiUrl}UpdateTeachers.php`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

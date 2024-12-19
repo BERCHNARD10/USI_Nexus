@@ -5,10 +5,10 @@ import { VitePWA } from "vite-plugin-pwa";
 const manifestForPlugin = {
   name: "UTHH Virtual",
   short_name: "UTHH Virtual",
-  start_url: "/UTHH_VIRTUAL",
+  start_url: "/UTHH_VIRTUAL/",
   display: "standalone",
   background_color: "#02233a",
-  lang: "en",
+  lang: "es",
   scope: "/UTHH_VIRTUAL/",
   includeAssets: [
     "favicon-196.ico",
@@ -53,7 +53,7 @@ const manifestForPlugin = {
   orientation: "portrait",
   screenshots: [
     {
-      src: "screenshot-wide.png",
+      src: "/logo.png",
       sizes: "1280x720",
       type: "image/png",
       form_factor: "wide"

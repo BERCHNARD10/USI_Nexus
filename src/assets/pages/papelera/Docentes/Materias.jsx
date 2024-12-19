@@ -27,11 +27,13 @@ const Materias = () => {
   const [openModal, setOpenModal] = useState(false);
   const [file, setFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const webUrl = import.meta.env.VITE_URL;
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const onloadNaterias = async () => {
     try {
 
-      const response = await fetch('https://robe.host8b.me/WebServices/cargarMaterias.php', {
+      const response = await fetch(`${apiUrl}cargarMaterias.php`, {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
@@ -163,7 +165,7 @@ const Materias = () => {
     {
       setIsLoading(true);
       // Hacer solicitud para obtener las carreras
-      const response = await fetch('https://robe.host8b.me/WebServices/InsertarActividades.php',
+      const response = await fetch(`${apiUrl}InsertarActividades.php`,
         {
           method: 'POST',
           headers: 

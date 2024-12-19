@@ -74,7 +74,7 @@ const DetallePracticaDocente = () => {
         }
         console.log("datos rubrica",editedData);
         try {
-        const response = await fetch(`${apiUrl}/cargarMaterias.php`, {
+        const response = await fetch(`${apiUrl}cargarMaterias.php`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ updatedRubrica: editedData }),
@@ -195,7 +195,7 @@ const DetallePracticaDocente = () => {
     const fetchCalificacionesAlumno = async (matricula) => {
         try {
             setIsLoadingAlumn(true);
-            const response = await fetch(`${apiUrl}/accionesAlumnos.php`, {
+            const response = await fetch(`${apiUrl}accionesAlumnos.php`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ 
@@ -243,7 +243,7 @@ const DetallePracticaDocente = () => {
 
         console.log(notificacion)
         try {
-            const response = await fetch(`${apiUrl}/accionesAlumnos.php`, {
+            const response = await fetch(`${apiUrl}accionesAlumnos.php`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -269,7 +269,7 @@ const DetallePracticaDocente = () => {
     /*
     const onloadAlumnos = async () => {
         try {
-        const response = await fetch(`${apiUrl}/accionesAlumnos.php`, {
+        const response = await fetch(`${apiUrl}accionesAlumnos.php`, {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
@@ -336,7 +336,7 @@ const DetallePracticaDocente = () => {
                 practicaId: intNumeroPractica,
             };
 
-            const response = await fetch(`${apiUrl}/accionesAlumnos.php`, {
+            const response = await fetch(`${apiUrl}accionesAlumnos.php`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(requestData),
@@ -388,7 +388,7 @@ const DetallePracticaDocente = () => {
     /*const fetchDetallePractica = async () => {
         const requestData = { idPracticaDetalle: intNumeroPractica };
         try {
-            const response = await fetch(`${apiUrl}/cargarMaterias.php`, {
+            const response = await fetch(`${apiUrl}cargarMaterias.php`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(requestData),
@@ -436,7 +436,7 @@ const DetallePracticaDocente = () => {
             }
     
             // Realizar la solicitud a la API
-            const response = await fetch(`${apiUrl}/cargarMaterias.php`, {
+            const response = await fetch(`${apiUrl}cargarMaterias.php`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(requestData),

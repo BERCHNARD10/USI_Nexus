@@ -27,7 +27,7 @@ const EmailForm = () => {
 
     try {
       setIsLoading(true);
-      const response = await fetch(`${apiUrl}/correo.php`, {
+      const response = await fetch(`${apiUrl}correo.php`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -70,7 +70,7 @@ const ResetPassword = () => {
     event.preventDefault();
     try {
       setIsLoading(true);
-      const response = await fetch(`${apiUrl}/restablecer-contrasena.php`, {
+      const response = await fetch(`${apiUrl}restablecer-contrasena.php`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

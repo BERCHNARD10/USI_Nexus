@@ -25,6 +25,8 @@ const Materias = () => {
   const [data, setData] = useState([]);
   const [header, setHeader] = useState([]);
   const [info, setInfo] = useState({});
+  const webUrl = import.meta.env.VITE_URL;
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
@@ -289,7 +291,7 @@ const Materias = () => {
     {
       setIsLoading(true);
       // Hacer solicitud para obtener las carreras
-      const response = await fetch('https://robe.host8b.me/WebServices/InsertarActividades.php',
+      const response = await fetch(`${apiUrl}InsertarActividades.php`,
         {
           method: 'POST',
           headers: 
@@ -334,7 +336,7 @@ const Materias = () => {
     {
       try 
       {
-        const response = await fetch('https://robe.host8b.me/WebServices/cargarMaterias.php', 
+        const response = await fetch(`${apiUrl}cargarMaterias.php`, 
         {
             method: 'POST',
             headers: {
@@ -399,7 +401,7 @@ const Materias = () => {
     });
     console.log("datos", actividadesData)
     try {
-      const response = await fetch('https://robe.host8b.me/WebServices/InsertarActividades.php', {
+      const response = await fetch(`${apiUrl}InsertarActividades.php`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

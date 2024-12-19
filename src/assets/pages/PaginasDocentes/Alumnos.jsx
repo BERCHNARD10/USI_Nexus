@@ -125,7 +125,7 @@ const Alumnos = () => {
         try {
             setIsLoading(true);
             // Hacer solicitud para obtener las carreras
-            const response = await fetch(`${apiUrl}/registerStudents.php`,
+            const response = await fetch(`${apiUrl}registerStudents.php`,
                 {
                     method: 'POST',
                     headers:
@@ -190,7 +190,7 @@ const Alumnos = () => {
 
     const cargarCarrerasTotal = async () => {
         try {
-            const response = await fetch(`${apiUrl}/obtenerCarreras.php`);
+            const response = await fetch(`${apiUrl}obtenerCarreras.php`);
             const result = await response.json();
 
             if (!result.done) {
@@ -205,7 +205,7 @@ const Alumnos = () => {
 
     const cargarCuatrimestresTotal = async () => {
         try {
-            const response = await fetch(`${apiUrl}/obtenerCuatrimestres.php`);
+            const response = await fetch(`${apiUrl}obtenerCuatrimestres.php`);
             const result = await response.json();
 
             if (!result.done) {
@@ -220,7 +220,7 @@ const Alumnos = () => {
 
     const cargarGruposTotal = async () => {
         try {
-            const response = await fetch(`${apiUrl}/obtenerGrupos.php`);
+            const response = await fetch(`${apiUrl}obtenerGrupos.php`);
             const result = await response.json();
 
             if (!result.done) {
@@ -235,7 +235,7 @@ const Alumnos = () => {
 
     const cargarPeriodos = async () => {
         try {
-            const response = await fetch(`${apiUrl}/obtener-periodos.php`);
+            const response = await fetch(`${apiUrl}obtener-periodos.php`);
             const result = await response.json();
 
             console.log("resultado", result);
@@ -297,7 +297,7 @@ const Alumnos = () => {
     const cargarCarreras = async (data) => {
         try {
             // Hacer solicitud para obtener las carreras
-            const response = await fetch(`${apiUrl}/obtenerCarreras.php`,
+            const response = await fetch(`${apiUrl}obtenerCarreras.php`,
                 {
                     method: 'POST',
                     headers:
@@ -326,7 +326,7 @@ const Alumnos = () => {
     const cargarCuatrimestres = async (carrera) => {
         try {
             // Hacer solicitud para obtener las carreras
-            const response = await fetch(`${apiUrl}/obtenerCuatrimestres.php`,
+            const response = await fetch(`${apiUrl}obtenerCuatrimestres.php`,
                 {
                     method: 'POST',
                     headers:
@@ -357,7 +357,7 @@ const Alumnos = () => {
     const cargarGrupos = async (cuatrimestre) => {
         try {
             // Hacer solicitud para obtener las carreras
-            const response = await fetch(`${apiUrl}/obtenerGrupos.php`,
+            const response = await fetch(`${apiUrl}obtenerGrupos.php`,
                 {
                     method: 'POST',
                     headers:
@@ -387,7 +387,7 @@ const Alumnos = () => {
     const onSubmit = async (data) => {
         console.log(data)
         try {        
-            const response = await fetch(`${apiUrl}/registerStudents.php`,
+            const response = await fetch(`${apiUrl}registerStudents.php`,
             {
                 method: 'POST',
                 headers: 
@@ -475,7 +475,7 @@ const Alumnos = () => {
 
     const suspender = async (data) => {
         try {
-            const response = await fetch(`${apiUrl}/suspenderAlumno.php`,
+            const response = await fetch(`${apiUrl}suspenderAlumno.php`,
                 {
                     method: 'POST',
                     headers: {
@@ -593,7 +593,7 @@ const Alumnos = () => {
     }
     const updateAlu = async  (data) => {
         try {
-          const response = await fetch(`${apiUrl}/updateAlumno.php`, {
+          const response = await fetch(`${apiUrl}updateAlumno.php`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

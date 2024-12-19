@@ -50,7 +50,7 @@ if (!self.define) {
   
     // Cachea de manera dinámica el contenido de la API, con estrategia de Network First
     e.registerRoute(
-      ({ url }) => url.origin === 'https://robe.host8b.me/', 
+      ({ url }) => url.origin === 'http://localhost/UTHH_VIRTUAL/', 
       new e.NetworkFirst({
         cacheName: 'api-cache',
         plugins: [

@@ -1,7 +1,7 @@
 // jest.setup.js
 globalThis.importMetaEnv = {
-    VITE_API_URL: 'https://robe.host8b.me/WebServices/',
-    VITE_URL: 'https://robe.host8b.me/',
+    VITE_API_URL: 'http://localhost/WebServices/',
+    VITE_URL: 'http://localhost/UTHH_VIRTUAL/',
   };
 
   // Mock `import.meta.env` para las pruebas

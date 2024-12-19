@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom';
 import { Alert, Card } from 'flowbite-react';
 import  Components from '../components/Components'
 const { CustomInputPassword, CustomRepeatPassword, LoadingButton} = Components;
-
+const apiUrl = import.meta.env.VITE_API_URL;
 const PasswordValidationItem = ({ isValid, text }) => (
   <li className="flex items-center mb-1">
     {isValid ? <FaCheck className="text-green-500" /> : <FaTimes className="text-red-500" />}
@@ -69,7 +69,7 @@ const ResetPasswordCode = () => {
     event.preventDefault();
     try {
       setIsLoading(true);
-      const response = await fetch('https://robe.host8b.me/WebServices/reset-password.php', {
+      const response = await fetch(`${apiUrl}reset-password.php`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

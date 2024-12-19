@@ -46,7 +46,7 @@ const CarrerasCrud = () => {
 
     const fetchCarreras = async () => {
         try {
-            const response = await fetch(`${apiUrl}/carreras.php`);
+            const response = await fetch(`${apiUrl}carreras.php`);
             const data = await response.json();
             if (data.done) {
                 setCarreras(data.message);
@@ -77,7 +77,7 @@ const CarrerasCrud = () => {
         setIsLoading(true);
         console.log(carreraToDelete)
         try {
-            const response = await fetch(`${apiUrl}/carrerasCrud.php`, {
+            const response = await fetch(`${apiUrl}carrerasCrud.php`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -105,7 +105,7 @@ const CarrerasCrud = () => {
     const onSubmit = async (formData) => {
         setIsLoading(true);
         try {
-            const url = `${apiUrl}/carrerasCrud.php`;
+            const url = `${apiUrl}carrerasCrud.php`;
             const method = 'POST';
             const body = isEditing 
                 ? { carreraID: idCarrera.intClvCarrera, nuevoNombre: formData.carrera }

@@ -43,7 +43,7 @@ const DetallePractica = () => {
       };
 
       try {
-        const response = await fetch('https://robe.host8b.me/WebServices/cargarMaterias.php', {
+        const response = await fetch(`${apiUrl}cargarMaterias.php`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

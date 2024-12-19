@@ -18,7 +18,7 @@ const ActividadesAlumno = () => {
 
     const onloadActividades = async () => {
         try {
-            const response = await fetch(`${apiUrl}/cargarMaterias.php`, {
+            const response = await fetch(`${apiUrl}cargarMaterias.php`, {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
@@ -69,7 +69,7 @@ const ActividadesAlumno = () => {
 
     const onloadAlumnos = async () => {
         try {
-            const response = await fetch(`${apiUrl}/accionesAlumnos.php`, {
+            const response = await fetch(`${apiUrl}accionesAlumnos.php`, {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',

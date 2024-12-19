@@ -70,7 +70,7 @@ function FooterSection() {
             {/* Logo */}
             <div className="flex justify-center sm:justify-start">
               <img
-                src={`${import.meta.env.VITE_URL}assets/main-logo-Dgm6DqGM.png`}
+                src={`${import.meta.env.VITE_URL}assets/main-logo.png`}
                 alt="Company Logo"
                 className="h-24 w-24"
               />
