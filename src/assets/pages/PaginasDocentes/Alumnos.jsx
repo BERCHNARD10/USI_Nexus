@@ -8,12 +8,10 @@ import * as XLSX from 'xlsx';
 import Components from '../../components/Components'
 import ArrayIterator from '../../components/Clases/Iterador'
 const { LoadingButton, SelectInput, IconButton, CustomInput, InfoAlert } = Components;
-import { FaFileExcel, FaPencilAlt, FaDownload } from 'react-icons/fa';
-
+import { FaFileExcel, FaPencilAlt } from 'react-icons/fa';
 import { data } from 'autoprefixer';
 
 const Alumnos = () => {
-
     const [periodos, setPeriodos] = useState([]);
     const [periodosTotal, setPeriodosTotal] = useState([]);
     const [carreras, setCarreras] = useState([]);
@@ -41,7 +39,6 @@ const Alumnos = () => {
     const [serverResponse, setServerResponse] = useState('');
     const [serverErrorMessage, setServerErrorMessage] = useState('');
     const apiUrl = import.meta.env.VITE_API_URL;
-    const webUrl = import.meta.env.VITE_URL;
 
     const {
         register,
@@ -125,7 +122,7 @@ const Alumnos = () => {
         try {
             setIsLoading(true);
             // Hacer solicitud para obtener las carreras
-            const response = await fetch(`${apiUrl}registerStudents.php`,
+            const response = await fetch(`${apiUrl}/registerStudents.php`,
                 {
                     method: 'POST',
                     headers:
@@ -141,7 +138,7 @@ const Alumnos = () => {
             const result = await response.json();
 
             if (result.done) {
-
+                
                 setServerResponse(`Éxito: Datos de estudiantes registrados correctamente`);
                 console.log('Datos recibidos php:', result);
             }
@@ -190,7 +187,7 @@ const Alumnos = () => {
 
     const cargarCarrerasTotal = async () => {
         try {
-            const response = await fetch(`${apiUrl}obtenerCarreras.php`);
+            const response = await fetch(`${apiUrl}/obtenerCarreras.php`);
             const result = await response.json();
 
             if (!result.done) {
@@ -205,7 +202,7 @@ const Alumnos = () => {
 
     const cargarCuatrimestresTotal = async () => {
         try {
-            const response = await fetch(`${apiUrl}obtenerCuatrimestres.php`);
+            const response = await fetch(`${apiUrl}/obtenerCuatrimestres.php`);
             const result = await response.json();
 
             if (!result.done) {
@@ -220,7 +217,7 @@ const Alumnos = () => {
 
     const cargarGruposTotal = async () => {
         try {
-            const response = await fetch(`${apiUrl}obtenerGrupos.php`);
+            const response = await fetch(`${apiUrl}/obtenerGrupos.php`);
             const result = await response.json();
 
             if (!result.done) {
@@ -235,12 +232,11 @@ const Alumnos = () => {
 
     const cargarPeriodos = async () => {
         try {
-            const response = await fetch(`${apiUrl}obtener-periodos.php`);
+            const response = await fetch(`${apiUrl}/obtener-periodos.php`);
             const result = await response.json();
 
-            console.log("resultado", result);
             if (!result.done) {
-                throw new Error('Error al obtener', result.message);
+                throw new Error('Error al obtener las carreras');
             }
             console.log(result);
 
@@ -297,7 +293,7 @@ const Alumnos = () => {
     const cargarCarreras = async (data) => {
         try {
             // Hacer solicitud para obtener las carreras
-            const response = await fetch(`${apiUrl}obtenerCarreras.php`,
+            const response = await fetch(`${apiUrl}/obtenerCarreras.php`,
                 {
                     method: 'POST',
                     headers:
@@ -326,7 +322,7 @@ const Alumnos = () => {
     const cargarCuatrimestres = async (carrera) => {
         try {
             // Hacer solicitud para obtener las carreras
-            const response = await fetch(`${apiUrl}obtenerCuatrimestres.php`,
+            const response = await fetch(`${apiUrl}/obtenerCuatrimestres.php`,
                 {
                     method: 'POST',
                     headers:
@@ -357,7 +353,7 @@ const Alumnos = () => {
     const cargarGrupos = async (cuatrimestre) => {
         try {
             // Hacer solicitud para obtener las carreras
-            const response = await fetch(`${apiUrl}obtenerGrupos.php`,
+            const response = await fetch(`${apiUrl}/obtenerGrupos.php`,
                 {
                     method: 'POST',
                     headers:
@@ -386,32 +382,36 @@ const Alumnos = () => {
 
     const onSubmit = async (data) => {
         console.log(data)
-        try {
+        try {  
+            const bodyContent = JSON.stringify({
+                [Array.isArray(data) && data.length > 1 ? 'dataEstudiantes' : 'dataEstudiante']: data
+            });
+            
+            console.log(bodyContent);  // Imprime el cuerpo de la solicitud en la consola
+            
             const response = await fetch(`${apiUrl}registerStudents.php`,
+            {
+                method: 'POST',
+                headers: 
                 {
-                    method: 'POST',
-                    headers:
-                    {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        dataEstudiante: data
-                    }),
-                });
+                    'Content-Type': 'application/json',
+                },
+                body: bodyContent,
+            });
 
             const result = await response.json();
-
-            if (result.done) {
-                setServerResponse(`Éxito:.${result.message}`);
+            console.log("respuesta api: ",result);
+            if(result.done)
+            {
+                setServerResponse(`Éxito: ${result.message}`);
                 setOpenModal(false)
             }
-            else {
-                setServerResponse(`Error: .${result.message}`);
-                console.log('Datos recibidos php:', result);
-            }
+            else
+            {
+                setServerResponse(`Error: ${result.message}`);
+            }    
         } catch (error) {
-            console.error(error);
-            setServerResponse(`Error: Error al conectar con el servidor. ${error}`);
+        console.error('Error al realizar la solicitud:', error);
         }
     }
 
@@ -467,7 +467,7 @@ const Alumnos = () => {
     const [selectAlumnos, setselectAlumnos] = useState();
     const editUser = (data) => {
         setOpenModalDelete(true)
-        console.log("editar alumno: ", data)
+        console.log(data)
         setselectAlumnos(data.vchMatricula)
 
     };
@@ -475,7 +475,7 @@ const Alumnos = () => {
 
     const suspender = async (data) => {
         try {
-            const response = await fetch(`${apiUrl}suspenderAlumno.php`,
+            const response = await fetch(`${apiUrl}/suspenderAlumno.php`,
                 {
                     method: 'POST',
                     headers: {
@@ -497,7 +497,7 @@ const Alumnos = () => {
                 cargarAlumnos(selectedGrupo);
 
             }
-            else {
+            else{
                 setServerResponse(`Error: ${result.message}`);
 
             }
@@ -519,7 +519,7 @@ const Alumnos = () => {
     const [seleCuatri, setseleCuatri] = useState();
 
     const editAll = (data, carrera) => {
-        console.log("editar: ", data)
+        console.log(data)
         setValue('matriculaAlumEdit', data.vchMatricula);
         setValue('nombrEdit', data.vchNombre);
         setValue('apellidoPaternoEdit', data.vchAPaterno);
@@ -529,8 +529,6 @@ const Alumnos = () => {
         setValue('vchNomCuatriTo', data.intClvCuatrimestre);
         setValue('chrGrupoTo', data.chrGrupo);
         setValue('editEstado', data.enmEstadoCuenta);
-        setValue('editPeriodo', data.intPeriodo);
-        console.log("periodo editado", data.intPeriodo)
 
 
 
@@ -568,7 +566,6 @@ const Alumnos = () => {
         const apellidoP = (watch('apellidoPaternoEdit') || '').toUpperCase();
         const apellidoM = (watch('apellidoMaternoEdit') || '').toUpperCase();
         const correo = (watch('correoEdit') || '');
-        const periodo = (watch('editPeriodo') || '');
         const carrera = (watch('vchNomCarreraToEdit') || '');
         const cuatri = (watch('vchNomCuatriTo') || '');
         const grupo = (watch('chrGrupoTo') || '');
@@ -577,13 +574,12 @@ const Alumnos = () => {
             matricula: matricula,
             nombre: nombre,             // nombre en mayúsculas
             apellidoP: apellidoP,       // apellido paterno en mayúsculas
-            apellidoM: apellidoM,
-            correo: correo,
+            apellidoM: apellidoM,  
+            correo: correo,     
             carrera: carrera,               // rol seleccionado
             cuatri: cuatri,          // estado seleccionado
             grupo: grupo,
-            estado: estatoCuenta,
-            periodo: periodo
+            estado: estatoCuenta          
         };
 
         console.log(datosDocente)
@@ -591,63 +587,43 @@ const Alumnos = () => {
         setOpenConfirm(true)
 
     }
-    const updateAlu = async (data) => {
+    const updateAlu = async  (data) => {
         try {
-            const response = await fetch(`${apiUrl}updateAlumno.php`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ data }),
-            });
-
-
-
-
-            const result = await response.json(); // Asumiendo que la respuesta es JSON
-            console.log(result);
-            if (result.done) {
-                setAlertMessage({ type: 'error', text: result.message });
-                setServerResponse(`Éxito: ${result.message}`);
-
-                cargarAlumnos(selectedGrupo);
-            }
-            else {
-                setServerResponse(`Error: ${result.message}`);
-
-            }
-        } catch (error) {
-            console.error('Error during fetch operation:', error);
-        }
-        finally {
-            setOpenConfirm(false)
-            setOpenModalEdit(false);
-        }
-    };
-
-
-    const handleDownload = async () => {
-        const response = await fetch(`${webUrl}assets/archivos/Formato-Lista-Alumnos.xlsx`, {
-            method: 'GET',
+          const response = await fetch(`${apiUrl}/updateAlumno.php`, {
+            method: 'POST',
             headers: {
-                'Content-Type': 'application/octet-stream',
+              'Content-Type': 'application/json',
             },
-        });
+            body: JSON.stringify({ data }),
+          });
+    
+          
+          
+    
+          const result = await response.json(); // Asumiendo que la respuesta es JSON
+          console.log( result);
+          if (result.done) {
+            setAlertMessage({ type: 'error', text: result.message });
+            setServerResponse(`Éxito: ${result.message}`);
+            
+            cargarAlumnos(selectedGrupo);
+          }
+          else{
+            setServerResponse(`Error: ${result.message}`);
 
-        if (!response.ok) {
-            throw new Error('Error al descargar el archivo');
+          }
+        } catch (error) {
+          console.error('Error during fetch operation:', error);
         }
+        finally
+        {
+          setOpenConfirm(false)
+          setOpenModalEdit(false);
+        }
+      };
 
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'Formato-Lista-Alumnos.xlsx';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(url);
-    };
+
+
 
     return (
         <section className='flex flex-col'>
@@ -745,13 +721,13 @@ const Alumnos = () => {
                                 </Tabs.Item>
                                 <Tabs.Item title="Ingreso Manual" icon={FaPencilAlt}>
                                     <form onSubmit={handleSubmit(onSubmit)}>
-                                        <Modal.Body className='max-h-96'>
+                                        <Modal.Body className='sm:max-h-56 max-h-96'>
                                             <div className='info-person grid grid-cols-2 gap-x-4'>
                                                 <CustomInput
                                                     label="Matrícula"
                                                     name="matriculaAlum"
-                                                    pattern={/^\d{8}$/} // Verifica exactamente 8 dígitos
-                                                    errorMessage="La matrícula debe contener solo 8 números y sin espacios."
+                                                    pattern={/^\d+$/}
+                                                    errorMessage="Solo números y sin espacios"
                                                     errors={errors}
                                                     register={register}
                                                     trigger={trigger}
@@ -759,12 +735,11 @@ const Alumnos = () => {
                                                 <CustomInput
                                                     label="Nombre"
                                                     name="nombre"
-                                                    pattern={/^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ\s]+$/}
+                                                    pattern={/^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ]+$/}
                                                     errorMessage="Solo letras y sin espacios"
                                                     errors={errors}
                                                     register={register}
                                                     trigger={trigger}
-                                                    style={{ textTransform: 'uppercase' }}
                                                 />
                                                 <CustomInput
                                                     label="Apellido Paterno"
@@ -774,7 +749,6 @@ const Alumnos = () => {
                                                     errors={errors}
                                                     register={register}
                                                     trigger={trigger}
-                                                    style={{ textTransform: 'uppercase' }}
                                                 />
                                                 <CustomInput
                                                     label="Apellido Materno"
@@ -784,7 +758,6 @@ const Alumnos = () => {
                                                     errors={errors}
                                                     register={register}
                                                     trigger={trigger}
-                                                    style={{ textTransform: 'uppercase' }}
                                                 />
                                             </div>
 
@@ -794,7 +767,7 @@ const Alumnos = () => {
                                                     labelSelect="Seleccionar Periodo"
                                                     label="Periodo"
                                                     name="vchPeriodoTo"
-                                                    value="vchPeriodo"
+                                                    value="vchPeriodo" 
                                                     options={periodosTotal}
                                                     errorMessage="No cumples con el patron de contraseña"
                                                     errors={errors}
@@ -808,7 +781,7 @@ const Alumnos = () => {
                                                     labelSelect="Seleccionar Carrera"
                                                     label="Carrera"
                                                     name="vchNomCarreraTo"
-                                                    value="vchNomCarreraTo"
+                                                    value="vchNomCarreraTo" 
                                                     options={carrerasTotal}
                                                     errors={errors}
                                                     register={register}
@@ -861,48 +834,46 @@ const Alumnos = () => {
                         </div>
                     </div>
                 </div>
-
+ 
             </Modal>
 
-            <Modal show={openModalDelete} size="md" onClose={() => setOpenModalDelete(false)} popup>
-                <Modal.Header />
-                <Modal.Body>
-                    <div className="text-center">
-                        <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
-                        <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                            ¿Estás seguro de que deseas suspender a este estudiante?
-                        </h3>
-                        <div className="flex justify-center gap-4">
-                            <Button color="failure" onClick={() => { setOpenModalDelete(false); suspender(selectAlumnos) }}>
-                                {"Sí estoy seguro"}
-                            </Button>
-                            <Button color="gray" onClick={() => setOpenModalDelete(false)}>
-                                No, cancelar
-                            </Button>
-                        </div>
+            <Modal className='h-0 mt-auto' show={openModalDelete} size="md" onClose={() => setOpenModalDelete(false)} popup>
+                <div className="fixed inset-0 flex items-center justify-center z-50">
+                    <div className="relative w-full max-w-lg mx-4 bg-white rounded-lg shadow-lg">
+                        <Modal.Header />
+                        <Modal.Body>
+                            <div className="text-center">
+                                <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+                                <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                                    ¿Estás seguro de que deseas suspender a este estudiante?
+                                </h3>
+                                <div className="flex justify-center gap-4">
+                                    <Button color="failure" onClick={() => { setOpenModalDelete(false); suspender(selectAlumnos) }}>
+                                        {"Sí estoy seguro"}
+                                    </Button>
+                                    <Button color="gray" onClick={() => setOpenModalDelete(false)}>
+                                        No, cancelar
+                                    </Button>
+                                </div>
+                            </div>
+                        </Modal.Body>
                     </div>
-                </Modal.Body>
+                </div>
             </Modal>
+
             <h1 className="m-3 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Alumnos</h1>
             <div className="w-full mb-4 md:mb-0 rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6 xl:p-8 grid gap-4">
                 <div className="mb-2 block">
                     <Label htmlFor="email4" value="Buscar alumno" />
                 </div>
                 <div className="flex items-center">
-                    {/*<TextInput id="email4" type="email" icon={HiOutlineSearch} placeholder="Matricula del Alumno" required />*/}
-                    <div className="flex items-center space-x-4">
-                        <IconButton
-                            className="ml-2"
-                            Icon={IoMdAdd} // Pasa el componente de ícono
-                            message="Añadir Estudiantes"
-                            onClick={() => setOpenModal(true)}
-                        />
-                        <IconButton
-                            Icon={FaDownload}
-                            message="Formato Lista de Alumnos"
-                            onClick={handleDownload}
-                        />
-                    </div>
+                    <TextInput id="email4" type="email" icon={HiOutlineSearch} placeholder="Matricula del Alumno" required />
+                    <IconButton
+                        className="ml-2"
+                        Icon={IoMdAdd} // Pasa el componente de ícono
+                        message="Añadir Estudiantes"
+                        onClick={() => setOpenModal(true)}
+                    />
                 </div>
                 <div>
                     <h3 className="mb-2 text-base font-bold text-gray-900 dark:text-white">Consultar Alumnos</h3>
@@ -984,202 +955,178 @@ const Alumnos = () => {
                 <Modal
                     show={openModalEdit}
                     onClose={() => setOpenModalEdit(false)}
-                    className="fixed inset-0 flex items-center justify-center z-50" // Asegura que el overlay cubra toda la pantalla y el modal esté centrado
+                    className='h-0 mt-auto'
                 >
-                    <Modal.Header>Editar Alumnos</Modal.Header>
-                    <Modal.Body>
-                        <div className="relative w-full max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg"> {/* Estilo para el contenido del modal */}
-                            <form>
-                                {/* Se ajusta el alto máximo y se agrega scroll si es necesario */}
-                                <div className="info-person grid grid-cols-2 gap-x-4"> {/* Se ajusta el espacio entre columnas */}
-                                    <CustomInput
-                                        label="Matrícula"
-                                        name="matriculaAlumEdit"
-                                        pattern={/^\d+$/}
-                                        errorMessage="Solo números y sin espacios"
-                                        errors={errors}
-                                        register={register}
-                                        trigger={trigger}
-                                        readOnly={true}
-                                    />
-                                    <CustomInput
-                                        label="Nombre"
-                                        name="nombrEdit"
-                                        pattern={/^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ\s]+$/}
+                    <div className="fixed inset-0 flex items-center justify-center z-50">
+                        <div className="relative w-full max-w-lg mx-4 bg-white rounded-lg">
+                            <Modal.Header>Editar Alumno</Modal.Header>
+                            <Modal.Body className='sm:max-h-72 max-h-96'>
+                                <div className="relative w-full max-w-4xl mx-auto"> {/* Estilo para el contenido del modal */}
+                                    <form>
+                                        {/* Se ajusta el alto máximo y se agrega scroll si es necesario */}
+                                        <div className="info-person grid grid-cols-2 gap-x-4"> {/* Se ajusta el espacio entre columnas */}
+                                            <CustomInput
+                                                label="Matrícula"
+                                                name="matriculaAlumEdit"
+                                                pattern={/^\d+$/}
+                                                errorMessage="Solo números y sin espacios"
+                                                errors={errors}
+                                                register={register}
+                                                trigger={trigger}
+                                                readOnly={true}
+                                            />
+                                            <CustomInput
+                                                label="Nombre"
+                                                name="nombrEdit"
+                                                pattern={/^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ]+$/}
+                                                errorMessage="Solo letras y sin espacios"
+                                                errors={errors}
+                                                register={register}
+                                                trigger={trigger}
+                                                style={{ textTransform: 'uppercase' }}
+                                            />
+                                            <CustomInput
+                                                label="Apellido Paterno"
+                                                name="apellidoPaternoEdit"
+                                                pattern={/^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ]+$/}
+                                                errorMessage="Solo letras y sin espacios"
+                                                errors={errors}
+                                                register={register}
+                                                trigger={trigger}
+                                                style={{ textTransform: 'uppercase' }}
+                                            />
+                                            <CustomInput
+                                                label="Apellido Materno"
+                                                name="apellidoMaternoEdit"
+                                                pattern={/^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ]+$/}
+                                                errorMessage="Solo letras y sin espacios"
+                                                errors={errors}
+                                                register={register}
+                                                trigger={trigger}
+                                                style={{ textTransform: 'uppercase' }}
+                                            />
+                                            <CustomInput
+                                                label="Correo"
+                                                name="correoEdit"
+                                                errors={errors}
+                                                errorMessage={"El correo no pertenece a la Institucion"}
+                                                register={register}
+                                                trigger={trigger}
+                                                pattern={/^[a-zA-Z0-9._%+-]+@uthh\.edu\.mx$/}
+                                                style={{ textTransform: 'lowercase' }}
+                                            />
+                                        </div>
 
-                                        errorMessage="Solo letras y sin espacios"
-                                        errors={errors}
-                                        register={register}
-                                        trigger={trigger}
-                                        style={{ textTransform: 'uppercase' }}
-                                    />
-                                    <CustomInput
-                                        label="Apellido Paterno"
-                                        name="apellidoPaternoEdit"
-                                        pattern={/^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ]+$/}
-                                        errorMessage="Solo letras y sin espacios"
-                                        errors={errors}
-                                        register={register}
-                                        trigger={trigger}
-                                        style={{ textTransform: 'uppercase' }}
-                                    />
-                                    <CustomInput
-                                        label="Apellido Materno"
-                                        name="apellidoMaternoEdit"
-                                        pattern={/^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ]+$/}
-                                        errorMessage="Solo letras y sin espacios"
-                                        errors={errors}
-                                        register={register}
-                                        trigger={trigger}
-                                        style={{ textTransform: 'uppercase' }}
-                                    />
-                                    <CustomInput
-                                        label="Correo"
-                                        name="correoEdit"
-                                        errors={errors}
-                                        errorMessage={"El correo no pertenece a la Institucion"}
-                                        register={register}
-                                        trigger={trigger}
-                                        pattern={/^[a-zA-Z0-9._%+-]+@uthh\.edu\.mx$/}
-                                        style={{ textTransform: 'lowercase' }}
-                                    />
+                                        <div className="info-academic grid grid-cols-2 gap-6 mt-6"> {/* Más espacio entre las secciones */}
+                                            <div className="w-full">
+                                                <div className="mb-2 block">
+                                                    <Label htmlFor="vchNomCarreraToEdit" value="Carrera" />
+                                                </div>
+                                                <select
+                                                    name="vchNomCarreraToEdit"
+                                                    id="vchNomCarreraToEdit"
+                                                    {...register('vchNomCarreraToEdit')}
+                                                    className="block w-full px-3 py-2 mt-1 text-sm text-gray-900 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                                                    onChange={(e) => setseleCarrera(e.target.value)}
+                                                >
+                                                    {carrerasTotal.map((dep) => (
+                                                        <option key={dep.intClvCarrera} value={dep.intClvCarrera}>
+                                                            {dep.vchNomCarreraTo}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
+
+                                            <div className="w-full">
+                                                <div className="mb-2 block">
+                                                    <Label htmlFor="vchNomCuatriTo" value="Seleccionar Cuatrimestre" />
+                                                </div>
+                                                <select
+                                                    name="vchNomCuatriTo"
+                                                    id="vchNomCuatriTo"
+                                                    {...register('vchNomCuatriTo')}
+                                                    className="block w-full px-3 py-2 mt-1 text-sm text-gray-900 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                                                    onChange={(e) => setseleCuatri(e.target.value)}
+                                                >
+                                                    {cuatrimestresTotal.map((dep) => (
+                                                        <option key={dep.intClvCuatrimestre} value={dep.intClvCuatrimestre}>
+                                                            {dep.vchNomCuatriTo}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
+
+
+                                            <div className="w-full">
+                                                <div className="mb-2 block">
+                                                    <Label htmlFor="chrGrupoTo" value="Seleccionar Grupo" />
+                                                </div>
+                                                <select
+                                                    name="chrGrupoTo"
+                                                    id="chrGrupoTo"
+                                                    {...register('chrGrupoTo')}
+                                                    className="block w-full px-3 py-2 mt-1 text-sm text-gray-900 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                                                    onChange={(e) => setseleCuatri(e.target.value)}
+                                                >
+                                                    {gruposTotal.map((dep) => (
+                                                        <option key={dep.chrGrupo} value={dep.chrGrupo}>
+                                                            {dep.chrGrupoTo}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
+
+                                            <div className="w-full">
+                                                <div className="mb-2 block">
+                                                    <Label htmlFor="editEstado" value="Estado de Cuenta" />
+                                                </div>
+                                                <select
+                                                    id="editEstado"
+                                                    name="editEstado"
+                                                    required
+                                                    className="block w-full px-3 py-2 mt-1 text-sm text-gray-900 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                                                    {...register('editEstado')}
+                                                // value={selectedDocenteEstado} // Controla el valor seleccionado
+                                                // onChange={(e) => setSelectedDocenteEstado(e.target.value)} // Actualiza el estado cuando se cambia la selección
+                                                >
+                                                    <option value="activa">Activa</option>
+                                                    <option value="bloqueada">Bloqueada</option>
+                                                </select>
+                                            </div>
+                                            {/*
+                                            <SelectInput
+                                                id="chrGrupo"
+                                                labelSelect="Seleccionar Grupo"
+                                                label="Grupo"
+                                                name="chrGrupoTo"
+                                                option=""
+                                                options={gruposTotal}
+                                                errorMessage="No cumples con el patrón de contraseña"
+                                                errors={errors}
+                                                register={register}
+                                                trigger={trigger}
+                                            />*/
+                                            }
+                                        </div>
+
+                                    </form>
                                 </div>
-
-                                <div className="info-academic grid grid-cols-2 gap-6 mt-6"> {/* Más espacio entre las secciones */}
-
-                                    <div className="w-full">
-                                        <div className="mb-2 block">
-                                            <Label htmlFor="editPeriodo" value="Periodo" />
-                                        </div>
-                                        <select
-                                            name="editPeriodo"
-                                            id="editPeriodo"
-                                            {...register('editPeriodo')}
-                                            className="block w-full px-3 py-2 mt-1 text-sm text-gray-900 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                                            onChange={(e) => setSelectedPeriodo(e.target.value)}
-                                        >
-                                            {periodos.map((dep) => (
-                                                <option key={dep.intIdPeriodo} value={dep.intIdPeriodo}>
-                                                    {dep.vchPeriodo}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-
-                                    <div className="w-full">
-                                        <div className="mb-2 block">
-                                            <Label htmlFor="vchNomCarreraToEdit" value="Carrera" />
-                                        </div>
-                                        <select
-                                            name="vchNomCarreraToEdit"
-                                            id="vchNomCarreraToEdit"
-                                            {...register('vchNomCarreraToEdit')}
-                                            className="block w-full px-3 py-2 mt-1 text-sm text-gray-900 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                                            onChange={(e) => setseleCarrera(e.target.value)}
-                                        >
-                                            {carrerasTotal.map((dep) => (
-                                                <option key={dep.intClvCarrera} value={dep.intClvCarrera}>
-                                                    {dep.vchNomCarreraTo}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-
-                                    <div className="w-full">
-                                        <div className="mb-2 block">
-                                            <Label htmlFor="vchNomCuatriTo" value="Seleccionar Cuatrimestre" />
-                                        </div>
-                                        <select
-                                            name="vchNomCuatriTo"
-                                            id="vchNomCuatriTo"
-                                            {...register('vchNomCuatriTo')}
-                                            className="block w-full px-3 py-2 mt-1 text-sm text-gray-900 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                                            onChange={(e) => setseleCuatri(e.target.value)}
-                                        >
-                                            {cuatrimestresTotal.map((dep) => (
-                                                <option key={dep.intClvCuatrimestre} value={dep.intClvCuatrimestre}>
-                                                    {dep.vchNomCuatriTo}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-
-
-                                    <div className="w-full">
-                                        <div className="mb-2 block">
-                                            <Label htmlFor="chrGrupoTo" value="Seleccionar Grupo" />
-                                        </div>
-                                        <select
-                                            name="chrGrupoTo"
-                                            id="chrGrupoTo"
-                                            {...register('chrGrupoTo')}
-                                            className="block w-full px-3 py-2 mt-1 text-sm text-gray-900 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                                            onChange={(e) => setseleCuatri(e.target.value)}
-                                        >
-                                            {gruposTotal.map((dep) => (
-                                                <option key={dep.chrGrupo} value={dep.chrGrupo}>
-                                                    {dep.chrGrupoTo}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-
-                                    <div className="w-full">
-                                        <div className="mb-2 block">
-                                            <Label htmlFor="editEstado" value="Estado de Cuenta" />
-                                        </div>
-                                        <select
-                                            id="editEstado"
-                                            name="editEstado"
-                                            required
-                                            className="block w-full px-3 py-2 mt-1 text-sm text-gray-900 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                                            {...register('editEstado')}
-                                        // value={selectedDocenteEstado} // Controla el valor seleccionado
-                                        // onChange={(e) => setSelectedDocenteEstado(e.target.value)} // Actualiza el estado cuando se cambia la selección
-                                        >
-                                            <option value="activa">Activa</option>
-                                            <option value="bloqueada">Bloqueada</option>
-                                        </select>
-
-                                    </div>
-
-
-
-
-
-                                    {/*
-                                    <SelectInput
-                                        id="chrGrupo"
-                                        labelSelect="Seleccionar Grupo"
-                                        label="Grupo"
-                                        name="chrGrupoTo"
-                                        option=""
-                                        options={gruposTotal}
-                                        errorMessage="No cumples con el patrón de contraseña"
-                                        errors={errors}
-                                        register={register}
-                                        trigger={trigger}
-                                    />*/
-                                    }
-                                </div>
-
-                            </form>
+                            </Modal.Body>
+                            <Modal.Footer className="flex justify-between"> {/* Distribuye los botones */}
+                                <LoadingButton
+                                    className="max-w-xs max-h-11" // Define un ancho y altura máximos para el botón
+                                    isLoading={isLoading}
+                                    loadingLabel="Cargando..."
+                                    normalLabel="Editar"
+                                    disabled={disbleButton}
+                                    onClick={() => updateAllAlumno()}
+                                />
+                                <Button color="gray" onClick={() => setOpenModalEdit(false)}>
+                                    Cancelar
+                                </Button>
+                            </Modal.Footer>
                         </div>
-                    </Modal.Body>
-                    <Modal.Footer className="flex justify-between"> {/* Distribuye los botones */}
-                        <LoadingButton
-                            className="max-w-xs max-h-11" // Define un ancho y altura máximos para el botón
-                            isLoading={isLoading}
-                            loadingLabel="Cargando..."
-                            normalLabel="Editar"
-                            disabled={disbleButton}
-                            onClick={() => updateAllAlumno()}
-                        />
-                        <Button color="gray" onClick={() => setOpenModalEdit(false)}>
-                            Cancelar
-                        </Button>
-                    </Modal.Footer>
-
+                    </div>
                 </Modal>
 
 
@@ -1197,12 +1144,12 @@ const Alumnos = () => {
                                 ¿Estás seguro de que deseas Actualizar a este Alumno?
                             </h3>
                             <div className="flex justify-center gap-4">
-                                <Button color="failure"
-                                    onClick={() => updateAlu(allAlu)}
+                                <Button color="failure"  
+                                onClick={()=>updateAlu(allAlu)}
                                 >
                                     {"Sí estoy seguro"}
                                 </Button>
-                                <Button color="gray" onClick={() => { setOpenConfirm(false), setAllAlu("") }}>
+                                <Button color="gray" onClick={() => { setOpenConfirm(false),setAllAlu("") }}>
                                     No, cancelar
                                 </Button>
                             </div>
@@ -1272,15 +1219,15 @@ const Alumnos = () => {
                                         </Tooltip>
 
                                         {activeMenu === alumnosFitro.vchMatricula && (
-                                            <div className="mr-12	absolute z-10 w-32 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-                                                <ul className="py-1 text-sm" aria-labelledby="apple-imac-27-dropdown-button">
+                                            <div class="mr-12	absolute z-10 w-32 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
+                                                <ul class="py-1 text-sm" aria-labelledby="apple-imac-27-dropdown-button">
                                                     <li>
-                                                        <button type="button" data-modal-target="updateProductModal" data-modal-toggle="updateProductModal" className="flex w-full items-center py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-gray-700 dark:text-gray-200"
+                                                        <button type="button" data-modal-target="updateProductModal" data-modal-toggle="updateProductModal" class="flex w-full items-center py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-gray-700 dark:text-gray-200"
                                                             onClick={() => { setOpenModalEdit(true); editAll(alumnosFitro, carrerasTotal) }}
                                                         >
-                                                            <svg className="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                            <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                                                 <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
-                                                                <path fillRule="evenodd" clipRule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
+                                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
                                                             </svg>
 
                                                             Editar
