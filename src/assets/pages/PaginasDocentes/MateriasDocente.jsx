@@ -304,9 +304,8 @@ const MateriasDocente = () => {
             });
     */
             setIsLoading(true);
-    
-            // Hacer la solicitud a la API si no hay datos en la caché o si estamos online
-            const response = await fetch(`${apiUrl}cargarMaterias.php`, {
+            const response = await fetch(`${apiUrl}/cargarMaterias.php`, 
+            {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
