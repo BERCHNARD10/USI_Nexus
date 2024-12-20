@@ -386,7 +386,13 @@ const Alumnos = () => {
 
     const onSubmit = async (data) => {
         console.log(data)
-        try {        
+        try {  
+            const bodyContent = JSON.stringify({
+                [Array.isArray(data) && data.length > 1 ? 'dataEstudiantes' : 'dataEstudiante']: data
+            });
+            
+            console.log(bodyContent);  // Imprime el cuerpo de la solicitud en la consola
+            
             const response = await fetch(`${apiUrl}registerStudents.php`,
             {
                 method: 'POST',
@@ -394,13 +400,11 @@ const Alumnos = () => {
                 {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    dataEstudiante:data
-                }),
+                body: bodyContent,
             });
 
             const result = await response.json();
-            console.log(result);
+            console.log("respuesta api: ",result);
             if(result.done)
             {
                 setServerResponse(`Éxito: ${result.message}`);
@@ -411,7 +415,7 @@ const Alumnos = () => {
                 setServerResponse(`Error: ${result.message}`);
             }    
         } catch (error) {
-            console.error(error);
+        console.error('Error al realizar la solicitud:', error);
         }
     }
 

@@ -521,9 +521,6 @@ const MateriasDocente = () => {
           <AiOutlineQuestionCircle size={24} />
         </button>*/}
       </div>
-
- 
-
             <TitlePage label="Materias Asociadas" />
             {isLoading ? 
             (
