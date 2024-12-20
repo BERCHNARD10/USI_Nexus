@@ -270,7 +270,7 @@ const MateriasDocente = () => {
         } 
         catch (error) 
         {
-            setServerResponse(`Error: ${result.message}`);
+            setServerResponse(`Error: ${error}`);
             console.error(error);
         }
         finally 

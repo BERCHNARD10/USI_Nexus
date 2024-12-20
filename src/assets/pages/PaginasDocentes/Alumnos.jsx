@@ -529,6 +529,7 @@ const Alumnos = () => {
         setValue('vchNomCuatriTo', data.intClvCuatrimestre);
         setValue('chrGrupoTo', data.chrGrupo);
         setValue('editEstado', data.enmEstadoCuenta);
+        setValue('editPeriodo', data.intPeriodo);
 
 
 
@@ -566,6 +567,7 @@ const Alumnos = () => {
         const apellidoP = (watch('apellidoPaternoEdit') || '').toUpperCase();
         const apellidoM = (watch('apellidoMaternoEdit') || '').toUpperCase();
         const correo = (watch('correoEdit') || '');
+        const periodo = (watch('editPeriodo') || '');
         const carrera = (watch('vchNomCarreraToEdit') || '');
         const cuatri = (watch('vchNomCuatriTo') || '');
         const grupo = (watch('chrGrupoTo') || '');
@@ -579,7 +581,8 @@ const Alumnos = () => {
             carrera: carrera,               // rol seleccionado
             cuatri: cuatri,          // estado seleccionado
             grupo: grupo,
-            estado: estatoCuenta          
+            estado: estatoCuenta,
+            periodo: periodo                 
         };
 
         console.log(datosDocente)
@@ -1018,6 +1021,26 @@ const Alumnos = () => {
                                         </div>
 
                                         <div className="info-academic grid grid-cols-2 gap-6 mt-6"> {/* Más espacio entre las secciones */}
+
+                                            <div className="w-full">
+                                                <div className="mb-2 block">
+                                                    <Label htmlFor="editPeriodo" value="Periodo" />
+                                                </div>
+                                                <select
+                                                    name="editPeriodo"
+                                                    id="editPeriodo"
+                                                    {...register('editPeriodo')}
+                                                    className="block w-full px-3 py-2 mt-1 text-sm text-gray-900 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                                                    onChange={(e) => setSelectedPeriodo(e.target.value)}
+                                                >
+                                                    {periodos.map((dep) => (
+                                                        <option key={dep.intIdPeriodo} value={dep.intIdPeriodo}>
+                                                            {dep.vchPeriodo}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
+
                                             <div className="w-full">
                                                 <div className="mb-2 block">
                                                     <Label htmlFor="vchNomCarreraToEdit" value="Carrera" />
