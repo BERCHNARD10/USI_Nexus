@@ -721,7 +721,7 @@ const Alumnos = () => {
                                 </Tabs.Item>
                                 <Tabs.Item title="Ingreso Manual" icon={FaPencilAlt}>
                                     <form onSubmit={handleSubmit(onSubmit)}>
-                                        <Modal.Body className='max-h-96'>
+                                        <Modal.Body className='sm:max-h-56 max-h-96'>
                                             <div className='info-person grid grid-cols-2 gap-x-4'>
                                                 <CustomInput
                                                     label="Matrícula"
@@ -837,25 +837,30 @@ const Alumnos = () => {
  
             </Modal>
 
-            <Modal show={openModalDelete} size="md" onClose={() => setOpenModalDelete(false)} popup>
-                <Modal.Header />
-                <Modal.Body>
-                    <div className="text-center">
-                        <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
-                        <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                            ¿Estás seguro de que deseas suspender a este estudiante?
-                        </h3>
-                        <div className="flex justify-center gap-4">
-                            <Button color="failure" onClick={() => { setOpenModalDelete(false); suspender(selectAlumnos) }}>
-                                {"Sí estoy seguro"}
-                            </Button>
-                            <Button color="gray" onClick={() => setOpenModalDelete(false)}>
-                                No, cancelar
-                            </Button>
-                        </div>
+            <Modal className='h-0 mt-auto' show={openModalDelete} size="md" onClose={() => setOpenModalDelete(false)} popup>
+                <div className="fixed inset-0 flex items-center justify-center z-50">
+                    <div className="relative w-full max-w-lg mx-4 bg-white rounded-lg shadow-lg">
+                        <Modal.Header />
+                        <Modal.Body>
+                            <div className="text-center">
+                                <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+                                <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                                    ¿Estás seguro de que deseas suspender a este estudiante?
+                                </h3>
+                                <div className="flex justify-center gap-4">
+                                    <Button color="failure" onClick={() => { setOpenModalDelete(false); suspender(selectAlumnos) }}>
+                                        {"Sí estoy seguro"}
+                                    </Button>
+                                    <Button color="gray" onClick={() => setOpenModalDelete(false)}>
+                                        No, cancelar
+                                    </Button>
+                                </div>
+                            </div>
+                        </Modal.Body>
                     </div>
-                </Modal.Body>
+                </div>
             </Modal>
+
             <h1 className="m-3 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Alumnos</h1>
             <div className="w-full mb-4 md:mb-0 rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6 xl:p-8 grid gap-4">
                 <div className="mb-2 block">
@@ -950,181 +955,178 @@ const Alumnos = () => {
                 <Modal
                     show={openModalEdit}
                     onClose={() => setOpenModalEdit(false)}
-                    className="fixed inset-0 flex items-center justify-center z-50" // Asegura que el overlay cubra toda la pantalla y el modal esté centrado
+                    className='h-0 mt-auto'
                 >
-                    <Modal.Header>Editar Alumnossss</Modal.Header>
-                    <Modal.Body>
-                        <div className="relative w-full max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg"> {/* Estilo para el contenido del modal */}
-                            <form>
-                                {/* Se ajusta el alto máximo y se agrega scroll si es necesario */}
-                                <div className="info-person grid grid-cols-2 gap-x-4"> {/* Se ajusta el espacio entre columnas */}
-                                    <CustomInput
-                                        label="Matrícula"
-                                        name="matriculaAlumEdit"
-                                        pattern={/^\d+$/}
-                                        errorMessage="Solo números y sin espacios"
-                                        errors={errors}
-                                        register={register}
-                                        trigger={trigger}
-                                        readOnly={true}
-                                    />
-                                    <CustomInput
-                                        label="Nombre"
-                                        name="nombrEdit"
-                                        pattern={/^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ]+$/}
-                                        errorMessage="Solo letras y sin espacios"
-                                        errors={errors}
-                                        register={register}
-                                        trigger={trigger}
-                                        style={{ textTransform: 'uppercase' }}
-                                    />
-                                    <CustomInput
-                                        label="Apellido Paterno"
-                                        name="apellidoPaternoEdit"
-                                        pattern={/^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ]+$/}
-                                        errorMessage="Solo letras y sin espacios"
-                                        errors={errors}
-                                        register={register}
-                                        trigger={trigger}
-                                        style={{ textTransform: 'uppercase' }}
-                                    />
-                                    <CustomInput
-                                        label="Apellido Materno"
-                                        name="apellidoMaternoEdit"
-                                        pattern={/^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ]+$/}
-                                        errorMessage="Solo letras y sin espacios"
-                                        errors={errors}
-                                        register={register}
-                                        trigger={trigger}
-                                        style={{ textTransform: 'uppercase' }}
-                                    />
-                                    <CustomInput
-                                        label="Correo"
-                                        name="correoEdit"
-                                        errors={errors}
-                                        errorMessage={"El correo no pertenece a la Institucion"}
-                                        register={register}
-                                        trigger={trigger}
-                                        pattern={/^[a-zA-Z0-9._%+-]+@uthh\.edu\.mx$/}
-                                        style={{ textTransform: 'lowercase' }}
-                                    />
+                    <div className="fixed inset-0 flex items-center justify-center z-50">
+                        <div className="relative w-full max-w-lg mx-4 bg-white rounded-lg">
+                            <Modal.Header>Editar Alumno</Modal.Header>
+                            <Modal.Body className='sm:max-h-72 max-h-96'>
+                                <div className="relative w-full max-w-4xl mx-auto"> {/* Estilo para el contenido del modal */}
+                                    <form>
+                                        {/* Se ajusta el alto máximo y se agrega scroll si es necesario */}
+                                        <div className="info-person grid grid-cols-2 gap-x-4"> {/* Se ajusta el espacio entre columnas */}
+                                            <CustomInput
+                                                label="Matrícula"
+                                                name="matriculaAlumEdit"
+                                                pattern={/^\d+$/}
+                                                errorMessage="Solo números y sin espacios"
+                                                errors={errors}
+                                                register={register}
+                                                trigger={trigger}
+                                                readOnly={true}
+                                            />
+                                            <CustomInput
+                                                label="Nombre"
+                                                name="nombrEdit"
+                                                pattern={/^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ]+$/}
+                                                errorMessage="Solo letras y sin espacios"
+                                                errors={errors}
+                                                register={register}
+                                                trigger={trigger}
+                                                style={{ textTransform: 'uppercase' }}
+                                            />
+                                            <CustomInput
+                                                label="Apellido Paterno"
+                                                name="apellidoPaternoEdit"
+                                                pattern={/^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ]+$/}
+                                                errorMessage="Solo letras y sin espacios"
+                                                errors={errors}
+                                                register={register}
+                                                trigger={trigger}
+                                                style={{ textTransform: 'uppercase' }}
+                                            />
+                                            <CustomInput
+                                                label="Apellido Materno"
+                                                name="apellidoMaternoEdit"
+                                                pattern={/^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ]+$/}
+                                                errorMessage="Solo letras y sin espacios"
+                                                errors={errors}
+                                                register={register}
+                                                trigger={trigger}
+                                                style={{ textTransform: 'uppercase' }}
+                                            />
+                                            <CustomInput
+                                                label="Correo"
+                                                name="correoEdit"
+                                                errors={errors}
+                                                errorMessage={"El correo no pertenece a la Institucion"}
+                                                register={register}
+                                                trigger={trigger}
+                                                pattern={/^[a-zA-Z0-9._%+-]+@uthh\.edu\.mx$/}
+                                                style={{ textTransform: 'lowercase' }}
+                                            />
+                                        </div>
+
+                                        <div className="info-academic grid grid-cols-2 gap-6 mt-6"> {/* Más espacio entre las secciones */}
+                                            <div className="w-full">
+                                                <div className="mb-2 block">
+                                                    <Label htmlFor="vchNomCarreraToEdit" value="Carrera" />
+                                                </div>
+                                                <select
+                                                    name="vchNomCarreraToEdit"
+                                                    id="vchNomCarreraToEdit"
+                                                    {...register('vchNomCarreraToEdit')}
+                                                    className="block w-full px-3 py-2 mt-1 text-sm text-gray-900 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                                                    onChange={(e) => setseleCarrera(e.target.value)}
+                                                >
+                                                    {carrerasTotal.map((dep) => (
+                                                        <option key={dep.intClvCarrera} value={dep.intClvCarrera}>
+                                                            {dep.vchNomCarreraTo}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
+
+                                            <div className="w-full">
+                                                <div className="mb-2 block">
+                                                    <Label htmlFor="vchNomCuatriTo" value="Seleccionar Cuatrimestre" />
+                                                </div>
+                                                <select
+                                                    name="vchNomCuatriTo"
+                                                    id="vchNomCuatriTo"
+                                                    {...register('vchNomCuatriTo')}
+                                                    className="block w-full px-3 py-2 mt-1 text-sm text-gray-900 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                                                    onChange={(e) => setseleCuatri(e.target.value)}
+                                                >
+                                                    {cuatrimestresTotal.map((dep) => (
+                                                        <option key={dep.intClvCuatrimestre} value={dep.intClvCuatrimestre}>
+                                                            {dep.vchNomCuatriTo}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
+
+
+                                            <div className="w-full">
+                                                <div className="mb-2 block">
+                                                    <Label htmlFor="chrGrupoTo" value="Seleccionar Grupo" />
+                                                </div>
+                                                <select
+                                                    name="chrGrupoTo"
+                                                    id="chrGrupoTo"
+                                                    {...register('chrGrupoTo')}
+                                                    className="block w-full px-3 py-2 mt-1 text-sm text-gray-900 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                                                    onChange={(e) => setseleCuatri(e.target.value)}
+                                                >
+                                                    {gruposTotal.map((dep) => (
+                                                        <option key={dep.chrGrupo} value={dep.chrGrupo}>
+                                                            {dep.chrGrupoTo}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
+
+                                            <div className="w-full">
+                                                <div className="mb-2 block">
+                                                    <Label htmlFor="editEstado" value="Estado de Cuenta" />
+                                                </div>
+                                                <select
+                                                    id="editEstado"
+                                                    name="editEstado"
+                                                    required
+                                                    className="block w-full px-3 py-2 mt-1 text-sm text-gray-900 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                                                    {...register('editEstado')}
+                                                // value={selectedDocenteEstado} // Controla el valor seleccionado
+                                                // onChange={(e) => setSelectedDocenteEstado(e.target.value)} // Actualiza el estado cuando se cambia la selección
+                                                >
+                                                    <option value="activa">Activa</option>
+                                                    <option value="bloqueada">Bloqueada</option>
+                                                </select>
+                                            </div>
+                                            {/*
+                                            <SelectInput
+                                                id="chrGrupo"
+                                                labelSelect="Seleccionar Grupo"
+                                                label="Grupo"
+                                                name="chrGrupoTo"
+                                                option=""
+                                                options={gruposTotal}
+                                                errorMessage="No cumples con el patrón de contraseña"
+                                                errors={errors}
+                                                register={register}
+                                                trigger={trigger}
+                                            />*/
+                                            }
+                                        </div>
+
+                                    </form>
                                 </div>
-
-                                <div className="info-academic grid grid-cols-2 gap-6 mt-6"> {/* Más espacio entre las secciones */}
-                                    <div className="w-full">
-                                        <div className="mb-2 block">
-                                            <Label htmlFor="vchNomCarreraToEdit" value="Carrera" />
-                                        </div>
-                                        <select
-                                            name="vchNomCarreraToEdit"
-                                            id="vchNomCarreraToEdit"
-                                            {...register('vchNomCarreraToEdit')}
-                                            className="block w-full px-3 py-2 mt-1 text-sm text-gray-900 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                                            onChange={(e) => setseleCarrera(e.target.value)}
-                                        >
-                                            {carrerasTotal.map((dep) => (
-                                                <option key={dep.intClvCarrera} value={dep.intClvCarrera}>
-                                                    {dep.vchNomCarreraTo}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-
-                                    <div className="w-full">
-                                        <div className="mb-2 block">
-                                            <Label htmlFor="vchNomCuatriTo" value="Seleccionar Cuatrimestre" />
-                                        </div>
-                                        <select
-                                            name="vchNomCuatriTo"
-                                            id="vchNomCuatriTo"
-                                            {...register('vchNomCuatriTo')}
-                                            className="block w-full px-3 py-2 mt-1 text-sm text-gray-900 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                                            onChange={(e) => setseleCuatri(e.target.value)}
-                                        >
-                                            {cuatrimestresTotal.map((dep) => (
-                                                <option key={dep.intClvCuatrimestre} value={dep.intClvCuatrimestre}>
-                                                    {dep.vchNomCuatriTo}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-
-
-                                    <div className="w-full">
-                                        <div className="mb-2 block">
-                                            <Label htmlFor="chrGrupoTo" value="Seleccionar Grupo" />
-                                        </div>
-                                        <select
-                                            name="chrGrupoTo"
-                                            id="chrGrupoTo"
-                                            {...register('chrGrupoTo')}
-                                            className="block w-full px-3 py-2 mt-1 text-sm text-gray-900 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                                            onChange={(e) => setseleCuatri(e.target.value)}
-                                        >
-                                            {gruposTotal.map((dep) => (
-                                                <option key={dep.chrGrupo} value={dep.chrGrupo}>
-                                                    {dep.chrGrupoTo}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-
-                                    <div className="w-full">
-                                        <div className="mb-2 block">
-                                            <Label htmlFor="editEstado" value="Estado de Cuenta" />
-                                        </div>
-                                        <select
-                                            id="editEstado"
-                                            name="editEstado"
-                                            required
-                                            className="block w-full px-3 py-2 mt-1 text-sm text-gray-900 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                                            {...register('editEstado')}
-                                        // value={selectedDocenteEstado} // Controla el valor seleccionado
-                                        // onChange={(e) => setSelectedDocenteEstado(e.target.value)} // Actualiza el estado cuando se cambia la selección
-                                        >
-                                            <option value="activa">Activa</option>
-                                            <option value="bloqueada">Bloqueada</option>
-                                        </select>
-
-                                    </div>
-
-
-
-
-
-                                    {/*
-                                    <SelectInput
-                                        id="chrGrupo"
-                                        labelSelect="Seleccionar Grupo"
-                                        label="Grupo"
-                                        name="chrGrupoTo"
-                                        option=""
-                                        options={gruposTotal}
-                                        errorMessage="No cumples con el patrón de contraseña"
-                                        errors={errors}
-                                        register={register}
-                                        trigger={trigger}
-                                    />*/
-                                    }
-                                </div>
-
-                            </form>
+                            </Modal.Body>
+                            <Modal.Footer className="flex justify-between"> {/* Distribuye los botones */}
+                                <LoadingButton
+                                    className="max-w-xs max-h-11" // Define un ancho y altura máximos para el botón
+                                    isLoading={isLoading}
+                                    loadingLabel="Cargando..."
+                                    normalLabel="Editar"
+                                    disabled={disbleButton}
+                                    onClick={() => updateAllAlumno()}
+                                />
+                                <Button color="gray" onClick={() => setOpenModalEdit(false)}>
+                                    Cancelar
+                                </Button>
+                            </Modal.Footer>
                         </div>
-                    </Modal.Body>
-                    <Modal.Footer className="flex justify-between"> {/* Distribuye los botones */}
-                        <LoadingButton
-                            className="max-w-xs max-h-11" // Define un ancho y altura máximos para el botón
-                            isLoading={isLoading}
-                            loadingLabel="Cargando..."
-                            normalLabel="Editar"
-                            disabled={disbleButton}
-                            onClick={() => updateAllAlumno()}
-                        />
-                        <Button color="gray" onClick={() => setOpenModalEdit(false)}>
-                            Cancelar
-                        </Button>
-                    </Modal.Footer>
-
+                    </div>
                 </Modal>
 
 
