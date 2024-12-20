@@ -417,7 +417,7 @@ const DetallePracticaDocente = () => {
             setIsLoading(true); // Activa el indicador de carga al inicio
 
             // Abrir el caché y buscar la respuesta en caché
-            const cache = await caches.open('api-cache');
+            /*const cache = await caches.open('api-cache');
             const cachedResponse = await cache.match(`${apiUrl}DetallePractica.php`);
     
             // Si hay una respuesta en caché y el usuario está offline, usar los datos en caché
@@ -433,7 +433,7 @@ const DetallePracticaDocente = () => {
                     setEditedData(fetchedRubricaData);
                 }
                 return; // Terminar la función aquí si usamos el caché
-            }
+            }*/
     
             // Realizar la solicitud a la API
             const response = await fetch(`${apiUrl}cargarMaterias.php`, {
@@ -448,7 +448,7 @@ const DetallePracticaDocente = () => {
             }
     
             // Clonar la respuesta antes de leer el JSON para poder guardarla en el caché
-            const responseClone = response.clone();
+            //const responseClone = response.clone();
             const data = await response.json();
             console.log("Datos de rubrica:", data);
     
@@ -460,8 +460,8 @@ const DetallePracticaDocente = () => {
                 setEditedData(fetchedRubricaData);
     
                 // Guardar la respuesta clonada en el caché para uso futuro
-                await cache.put(`${apiUrl}DetallePractica.php`, responseClone);
-                console.log('Respuesta de la API almacenada en caché.');
+                //await cache.put(`${apiUrl}DetallePractica.php`, responseClone);
+                //console.log('Respuesta de la API almacenada en caché.');
             } else {
                 console.log('Error al cargar los datos de la actividad:', data);
             }
