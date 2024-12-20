@@ -13,7 +13,7 @@ import { FaFileExcel, FaPencilAlt, FaDownload } from 'react-icons/fa';
 import { data } from 'autoprefixer';
 
 const Alumnos = () => {
-    
+
     const [periodos, setPeriodos] = useState([]);
     const [periodosTotal, setPeriodosTotal] = useState([]);
     const [carreras, setCarreras] = useState([]);
@@ -141,7 +141,7 @@ const Alumnos = () => {
             const result = await response.json();
 
             if (result.done) {
-                
+
                 setServerResponse(`Éxito: Datos de estudiantes registrados correctamente`);
                 console.log('Datos recibidos php:', result);
             }
@@ -386,32 +386,32 @@ const Alumnos = () => {
 
     const onSubmit = async (data) => {
         console.log(data)
-        try {        
+        try {
             const response = await fetch(`${apiUrl}registerStudents.php`,
-            {
-                method: 'POST',
-                headers: 
                 {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    dataEstudiante:data
-                }),
-            });
+                    method: 'POST',
+                    headers:
+                    {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        dataEstudiante: data
+                    }),
+                });
 
             const result = await response.json();
-            console.log(result);
-            if(result.done)
-            {
-                setServerResponse(`Éxito: ${result.message}`);
+
+            if (result.done) {
+                setServerResponse(`Éxito:.${result.message}`);
                 setOpenModal(false)
             }
-            else
-            {
-                setServerResponse(`Error: ${result.message}`);
-            }    
+            else {
+                setServerResponse(`Error: .${result.message}`);
+                console.log('Datos recibidos php:', result);
+            }
         } catch (error) {
             console.error(error);
+            setServerResponse(`Error: Error al conectar con el servidor. ${error}`);
         }
     }
 
@@ -467,7 +467,7 @@ const Alumnos = () => {
     const [selectAlumnos, setselectAlumnos] = useState();
     const editUser = (data) => {
         setOpenModalDelete(true)
-        console.log("editar alumno: ",data)
+        console.log("editar alumno: ", data)
         setselectAlumnos(data.vchMatricula)
 
     };
@@ -497,7 +497,7 @@ const Alumnos = () => {
                 cargarAlumnos(selectedGrupo);
 
             }
-            else{
+            else {
                 setServerResponse(`Error: ${result.message}`);
 
             }
@@ -577,13 +577,13 @@ const Alumnos = () => {
             matricula: matricula,
             nombre: nombre,             // nombre en mayúsculas
             apellidoP: apellidoP,       // apellido paterno en mayúsculas
-            apellidoM: apellidoM,  
-            correo: correo,     
+            apellidoM: apellidoM,
+            correo: correo,
             carrera: carrera,               // rol seleccionado
             cuatri: cuatri,          // estado seleccionado
             grupo: grupo,
-            estado: estatoCuenta, 
-            periodo: periodo       
+            estado: estatoCuenta,
+            periodo: periodo
         };
 
         console.log(datosDocente)
@@ -591,54 +591,53 @@ const Alumnos = () => {
         setOpenConfirm(true)
 
     }
-    const updateAlu = async  (data) => {
+    const updateAlu = async (data) => {
         try {
-          const response = await fetch(`${apiUrl}updateAlumno.php`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ data }),
-          });
-    
-          
-          
-    
-          const result = await response.json(); // Asumiendo que la respuesta es JSON
-          console.log( result);
-          if (result.done) {
-            setAlertMessage({ type: 'error', text: result.message });
-            setServerResponse(`Éxito: ${result.message}`);
-            
-            cargarAlumnos(selectedGrupo);
-          }
-          else{
-            setServerResponse(`Error: ${result.message}`);
+            const response = await fetch(`${apiUrl}updateAlumno.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ data }),
+            });
 
-          }
+
+
+
+            const result = await response.json(); // Asumiendo que la respuesta es JSON
+            console.log(result);
+            if (result.done) {
+                setAlertMessage({ type: 'error', text: result.message });
+                setServerResponse(`Éxito: ${result.message}`);
+
+                cargarAlumnos(selectedGrupo);
+            }
+            else {
+                setServerResponse(`Error: ${result.message}`);
+
+            }
         } catch (error) {
-          console.error('Error during fetch operation:', error);
+            console.error('Error during fetch operation:', error);
         }
-        finally
-        {
-          setOpenConfirm(false)
-          setOpenModalEdit(false);
+        finally {
+            setOpenConfirm(false)
+            setOpenModalEdit(false);
         }
-      };
+    };
 
 
-      const handleDownload = async () => {
+    const handleDownload = async () => {
         const response = await fetch(`${webUrl}assets/archivos/Formato-Lista-Alumnos.xlsx`, {
             method: 'GET',
-          headers: {
-            'Content-Type': 'application/octet-stream',
-          },
+            headers: {
+                'Content-Type': 'application/octet-stream',
+            },
         });
-    
+
         if (!response.ok) {
-          throw new Error('Error al descargar el archivo');
+            throw new Error('Error al descargar el archivo');
         }
-    
+
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
@@ -648,7 +647,7 @@ const Alumnos = () => {
         link.click();
         document.body.removeChild(link);
         window.URL.revokeObjectURL(url);
-      };
+    };
 
     return (
         <section className='flex flex-col'>
@@ -751,8 +750,8 @@ const Alumnos = () => {
                                                 <CustomInput
                                                     label="Matrícula"
                                                     name="matriculaAlum"
-                                                    pattern={/^\d+$/}
-                                                    errorMessage="Solo números y sin espacios"
+                                                    pattern={/^\d{8}$/} // Verifica exactamente 8 dígitos
+                                                    errorMessage="La matrícula debe contener solo 8 números y sin espacios."
                                                     errors={errors}
                                                     register={register}
                                                     trigger={trigger}
@@ -760,11 +759,12 @@ const Alumnos = () => {
                                                 <CustomInput
                                                     label="Nombre"
                                                     name="nombre"
-                                                    pattern={/^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ]+$/}
+                                                    pattern={/^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ\s]+$/}
                                                     errorMessage="Solo letras y sin espacios"
                                                     errors={errors}
                                                     register={register}
                                                     trigger={trigger}
+                                                    style={{ textTransform: 'uppercase' }}
                                                 />
                                                 <CustomInput
                                                     label="Apellido Paterno"
@@ -774,6 +774,7 @@ const Alumnos = () => {
                                                     errors={errors}
                                                     register={register}
                                                     trigger={trigger}
+                                                    style={{ textTransform: 'uppercase' }}
                                                 />
                                                 <CustomInput
                                                     label="Apellido Materno"
@@ -783,6 +784,7 @@ const Alumnos = () => {
                                                     errors={errors}
                                                     register={register}
                                                     trigger={trigger}
+                                                    style={{ textTransform: 'uppercase' }}
                                                 />
                                             </div>
 
@@ -792,7 +794,7 @@ const Alumnos = () => {
                                                     labelSelect="Seleccionar Periodo"
                                                     label="Periodo"
                                                     name="vchPeriodoTo"
-                                                    value="vchPeriodo" 
+                                                    value="vchPeriodo"
                                                     options={periodosTotal}
                                                     errorMessage="No cumples con el patron de contraseña"
                                                     errors={errors}
@@ -806,7 +808,7 @@ const Alumnos = () => {
                                                     labelSelect="Seleccionar Carrera"
                                                     label="Carrera"
                                                     name="vchNomCarreraTo"
-                                                    value="vchNomCarreraTo" 
+                                                    value="vchNomCarreraTo"
                                                     options={carrerasTotal}
                                                     errors={errors}
                                                     register={register}
@@ -859,7 +861,7 @@ const Alumnos = () => {
                         </div>
                     </div>
                 </div>
- 
+
             </Modal>
 
             <Modal show={openModalDelete} size="md" onClose={() => setOpenModalDelete(false)} popup>
@@ -889,17 +891,17 @@ const Alumnos = () => {
                 <div className="flex items-center">
                     {/*<TextInput id="email4" type="email" icon={HiOutlineSearch} placeholder="Matricula del Alumno" required />*/}
                     <div className="flex items-center space-x-4">
-                    <IconButton
-                        className="ml-2"
-                        Icon={IoMdAdd} // Pasa el componente de ícono
-                        message="Añadir Estudiantes"
-                        onClick={() => setOpenModal(true)}
-                    />
-                    <IconButton
-                        Icon={FaDownload}
-                        message="Formato Lista de Alumnos"
-                        onClick={handleDownload}
-                    />
+                        <IconButton
+                            className="ml-2"
+                            Icon={IoMdAdd} // Pasa el componente de ícono
+                            message="Añadir Estudiantes"
+                            onClick={() => setOpenModal(true)}
+                        />
+                        <IconButton
+                            Icon={FaDownload}
+                            message="Formato Lista de Alumnos"
+                            onClick={handleDownload}
+                        />
                     </div>
                 </div>
                 <div>
@@ -1003,7 +1005,8 @@ const Alumnos = () => {
                                     <CustomInput
                                         label="Nombre"
                                         name="nombrEdit"
-                                        pattern={/^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ]+$/}
+                                        pattern={/^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ\s]+$/}
+
                                         errorMessage="Solo letras y sin espacios"
                                         errors={errors}
                                         register={register}
@@ -1043,8 +1046,8 @@ const Alumnos = () => {
                                 </div>
 
                                 <div className="info-academic grid grid-cols-2 gap-6 mt-6"> {/* Más espacio entre las secciones */}
-                                    
-                                <div className="w-full">
+
+                                    <div className="w-full">
                                         <div className="mb-2 block">
                                             <Label htmlFor="editPeriodo" value="Periodo" />
                                         </div>
@@ -1194,12 +1197,12 @@ const Alumnos = () => {
                                 ¿Estás seguro de que deseas Actualizar a este Alumno?
                             </h3>
                             <div className="flex justify-center gap-4">
-                                <Button color="failure"  
-                                onClick={()=>updateAlu(allAlu)}
+                                <Button color="failure"
+                                    onClick={() => updateAlu(allAlu)}
                                 >
                                     {"Sí estoy seguro"}
                                 </Button>
-                                <Button color="gray" onClick={() => { setOpenConfirm(false),setAllAlu("") }}>
+                                <Button color="gray" onClick={() => { setOpenConfirm(false), setAllAlu("") }}>
                                     No, cancelar
                                 </Button>
                             </div>

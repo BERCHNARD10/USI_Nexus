@@ -9,7 +9,7 @@ import { HiOutlineSearch, HiOutlineExclamationCircle } from "react-icons/hi";
 import { Label, TextInput, Button, Select, Modal } from "flowbite-react"; // Importamos el componente Button
 import * as XLSX from 'xlsx';
 import Components from '../../components/Components'
-const { LoadingButton, CustomInput, IconButton, SelectInput, newSelect,InfoAlert } = Components;
+const { LoadingButton, CustomInput, IconButton, SelectInput, newSelect, InfoAlert } = Components;
 const PasswordValidationItem = ({ isValid, text }) => (
   <li className="flex items-center mb-1">
     {isValid ? <FaCheck className="text-green-500" /> : <FaTimes className="text-red-500" />}
@@ -42,6 +42,8 @@ const Docentes = () => {
 
   const [selectedPeriodoManualEdit, setSelectedDepartamentoEdit] = useState(null);
   const [serverErrorMessage, setServerErrorMessage] = useState('');
+  const [serverResponse, setServerResponse] = useState('');
+ 
   const apiUrl = import.meta.env.VITE_API_URL;
   const webUrl = import.meta.env.VITE_URL;
 
@@ -240,7 +242,8 @@ const Docentes = () => {
         console.log(result.userData[0]);
         if (result.userData[0] == "Error al insertar al Docente (Usuario ya existente):") {
           setOpenModalAdd(false)
-          setAlertMessage({ type: 'success', text: 'Docente ya registrado' });
+          setAlertMessage({ type: 'error', text: result.message });
+          setServerResponse(`Error: El docente ya existe`);
           setSelectedDepartamen("")
           return
 
@@ -248,8 +251,11 @@ const Docentes = () => {
 
 
         setAlertMessage({ type: 'success', text: 'Datos de Docentes registrados correctamente' });
+        
+        setServerResponse(`Éxito: ${result.message}`);
         setOpenModalAdd(false)
         setSelectedDepartamen("")
+        cargarDocentes()
       }
       else {
         setAlertMessage({ type: 'error', text: 'Error al registrar Docentes. Inténtalo de nuevo.' });
@@ -331,7 +337,7 @@ const Docentes = () => {
       }
       else {
         setAlertMessage({ type: 'error', text: 'No hay Docentes con el departamento seleccionado' });
-        setServerErrorMessage("No hay Docentes con el departamento seleccionado"|| 'Error en el servidor.');
+        setServerErrorMessage("No hay Docentes con el departamento seleccionado" || 'Error en el servidor.');
         setDocentes([]);
 
       }
@@ -457,12 +463,12 @@ const Docentes = () => {
     setValue('apellidoAMedit', docente.vchAMaterno);
     setValue('correoEdit', docente.vchEmail);
     setValue('departamentoEdit', docente.vchDepartamento);
-    setValue('editRol', docente.vchNombreRol == "Administrador" ? "1":"2");
+    setValue('editRol', docente.vchNombreRol == "Administrador" ? "1" : "2");
     setValue('editEstado', docente.enmEstadoCuenta);
 
 
 
-    setSelectedDocenteRol(docente.vchNombreRol== "Administrador" ? "1":"2")
+    setSelectedDocenteRol(docente.vchNombreRol == "Administrador" ? "1" : "2")
     setSelectedDocenteEstado(docente.enmEstadoCuenta)
     setselectedDocenteDepartamento(docente.vchDepartamento);
     setselectedDocenteselectedDocenteMA(docente.vchMatricula);
@@ -557,7 +563,7 @@ const Docentes = () => {
 
   const [openConfirm, setOpenConfirm] = useState(false);
 
-  const update = async  (data) => {
+  const update = async (data) => {
     try {
       const response = await fetch(`${apiUrl}UpdateTeachers.php`, {
         method: 'POST',
@@ -567,32 +573,31 @@ const Docentes = () => {
         body: JSON.stringify({ data }),
       });
 
-      
-      
+
+
 
       const result = await response.json(); // Asumiendo que la respuesta es JSON
-      console.log( result);
+      console.log(result);
       if (result.done) {
         setAlertMessage({ type: 'error', text: result.message });
         setServerErrorMessage(result.message || 'Error en el servidor.');
         cargarDocentes();
-        
+
       }
     } catch (error) {
       console.error('Error during fetch operation:', error);
       alert('Error 500: Ocurrió un problema en el servidor. Intenta nuevamente más tarde.');
     }
-    finally
-    {
+    finally {
       setOpenConfirm(false)
       setOpenModalEdit(false);
     }
   };
 
-  
+
   const handleDownload = async () => {
     const response = await fetch(`${webUrl}assets/archivos/Formato-Lista-Docente.xlsx`, {
-        method: 'GET',
+      method: 'GET',
       headers: {
         'Content-Type': 'application/octet-stream',
       },
@@ -616,10 +621,10 @@ const Docentes = () => {
   return (
     <section className='flex flex-col'>
       <InfoAlert
-                message={serverErrorMessage}
-                type="success"
-                isVisible={!!serverErrorMessage}
-                onClose={() => setServerErrorMessage('')}
+                message={serverResponse}
+                type={serverResponse.includes('Éxito') ? 'success' : 'error'}
+                isVisible={!!serverResponse}
+                onClose={() => setServerResponse('')}
             />
       <Modal className='mt-11 pt-16' size="4xl" base show={openModal} onClose={() => { setOpenModal(false); setFile(null); setSelectedDepartamen("") }}>
         <Modal.Header>Agregar Docentes </Modal.Header>
@@ -644,6 +649,7 @@ const Docentes = () => {
                       name="vchDepartamento"
                       option=""
                       options={departamento}
+                      value="vchDepartamento"
                       errorMessage="No cumples con el patron de contraseña"
                       errors={errors}
                       register={register}
@@ -740,22 +746,30 @@ const Docentes = () => {
                 label="Nombre"
                 name="nombreEdit"
                 errors={errors}
+                pattern={/^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ\s]+$/}
+                errorMessage="Solo letras y sin espacios"
                 register={register}
                 trigger={trigger}
+
                 style={{ textTransform: 'uppercase' }}
               />
               <div className="grid grid-cols-2 gap-4">
                 <CustomInput
                   label="Apellido Paterno"
                   name="apellidoAPedit"
+                  pattern={/^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ\s]+$/}
+                  errorMessage="Solo letras y sin espacios"
                   errors={errors}
                   register={register}
                   trigger={trigger}
+
                   style={{ textTransform: 'uppercase' }}
                 />
                 <CustomInput
                   label="Apellido Materno"
                   name="apellidoAMedit"
+                  pattern={/^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ\s]+$/}
+                  errorMessage="Solo letras y sin espacios"
                   errors={errors}
                   register={register}
                   trigger={trigger}
@@ -772,7 +786,7 @@ const Docentes = () => {
                 pattern={/^[a-zA-Z0-9._%+-]+@uthh\.edu\.mx$/}
                 style={{ textTransform: 'lowercase' }}
               />
-        
+
               {
                 <div className="max-w-md">
                   <div className="mb-2 block">
@@ -949,7 +963,7 @@ const Docentes = () => {
                     register={register}
                     trigger={trigger}
                     className="w-full"
-                    
+
                   />
                   <div className="flex flex-wrap gap-4">
                     <CustomInput
@@ -959,6 +973,8 @@ const Docentes = () => {
                       register={register}
                       trigger={trigger}
                       className="w-full md:w-1/2"
+                      pattern={/^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ\s]+$/}
+                      errorMessage="Solo letras y sin espacios"
                       style={{ textTransform: 'uppercase' }}
                     />
                     <CustomInput
@@ -968,12 +984,16 @@ const Docentes = () => {
                       register={register}
                       trigger={trigger}
                       className="w-full md:w-1/2"
+                      pattern={/^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ\s]+$/}
+                      errorMessage="Solo letras y sin espacios"
                       style={{ textTransform: 'uppercase' }}
                     />
                     <CustomInput
                       label="Apellido Materno"
                       name="apellidoM"
                       errors={errors}
+                      pattern={/^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ\s]+$/}
+                      errorMessage="Solo letras y sin espacios"
                       register={register}
                       trigger={trigger}
                       className="w-full md:w-1/2"
@@ -1049,7 +1069,7 @@ const Docentes = () => {
                   <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                     {docente.vchMatricula}
                   </Table.Cell>
-                  <Table.Cell>{docente.vchNombre } {docente.vchAPaterno} {docente.vchAMaterno}</Table.Cell>
+                  <Table.Cell>{docente.vchNombre} {docente.vchAPaterno} {docente.vchAMaterno}</Table.Cell>
                   <Table.Cell>{renderBadge(docente.vchNombreRol)}</Table.Cell>
                   <Table.Cell>{docente.vchEmail}</Table.Cell>
                   <Table.Cell>
