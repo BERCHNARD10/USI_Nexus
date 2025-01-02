@@ -168,7 +168,9 @@ const MateriasDocente = () => {
     const extractActivityData = (parsedData, showAlert) => {
         const activityData = [];
         let totalPuntuacion = 0;
-    
+        const activityNames = new Set(); // Conjunto para verificar nombres únicos
+        const activityRegex = /^ACTIVIDAD \d+:/; // Expresión regular para validar el formato
+
         for (let i = 14; i < parsedData.length; i++) {
 
         // Verificar si la fila está completamente vacía
@@ -179,8 +181,39 @@ const MateriasDocente = () => {
             break; // Detener la lectura cuando se encuentre "Subtotal"
         }
             if (i % 9 === 14 % 9) {
+                // Limpiar y extraer el nombre base de la actividad
+                const actividadOriginal = parsedData[i][0];
+
+                // Validar formato del nombre de la actividad
+                if (!activityRegex.test(actividadOriginal)) {
+                    if (showAlert) showAlert(`El nombre de la actividad "${actividadOriginal}" no cumple con el formato requerido: "ACTIVIDAD <NÚMERO>:".`);
+                    console.warn(`Formato inválido detectado: "${actividadOriginal}".`);
+                    continue; // Saltar esta actividad si el formato es inválido
+                }
+
+
+                const actividadBase = actividadOriginal.split(':')[0].trim().toLowerCase(); // Extraer todo antes de ":"
+
+                // Verificar duplicados basados en el nombre base
+                const esDuplicado = activityNames.has(actividadBase);
+
+                // Imprimir detalles para depuración
+                console.log(`Verificación de Actividad:
+                    Nombre Original: "${actividadOriginal}"
+                    Nombre Base: "${actividadBase}"
+                    Duplicado: ${esDuplicado}
+                    Conjunto Actual: ${Array.from(activityNames).join(', ')}
+                `);
+
+                if (esDuplicado) {
+                    if (showAlert) showAlert(`El nombre de la actividad "${actividadOriginal}" ya existe como "${actividadBase}". Verifique los datos.`);
+                    continue; // Saltar esta actividad duplicada
+                }
+
+                // Agregar el nombre base al conjunto si no es duplicado
+                activityNames.add(actividadBase);
                 const puntuacion = parseFloat(parsedData[i][3]); // Asegúrate de convertir a número
-                
+
                 if (totalPuntuacion + puntuacion > 10) {
                     if (showAlert) showAlert("No se pueden agregar más actividades. La suma de las puntuaciones excede 10.");
                 }
@@ -197,7 +230,7 @@ const MateriasDocente = () => {
                     fechaSolicitud: formatDate(parsedData[i][6]),
                     fechaEntrega: formatDate(parsedData[i][7]),
                 };
-    
+                console.log("Actividad: ", activity);
                 activityData.push(activity);
             }
         }
@@ -229,15 +262,15 @@ const MateriasDocente = () => {
             noActividad: index + 1,
             nomActividad: activity.actividad,
             intPuntuacion: activity.puntuacion,
-            dtmSolicitud: activity.fechaSolicitud,
-            ttmEntrega: activity.fechaEntrega,
+            dtmFechaSolicitud: activity.fechaSolicitud,
+            dtmFechaEntrega: activity.fechaEntrega,
             vchDescripcion: activity.descripcion,
             intTiempo: activity.tiempoEstimado,
             enumModalidad: activity.modalidad,
             clvinstrumento: activity.instrumento
             };
         });
-        console.log("datos", actividadesData)
+        console.log("DATOS DEL EXCEL PARA INSERTAR ACTIVIDADES: ", actividadesData)
         try 
         {
             setIsLoading(true);
@@ -254,23 +287,27 @@ const MateriasDocente = () => {
                 }),
                 }
             );
+   
+            console.log('Estado de la respuesta:', response.status); // Imprimir el código de estado HTTP
+
+
             const result = await response.json();
-            setActividades([]);
+            console.log('Datos recibidos php JSON:', result);
+
             if (result.done) 
             {
+                setActividades([]);
                 onloadNaterias(); // Llamar a la función para recargar las materias
                 setServerResponse(`Éxito: ${result.message}`);
-                console.log('Datos recibidos php:', result);
             }
             else
             {
                 setServerResponse(`Error: ${result.message}`);                
-                console.log('Datos recibidos php:', result);
             }
         } 
         catch (error) 
         {
-            setServerResponse(`Error: ${result.message}`);
+            setServerResponse(`Error: ${error}`);
             console.error(error);
         }
         finally 

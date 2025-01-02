@@ -315,7 +315,11 @@
 }
 
 .progress-bar {
-  animation: progress-animation 2s linear forwards; /* Mantener la duración de 4 segundos */
+  animation: progress-animation 2.02s linear forwards; 
+}
+
+.progress-bar.paused {
+  animation-play-state: paused;
 }
 
 @media (max-width: 365px) {

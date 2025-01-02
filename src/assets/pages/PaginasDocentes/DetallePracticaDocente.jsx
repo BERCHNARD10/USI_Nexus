@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Components from '../../components/Components';
 import { Tooltip } from 'flowbite-react';
 import { useAuth } from '../../server/authUser';
@@ -13,7 +13,7 @@ import 'react-quill/dist/quill.snow.css';
 const {RubricaSkeletonLoader, DetailedPracticeSkeleton, TitlePage, Paragraphs, TitleSection, LoadingButton, CustomInputOnchange, ContentTitle, FloatingLabelInput, InfoAlert, IconButton } = Components;
 
 const DetallePracticaDocente = () => {
-    const {intNumeroActi, intIdActividadCurso, intNumeroPractica } = useParams();
+    const {vchClvMateria, chrGrupo, intPeriodo, intNumeroActi, intIdActividadCurso, intNumeroPractica, tabActivo } = useParams();
     const [detalleActividad, setDetalleActividad] = useState({});
     const {sendNotification, userData } = useAuth();
     const [rubricaCalAlumno, setRubricaCalAlumno] = useState([]);
@@ -23,7 +23,6 @@ const DetallePracticaDocente = () => {
     const [rubricaData, setRubricaData] = useState([]);
     const [editedData, setEditedData] = useState([]);
     const [alumnos, setAlumnosMaterias] = useState([]);
-    const {vchClvMateria, chrGrupo, intPeriodo } = useParams();
     const [selectedAlumnoMatricula, setSelectedAlumnoMatricula] = useState(null);
     const [selectedAlumno, setSelectedAlumno] = useState(null);
     const [puntajeObtenido, setPuntajeObtenido] = useState(0);
@@ -36,6 +35,35 @@ const DetallePracticaDocente = () => {
     const webUrl = import.meta.env.VITE_URL;
 
     const { register, handleSubmit, watch, trigger, formState: { errors } } = useForm();
+
+    const navigate = useNavigate();
+  const tabs = ['instrucciones', 'trabajos'];
+
+  // Obtener el índice del tab inicial basado en el parámetro :tabActivo
+  const getInitialTabIndex = () => {
+    const index = tabs.indexOf(tabActivo);
+    return index !== -1 ? index : 0; // Por defecto, mostrar el primer tab
+  };
+
+  const [activeTabIndex, setActiveTabIndex] = useState(getInitialTabIndex);
+
+  useEffect(() => {
+    // Actualizar el índice activo cuando cambie el parámetro :tabActivo
+    const index = tabs.indexOf(tabActivo);
+    if (index !== -1) {
+      setActiveTabIndex(index);
+    }
+  }, [tabActivo]);
+
+  const handleTabChange = (index) => {
+    // Cambiar el tab activo y actualizar la URL dinámicamente
+    setActiveTabIndex(index);
+    navigate(
+      `/gruposMaterias/actividades/detalleActividad/detallePractica/${vchClvMateria}/${chrGrupo}/${intPeriodo}/${intNumeroActi}/${intNumeroPractica}/${intIdActividadCurso}/${tabs[index]}`,
+      { replace: true }
+    );
+  };
+
 
     {/*const validatePuntajeTotal = (data) => {
         return data.reduce((sum, rubrica) => sum + (parseInt(rubrica.intValor) || 0), 0) <= 10;
@@ -266,49 +294,6 @@ const DetallePracticaDocente = () => {
         }
     };
     
-    /*
-    const onloadAlumnos = async () => {
-        try {
-        const response = await fetch(`${apiUrl}accionesAlumnos.php`, {
-            method: 'POST',
-            headers: {
-            'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-            clvMateria: vchClvMateria,
-            matriculaDocent: userData.vchMatricula,
-            chrGrupo: chrGrupo,
-            periodo: intPeriodo,
-            practicaId: intNumeroPractica, // Asegúrate de tener el idPractica en el contexto adecuado
-
-            }),
-        });
-        const result = await response.json();
-        console.log("alumnos calificados", result)
-        if (result.done) {
-            setAlumnosMaterias(result.message);
-        } else {
-            console.error('Error en el registro:', result.message);
-            if (result.debug_info) {
-            console.error('Información de depuración:', result.debug_info);
-            }
-            if (result.errors) {
-            result.errors.forEach(error => {
-                console.error('Error específico:', error);
-            });
-            }
-        }
-        } catch (error) {
-        console.error('Error 500', error);
-        setTimeout(() => {
-            alert('¡Ay caramba! Encontramos un pequeño obstáculo en el camino, pero estamos trabajando para superarlo. Gracias por tu paciencia mientras solucionamos este problemita.');
-        }, 2000);
-        }
-        finally{
-            setIsLoading(false);
-        }
-    };
-*/
     const onloadAlumnos = async () => {
 
         try {
@@ -510,6 +495,8 @@ const DetallePracticaDocente = () => {
         return <DetailedPracticeSkeleton />;
     }
 
+
+
     return (
         <section className='w-full flex flex-col'>
             <InfoAlert
@@ -522,8 +509,10 @@ const DetallePracticaDocente = () => {
             />
         <TitlePage label={detalleActividad.vchNombre} />
         <Paragraphs className="ml-3" label={detalleActividad.vchDescripcion} />
-        <Tabs aria-label="Tabs with underline" style="underline">
-            <Tabs.Item  active  title="Instrucciones" icon={MdDescription}>
+        <Tabs aria-label="Tabs with underline" style="underline" 
+        onActiveTabChange={handleTabChange}
+        >
+            <Tabs.Item title="Instrucciones" icon={MdDescription}>
                 <div className="flex flex-col md:flex-row gap-4">
                     <div className='md:w-full md:flex flex-col gap-y-4'>
                         <div className="mb-4 md:mb-0 rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6 xl:p-8">
@@ -561,7 +550,7 @@ const DetallePracticaDocente = () => {
                                 </div>
                                 
                                 {editedData.map((rubrica, index) => (
-                                <div key={index} className="border-b border-gray-200 dark:border-gray-700 pb-4 mb-4">
+                                <div key={index} className="border-b border-gray-200 dark:border-gray-700 pb-4 mb-2">
                                     <div className={`grid ${isEditing ? 'grid-cols-10' : 'grid-cols-5'} items-center gap-6`}>
                                     <div className={`${isEditing ? 'col-span-7' : 'col-span-4'} text-muted-foreground`}>
                                         {isEditing ? (
@@ -572,7 +561,10 @@ const DetallePracticaDocente = () => {
                                             onChange={(e) => handleInputChange(index, 'vchDescripcion', e.target.value)}
                                         />
                                         ) : (
-                                        <p className="text-gray-900 dark:text-white">{rubrica.vchDescripcion}</p>
+                                            <>
+                                                <h4 className="text-sm font-semibold text-gray-800 mb-1"> {`Criterio ${index + 1}`} </h4>
+                                                <p className="text-gray-900 dark:text-white">{rubrica.vchDescripcion}</p>
+                                            </>
                                         )}
                                     </div>
                                     <div className={`${isEditing ? 'col-span-3' : 'col-span-1'} flex items-center justify-end gap-2`}>
@@ -610,7 +602,7 @@ const DetallePracticaDocente = () => {
                                     <Tooltip content="Agregar nuevo criterio">
                                     <button
                                         type="button"
-                                        className="bg-primary hover:bg-secondary p-3 rounded-full border border-bg-primary focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-300"
+                                        className="p-3 rounded-full border border-bg-primary focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-300"
                                         onClick={handleAddRubro}
                                     >
                                         <FaPlus className="text-lg" />
@@ -629,7 +621,7 @@ const DetallePracticaDocente = () => {
                     </div>
                 </div>
             </Tabs.Item>
-            <Tabs.Item title="Trabajos de los Alumnos" icon={MdAssignment}>
+            <Tabs.Item active={activeTabIndex === 1} title="Trabajos de los Alumnos" icon={MdAssignment}>
             <div className="flex flex-col md:flex-row gap-4">
                 <div className='md:w-5/12 md:flex flex-col gap-y-4'>
                     <div className="mb-4 md:mb-0 rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6 xl:p-8">

@@ -686,15 +686,71 @@ const ConfirmDeleteModal = ({ open, onClose, onConfirm, message }) => {
     );
 };
 
+const ContentModal = ({ open, onClose, onConfirm, message, children }) => {
+    return (
+        <Modal className='h-0 mt-auto' show={open} size="4xl" onClose={onClose} popup>
+            <div className="fixed inset-0 flex items-center justify-center z-50">
+                <div className="relative w-full max-w-lg mx-4 bg-white rounded-lg shadow-lg">
+                    <Modal.Header>     
+                        {message && (
+                            <span dangerouslySetInnerHTML={{ __html: message }} />
+                        )}
+                    </Modal.Header>
+                    <Modal.Body className='sm:max-h-60 h-96'>
+                        {/* Renderizar contenido dinámico */}
+                        {children && <div>{children}</div>}
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <div className="flex justify-center gap-4 mt-5">
+                            <Button color="failure" onClick={onConfirm}>
+                                Sí, estoy seguro
+                            </Button>
+                            <Button color="gray" onClick={onClose}>
+                                    No, cancelar
+                            </Button>
+                        </div>
+                    </Modal.Footer>
+                </div>
+            </div>
+        </Modal>
+    );
+};
+
 const InfoAlert = ({ message, type, isVisible, onClose, hasDuration = true }) => {
+    const [timer, setTimer] = useState(null);
+    const [isPaused, setIsPaused] = useState(false); // Controla el estado de pausa de la barra de progreso
+
     useEffect(() => {
         if (isVisible && (type !== "error" || hasDuration)) {
-            const timer = setTimeout(() => {
+            const timeout  = setTimeout(() => {
                 onClose();
             }, 2000);
+            setTimer(timeout);
+
             return () => clearTimeout(timer);
         }
     }, [isVisible, onClose, type, hasDuration]);
+
+    // Pausar el temporizador al pasar el mouse
+    const handleMouseEnter = () => {
+        if (timer) {
+            clearTimeout(timer);
+            setTimer(null);
+        }
+        setIsPaused(true); // Pausa la barra de progreso
+    };
+
+           // Reanudar el temporizador al salir del mouse
+    const handleMouseLeave = () => {
+        if (!timer && isVisible && (type !== "error" || hasDuration)) {
+            const timeout = setTimeout(() => {
+                onClose();
+            }, 2000);
+            setTimer(timeout);
+        }
+        setIsPaused(false); // Reanuda la barra de progreso
+    };
+    
 
     if (!isVisible) return null;
 
@@ -727,6 +783,8 @@ const InfoAlert = ({ message, type, isVisible, onClose, hasDuration = true }) =>
             id="alert-1"
             className={`flex items-center p-4 mb-4 rounded-lg shadow-lg alert-slide ${bgColor} ${textColor} myComponent`} // Esto equivale a md:max-w-lg
             role="alert"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
         >
             <Icon className="flex-shrink-0 w-4 h-4" aria-hidden="true" />
             <div className="ms-3 text-sm font-medium">{message}</div>
@@ -740,8 +798,10 @@ const InfoAlert = ({ message, type, isVisible, onClose, hasDuration = true }) =>
             </button>
             {hasDuration && (
                 <div
-                    className={`progress-bar absolute bottom-0 left-0 h-1 ${progressColor}`}
-                ></div>
+                className={`progress-bar absolute bottom-0 left-0 h-1 ${progressColor} ${
+                    isPaused ? "paused" : ""
+                }`}
+            ></div>
             )}
         </div>
     );
@@ -765,6 +825,7 @@ export default {
     ActivitiesSkeleton,
     DetailedActivitySkeleton,
     DetailedPracticeSkeleton,
+    ContentModal,
     TitlePage,  
     TitleSection, 
     ContentTitle, 

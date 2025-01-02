@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../server/authUser'; // Importa el hook de autenticación
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation, useNavigate  } from 'react-router-dom';
 import { Tabs, Accordion } from "flowbite-react";
 import { HiClipboardList, HiUserGroup } from "react-icons/hi"; // Actualiza aquí
 import Components from '../../components/Components';
@@ -19,6 +19,39 @@ const ActividadesDocente = () => {
     const [serverResponse, setServerResponse] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [loadingParcial, setLoadingParcial] = useState(null);
+    
+    const location = useLocation();
+    const navigate = useNavigate();
+    const tabs = ['actividades', 'alumnos'];
+  
+    // Sincronizar el estado inicial con el hash
+    const getInitialTab = () => {
+      const hash = location.hash.replace('#', '');
+      return tabs[hash] ? tabs[hash] : 'actividades'; // Validar el hash
+    };
+  
+    const [activeTab, setActiveTab] = useState(getInitialTab);
+
+    useEffect(() => {
+        // Si no hay hash en la URL, redirigir a #0
+        if (!location.hash) {
+          navigate('#0', { replace: true });
+        }
+      }, [location.hash, navigate]);
+  
+    useEffect(() => {
+      // Sincronizar el estado cuando cambia el hash de la URL
+      const hash = location.hash.replace('#', '');
+      if (tabs.includes(hash)) {
+        setActiveTab(hash);
+      }
+    }, [location.hash]);
+  
+    const handleTabChange = (index) => {
+      const tab = tabs[index];
+      setActiveTab(tab);
+      navigate(`#${index}`, { replace: true });
+    };
     
     const onloadActividades = async () => {
         try {
@@ -284,7 +317,22 @@ const ActividadesDocente = () => {
 
         // Filtrar actividades por parcial
         const filtrarActividadesPorParcial = (actividades, parcial) => {
-            return actividades.filter(actividad => actividad.intParcial === Number(parcial));
+            console.log(`Datos recibidos: \nParcial: ${parcial}\nActividades: ${JSON.stringify(actividades, null, 2)}`);
+
+            // Validar que 'actividades' sea un array y 'parcial' sea un recibido
+            if (!Array.isArray(actividades)) {
+                console.error('Error: El parámetro "actividades" debe ser un array.');
+                return [];
+            }
+            if (isNaN(parcial)) {
+                console.error('Error: El parámetro "parcial" debe ser un número.');
+                return [];
+            }
+
+            const actFiltradas = actividades.filter(actividad =>  String(actividad.intParcial) === String(parcial));
+            console.log('Actividades Filtradas: ', actFiltradas);
+
+            return actFiltradas;
         };
 
         const actividadesFiltradas = filtrarActividadesPorParcial(actividades, parcial);
@@ -731,6 +779,8 @@ const ActividadesDocente = () => {
 
     return (
         <section className="w-full flex flex-col">
+                  {console.log("tab: ",activeTab)} {/* Para depuración */}
+
             <InfoAlert
                 message={serverResponse}
                 type={serverResponse.includes('éxito') ? 'success' : 'error'}
@@ -741,9 +791,12 @@ const ActividadesDocente = () => {
             />
             <TitlePage label="Actividades de clase" />
             <div className="mb-4 md:mb-0 rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6 xl:p-8">
-                <Tabs aria-label="Tabs with underline" style="underline">
+                <Tabs aria-label="Tabs with underline" style="underline"
+                    onActiveTabChange={handleTabChange}
+
+                >
                     <Tabs.Item 
-                    active 
+                    active={activeTab === "actividades"}
                     title="Actividades" 
                     icon={HiClipboardList}
                     className="w-full sm:w-auto" // Hacer que el tab ocupe todo el ancho en móviles
@@ -791,6 +844,8 @@ const ActividadesDocente = () => {
                     title="Alumnos" 
                     icon={HiUserGroup}
                     className="w-full sm:w-auto" // Hacer que el tab ocupe todo el ancho en móviles
+                    active={activeTab === "alumnos"}
+
                     >
                     <TitlePage label="Alumnos" />
                     <div className="space-y-3">

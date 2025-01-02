@@ -700,7 +700,7 @@ const PerfilUsuario = () => {
                     errorMessage="Las contraseñas no coinciden."
                   />
                 </div>
-                <div className="col-span-6 grid grid-cols-1 gap-y-2 sm:col-span-3">
+                <div className="h-4/6 col-span-6 grid grid-cols-1 gap-y-2 sm:col-span-3">
                   <LoadingButton
                     isLoading={isLoading}
                     loadingLabel="Cargando..."

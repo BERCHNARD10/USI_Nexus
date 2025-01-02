@@ -120,6 +120,7 @@ const DetallePracticaAlumno = () => {
                 {rubricaCalAlumno.map((rubrica, index) => (
                     <div key={index} className="flex justify-between items-center py-4 border-b border-gray-200 dark:border-gray-700">
                     <div className="flex-1 text-muted-foreground mr-4">
+                        <h4 className="text-sm font-semibold text-gray-800 mb-1"> {`Criterio ${index + 1}`} </h4>
                         <p className='text-gray-900 dark:text-white'>{rubrica.criterioDescripcion}</p>
                     </div>
                     <div className="flex-shrink-0 flex items-center gap-2 text-lg font-semibold">

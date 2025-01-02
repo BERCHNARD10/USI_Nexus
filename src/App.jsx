@@ -111,7 +111,7 @@ function App() {
           <Route path="/gruposMaterias/:vchClvMateria/:intPeriodo" element={<PrivateRoute><Layout><GruposMateriasDocente /></Layout></PrivateRoute>} />
           <Route path="/gruposMaterias/actividades/:vchClvMateria/:chrGrupo/:intPeriodo" element={<PrivateRoute><Layout><ActividadesDocente /></Layout></PrivateRoute>} />
           <Route path="/gruposMaterias/actividades/detalleActividad/:vchClvMateria/:chrGrupo/:intPeriodo/:intNumeroActi/:intIdActividadCurso" element={<PrivateRoute><Layout><DetalleActividadDocente /></Layout></PrivateRoute>} />
-          <Route path="/gruposMaterias/actividades/detalleActividad/detallePractica/:vchClvMateria/:chrGrupo/:intPeriodo/:intNumeroActi/:intNumeroPractica/:intIdActividadCurso" element={<PrivateRoute><Layout><DetallePracticaDocente /></Layout></PrivateRoute>} />
+          <Route path="/gruposMaterias/actividades/detalleActividad/detallePractica/:vchClvMateria/:chrGrupo/:intPeriodo/:intNumeroActi/:intNumeroPractica/:intIdActividadCurso/:tabActivo" element={<PrivateRoute><Layout><DetallePracticaDocente /></Layout></PrivateRoute>} />
 
           <Route path="/Terminos" element={<Layout><PrivacyPolicy /></Layout>} />
           <Route path="/*" element={<Layout><Error404 /></Layout>} />
