@@ -113,7 +113,7 @@ export default defineConfig({
             },
           },
           {
-            urlPattern: /^https:\/\/robe\.host8b\.me\/WebServices\/.*\.php$/,
+            urlPattern: /^https:\/\/bernard\.cod3developer\.com\/WebServices\/.*\.php$/,
             handler: 'NetworkFirst',
             options: {
               cacheName: 'api-cache',
