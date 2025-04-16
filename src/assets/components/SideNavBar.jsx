@@ -16,7 +16,7 @@ const SideNav = ({ isSidebarOpen, toggleSidebar }) => {
        className={`mt-16 fixed inset-y-0 left-0 z-10 flex-shrink-0 text-white sidebar flex-grow bg-gray-100 shadow-none sm:shadow-[4px_0_10px_-2px_rgba(0,0,0,0.1)] ${isSidebarOpen ? 'sidebar-enter' : 'sidebar-exit'} ${isAuthenticated ? '' : 'hidden'} `}       
         theme={{
           root: {
-            inner: "h-full overflow-y-auto overflow-x-hidden rounded bg-white px-3 py-4 dark:bg-gray-900 sm:px-4 rounded p-3 bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700 shadow-md"
+            inner: "h-full overflow-y-auto overflow-x-hidden rounded bg-white px-3 py-4 dark:bg-background_400 sm:px-4 rounded p-3 bg-white border border-gray-200 dark:border-gray-700 shadow-md"
           }
         }}
         >

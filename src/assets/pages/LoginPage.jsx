@@ -11,7 +11,7 @@ const { TitlePage, Paragraphs, LoadingButton, CustomInput, CustomInputPassword, 
 const LoginPage = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
-
+  const [rolDemo, setRolDemo] = useState('alumno'); // '' | 'alumno' | 'profesor'
   const [showPassword, setShowPassword] = useState(false);
   const [serverErrorMessage, setServerErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -20,13 +20,31 @@ const LoginPage = () => {
   const [segundosRestantes, setSegundosRestantes] = useState(0);
   const apiUrl = import.meta.env.VITE_API_URL;
 
+  
   const {
     register,
     handleSubmit,
     trigger,
+    setValue,
     formState: { errors },
   } = useForm();
 
+
+  
+  useEffect(() => {
+    if (rolDemo === 'alumno') {
+      trigger(); // Opcional, en caso de que quieras validar de una vez
+      setValue('matriculaAlum', '20210643');
+      setValue('password', '20210643');
+    } else if (rolDemo === 'profesor') {
+      setValue('matriculaAlum', '0432');
+      setValue('password', '0432');
+    } else {
+      setValue('matriculaAlum', '');
+      setValue('password', '');
+    }
+  }, [rolDemo]);
+  
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
   };
@@ -139,6 +157,27 @@ const LoginPage = () => {
           />
         </div>
         <div className="lg:w-1/2 bg-white p-8 flex-col flex items-center justify-center">
+
+          <div className="mb-4 w-full max-w-md">
+            <Label htmlFor="rol-toggle" className="mb-1 block text-sm font-medium text-gray-700">
+              Selecciona un rol demo:
+            </Label>
+            <div className="flex items-center gap-4">
+              <span className={rolDemo === 'alumno' ? 'text-primary font-bold' : 'text-gray-500'}>Alumno</span>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  value=""
+                  className="sr-only peer"
+                  checked={rolDemo === 'profesor'}
+                  onChange={(e) => setRolDemo(e.target.checked ? 'profesor' : 'alumno')}
+                />
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gray-600" />
+              </label>
+              <span className={rolDemo === 'profesor' ? 'text-gray-600 font-bold' : 'text-gray-500'}>Profesor</span>
+            </div>
+          </div>
+
           <img className="w-20 mb-4" 
               src={`${import.meta.env.VITE_URL}assets/secondary-logo-BL9o4fsR.png`}
               alt="logo" 

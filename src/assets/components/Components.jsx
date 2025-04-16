@@ -7,7 +7,33 @@ import { AiOutlineClose } from 'react-icons/ai';
 import { BsCircleFill } from 'react-icons/bs';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { FaSun, FaMoon } from "react-icons/fa"; // Importamos los íconos de react-icons
 
+
+function DarkModeToggle() {
+    const [darkMode, setDarkMode] = useState(
+      localStorage.getItem("theme") === "dark"
+    );
+  
+    useEffect(() => {
+      if (darkMode) {
+        document.documentElement.classList.add("dark");
+        localStorage.setItem("theme", "dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+        localStorage.setItem("theme", "light");
+      }
+    }, [darkMode]);
+  
+    return (
+      <button
+        onClick={() => setDarkMode(!darkMode)}
+        className="p-2 rounded-lg transition-all bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200"
+      >
+        {darkMode ? <FaSun size={20} /> : <FaMoon size={20} />}
+      </button>
+    );
+  }
 
 const ActivitiesSkeleton = () => {
     return (
@@ -44,6 +70,7 @@ const ActivitiesSkeleton = () => {
       </div>
     );
   };
+
 
 const DetailedActivitySkeleton = () => {
     return (
@@ -169,7 +196,7 @@ const DetailedActivitySkeleton = () => {
 const TitlePage = ({ label }) => 
 {   
     return (
-        <h1 className="mb-3 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">{label}</h1>
+        <h1 className="mb-3 text-xl font-semibold text-gray-900 dark:text-gray-200 sm:text-2xl">{label}</h1>
     )
 }
 
@@ -823,6 +850,7 @@ const LoadingOverlay = () => {
 
 export default {
     ActivitiesSkeleton,
+    DarkModeToggle,
     DetailedActivitySkeleton,
     DetailedPracticeSkeleton,
     ContentModal,

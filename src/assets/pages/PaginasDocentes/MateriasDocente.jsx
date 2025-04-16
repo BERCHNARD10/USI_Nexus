@@ -537,7 +537,7 @@ const MateriasDocente = () => {
         <div className="flex items-center space-x-4">
           <IconButton
             Icon={MdAdd}
-            message="Añadir Materias con actividades UWU"
+            message="Añadir Materias con actividades"
             onClick={() => setOpenModal(true)}
           />
           
@@ -576,39 +576,41 @@ const MateriasDocente = () => {
                         {materias.map((materia) => (
                             <Card
                                 key={materia.vchClvMateria}
-                                //href={`/gruposMaterias/${materia.vchClvMateria}/${materia.intPeriodo}`}
-                                className="rounded-lg overflow-hidden shadow-lg transform transition duration-300 hover:scale-105"
+                                className="rounded-lg overflow-hidden shadow-lg transform transition duration-300 hover:scale-105 bg-white dark:bg-background_400 border border-gray-200 dark:border-gray-700"
                                 theme={{
-                                    root: {
-                                        children: "p-0",
-                                    }
+                                root: {
+                                    children: "p-0",
+                                }
                                 }}
                             >
                                 <Link
-                                    to={`/gruposMaterias/${materia.vchClvMateria}/${materia.intPeriodo}`}
-                                    className="block"
+                                to={`/gruposMaterias/${materia.vchClvMateria}/${materia.intPeriodo}`}
+                                className="block"
                                 >
-                                    <div className="relative h-60">
-                                        <div className="bg-gray-200 p-2 h-1/2 flex flex-col items-center justify-center">
-                                            <div className="relative w-full flex justify-center">
-                                                {/* Puedes agregar algo aquí si lo necesitas */}
-                                            </div>
-                                        </div>
-                                        <div className="pt-5 pb-6 px-4">
-                                            <h3 className="text-xl font-bold text-gray-900 text-center">
-                                                {materia.vchNomMateria}
-                                            </h3>
-                                            <p className="text-sm text-gray-500 text-center">
-                                                {materia.vchClvMateria}: {materia.vchNomMateria} {materia.intHoras}
-                                            </p>
-                                            <p className="text-sm text-gray-500 text-center">
-                                                {materia.NombreCuatrimestre}
-                                            </p>
-                                            <p className="mt-1 text-sm text-gray-500 text-center">
-                                                <strong>Periodo:</strong> {materia.NombrePeriodo}
-                                            </p>
-                                        </div>
+                                <div className="relative h-60">
+                                    {/* Cabecera */}
+                                    <div className="bg-gray-200 dark:bg-background_600 p-2 h-1/2 flex flex-col items-center justify-center">
+                                    <div className="relative w-full flex justify-center">
+                                        {/* Puedes agregar un ícono, imagen, etc. */}
                                     </div>
+                                    </div>
+                            
+                                    {/* Contenido */}
+                                    <div className="pt-5 pb-6 px-4">
+                                    <h3 className="text-xl font-bold text-gray-900 dark:text-white text-center">
+                                        {materia.vchNomMateria}
+                                    </h3>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
+                                        {materia.vchClvMateria}: {materia.vchNomMateria} {materia.intHoras}
+                                    </p>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
+                                        {materia.NombreCuatrimestre}
+                                    </p>
+                                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400 text-center">
+                                        <strong className="dark:text-white">Periodo:</strong> {materia.NombrePeriodo}
+                                    </p>
+                                    </div>
+                                </div>
                                 </Link>
                             </Card>
                         ))}

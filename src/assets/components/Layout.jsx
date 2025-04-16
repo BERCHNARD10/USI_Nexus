@@ -17,7 +17,7 @@ const Layout = ({ children }) => {
   return (
     <div className="flex">
       {/*<SideNav isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar}/>*/}
-      <div className={`flex-grow bg-gray-100 ${isAuthenticated ? (isSidebarOpen ? 'ml-12 lg:ml-64' : 'ml-12 lg:ml-12') : ''}`}>
+      <div className={`flex-grow bg-gray-100 dark:bg-background_500 ${isAuthenticated ? (isSidebarOpen ? 'ml-12 lg:ml-64' : 'ml-12 lg:ml-12') : ''}`}>
       <NavigationBar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar}/>
         <section className='m-4'>
           <main className="flex-grow mx-auto px-4 min-h-screen">

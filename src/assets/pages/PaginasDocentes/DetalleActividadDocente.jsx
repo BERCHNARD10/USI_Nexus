@@ -10,11 +10,12 @@ import { Accordion, Tabs } from "flowbite-react";
 import { SiMicrosoftexcel } from "react-icons/si"; // Nuevo icono de Excel
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // Estilos del editor
-import { HiArrowCircleRight } from 'react-icons/hi';
+import {useAuth } from '../../server/authUser'; // Importa el hook de autenticación
 
 const DetalleActividadDocente = () => {
     const apiUrl = import.meta.env.VITE_API_URL;
     const webUrl = import.meta.env.VITE_URL;
+    const {userData} = useAuth(); // Obtén el estado de autenticación del contexto
     const { vchClvMateria, chrGrupo, intPeriodo, intNumeroActi, intIdActividadCurso } = useParams();
     const [actividad, setActividad] = useState([]);
     const [practicas, setPracticas] = useState([]);
@@ -35,6 +36,11 @@ const DetalleActividadDocente = () => {
     const [arregloRubrica, setArregloRubrica] = useState([]);
     const [calificaciones, setCalificaciones] = useState([]);
     const [practicaCal, setPracticaCal] = useState([]);  // Para almacenar las prácticas
+    const [activeTabPractica, setActiveTabPractica] = useState(0); // Asumiendo que la primera pestaña (índice 0) es la activa por defecto
+
+    const handleTabChangePractica = (index) => {
+      setActiveTabPractica(index); // Actualiza el estado con el índice de la pestaña seleccionada
+    };
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -250,7 +256,13 @@ const DetalleActividadDocente = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({clvActividad:parseFloat(intNumeroActi)})
+                body: JSON.stringify({
+                    p_intMateria:vchClvMateria,
+                    p_chrGrupo:chrGrupo, 	
+                    p_intPeriodo: intPeriodo,
+                    p_intDocente: userData.vchMatricula,	
+                    clvActividad:parseFloat(intNumeroActi)
+                })
             });
     
             // Verificar si la respuesta es exitosa
@@ -577,6 +589,8 @@ const DetalleActividadDocente = () => {
         newPracticas[index][field] = value;
         setArregloPracticas(newPracticas);
     };*/
+
+    
     const handleInputChange = (index, field, value) => {
         const newPracticas = [...arregloPracticas];
         
@@ -700,6 +714,8 @@ const DetalleActividadDocente = () => {
     if (isLoading) {
         return <DetailedActivitySkeleton />;
     }
+
+ 
     
     return (
         <Tabs aria-label="Default tabs" variant="default" onActiveTabChange={handleTabChange}>
@@ -826,6 +842,7 @@ const DetalleActividadDocente = () => {
                                 aria-label="Tabs with underline" 
                                 style="underline"
                                 onActiveTabChange={(index) => {
+                                    handleTabChangePractica(index);
                                     if (index === 1) { // Si la pestaña activa es la segunda (índice 1)
                                         handleSelectChange(1); // Llama a la función con el valor 1
                                     }
@@ -839,6 +856,8 @@ const DetalleActividadDocente = () => {
                             >
                                 
                                 <Tabs.Item title="Subir archivo Excel" icon={SiMicrosoftexcel}>
+                                {activeTabPractica === 0 && (
+                                    <>
                                     <Paragraphs label="Por favor, asegúrate de que la rúbrica que vas a subir esté en el formato adecuado (EXCEL). Si no sigues este formato, la rúbrica no se podrá procesar correctamente y podría causar una inserción incorrecta de datos en el sistema." />
                                     {/*Seccion de practicas con excel */}
                                     <div className="w-full flex flex-col gap-4 p-4">
@@ -921,7 +940,7 @@ const DetalleActividadDocente = () => {
                                                             theme="snow"
                                                             value={practica.instrucciones|| ''}
                                                             onChange={(value) => handleInputChange(index + (currentPage - 1) * itemsPerPage, 'instrucciones', value)}
-                                                            placeholder={`Instrucciones ${globalIndex} (Opcional)`}
+                                                            placeholder={`Instrucciones ${globalIndex} (Opciona papal)`}
                                                         />
                                                     </div>
             
@@ -959,8 +978,12 @@ const DetalleActividadDocente = () => {
                                         </>
                                         )}
                                     </div>
+                                    </>
+                                )}
                                 </Tabs.Item>
                                 <Tabs.Item title="Ingresar manualmente" icon={FaKeyboard}>
+                                {activeTabPractica === 1 && currentItems.length > 0 && (
+                                    <>
                                     <Accordion>
                                         <Accordion.Panel>
                                             <Accordion.Title>Información General</Accordion.Title>
@@ -1065,9 +1088,8 @@ const DetalleActividadDocente = () => {
                                             </Accordion.Content>
                                         </Accordion.Panel>
                                     </Accordion>
-                                    {currentItems.length > 0 && (
-                                        <>
-                                        <div className="mt-5 flex flex-col md:flex-row md:items-center md:justify-end gap-4">
+                                    
+                                    <div className="mt-5 flex flex-col md:flex-row md:items-center md:justify-end gap-4">
                                             <div className="flex justify-center md:justify-end">
                                                 <LoadingButton
                                                     className="w-full md:w-auto h-11"
@@ -1077,7 +1099,7 @@ const DetalleActividadDocente = () => {
                                                     isLoading={isLoadingPrat}
                                                 />
                                             </div>
-                                        </div>
+                                    </div>
                                     </>
                                 )}
                                 </Tabs.Item>

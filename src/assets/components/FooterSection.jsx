@@ -82,16 +82,17 @@ function FooterSection() {
                 <Footer.Title title="Acerca de" />
                 <Footer.LinkGroup col>
                   <Footer.Link href="#">
-                    Carretera Huejutla - Chalahuiyapa S/N, C.P. 43000, Huejutla de Reyes, Hidalgo.
+                  Carretera Lorem - Lorem S/N, C.P. 43000, Lorem, Lorem.                    
+                  {/*!Carretera Huejutla - Chalahuiyapa S/N, C.P. 43000, Huejutla de Reyes, Hidalgo.*/}
                   </Footer.Link>
-                  <Footer.Link href="#">E-mail: rectoría@uthh.edu.mx</Footer.Link>
+                  <Footer.Link href="#">E-mail: lorem@gmail.com</Footer.Link>
                 </Footer.LinkGroup>
               </div>
 
               <div className="flex flex-col items-center sm:items-start">
                 <Footer.Title title="Términos Legales" />
                 <Footer.LinkGroup col>
-                  <Footer.Link as={Link} to="/Terminos">
+                  <Footer.Link as={Link} to="/Terminos-legales">
                     Términos & Condiciones
                   </Footer.Link>
                 </Footer.LinkGroup>
@@ -104,7 +105,7 @@ function FooterSection() {
               <div className="flex items-center mb-4 sm:mb-0 sm:mr-4">
                 <img src={`${import.meta.env.VITE_URL}assets/logo-pwa-D7m3SRGY.png`} alt="Logo UTHH Virtual" className="w-12 h-12" />
                 <div className="ml-4">
-                  <h2 className="text-lg font-semibold text-gray-800">App de UTHH Virtual</h2>
+                  <h2 className="text-lg font-semibold text-gray-800">App de USI NEXUS</h2>
                   <p className="text-gray-600 text-sm">Descarga la app para un acceso rápido</p>
                 </div>
               </div>

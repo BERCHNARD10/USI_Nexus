@@ -102,7 +102,7 @@ const GruposMateriasDocente = () => {
             : materias.map((materia) => (                    
                 <Card
                     key={materia.chrGrupo}
-                    className="w-full rounded-lg overflow-hidden shadow-lg transform transition duration-300 hover:scale-105"
+                    className="w-full rounded-lg overflow-hidden shadow-lg transform transition duration-300 hover:scale-105 dark:bg-component_dark"
                     theme={{
                     root: {
                         children: "p-0",

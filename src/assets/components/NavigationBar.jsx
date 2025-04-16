@@ -11,7 +11,7 @@ import secondaryLogo from '../images/secondary-logo.png'
 import logoPwa from '../images/logo-pwa.png'
 import SideNav from './SideNavBar'
 import  Components from './Components'
-const {LoadingButton} = Components;
+const {LoadingButton, DarkModeToggle} = Components;
 
 const NavigationBar = ({ isSidebarOpen, toggleSidebar }) => {
   const navigate = useNavigate(); 
@@ -160,14 +160,14 @@ const handleInstallClick = () => {
 
   return (
     <>
-    <Navbar fluid rounded className="p-3 bg-white border border-gray-200 shadow dark:bg-gray-800 dark:border-gray-700 header">
+    <Navbar fluid rounded className="p-3 bg-white border border-gray-200 shadow dark:bg-background_400  dark:border-gray-700 header">
       <div className="nav__section flex">
         <div className={`nav__toggle  ${isAuthenticated ? "block md:block mr-2" : "hidden "}`} id="nav-toggle" onClick={toggleSidebar}>
           <IoMenu />
         </div>
         <Navbar.Brand as={NavLink} to="/">
-          <img className="h-8 mr-2" src={`${webUrl}assets/imagenes/logo.png`} alt="" />
-          UTHH Virtual
+          <img className="h-8 mr-2" src={`${webUrl}assets/secondary-logo-BL9o4fsR.png`} alt="" />
+          Nexus  
         </Navbar.Brand>
       </div>
       {isAuthenticated ? 
@@ -219,17 +219,21 @@ const handleInstallClick = () => {
           )}
           </Dropdown>
           */}
-          <Dropdown
-            arrowIcon={false}
-            inline
-            label={
-              <img 
-                src={profileImageUrl}
-                alt="User Avatar" 
-                className="w-10 h-10 rounded-full object-cover"
-              />
-            }
-          >
+      <Dropdown arrowIcon={false} inline
+        label={
+          <div className="flex items-center gap-2">
+            {/* Botón de Modo Oscuro */}
+            <DarkModeToggle />
+
+            {/* Imagen de perfil */}
+            <img 
+              src={profileImageUrl}
+              alt="User Avatar" 
+              className="w-10 h-10 rounded-full object-cover"
+            />
+          </div>
+        }
+      >
             <Dropdown.Item as="div">
               <Link to="/mi-perfil" className="flex items-center">
                 <FaUser className="mr-2" />
@@ -243,12 +247,14 @@ const handleInstallClick = () => {
           </Dropdown>
 
           <div className="flex flex-col text-right hidden-below-365">
-            <span className="text-sm font-medium text-gray-900 dark:text-white capitalize">
-              {userData.vchNombre.toLowerCase()} {userData.vchAPaterno.toLowerCase()} {userData.vchAMaterno.toLowerCase()}
+          <span className="text-sm font-medium text-gray-900 dark:text-gray-200 capitalize">
+          {userData.vchNombre.toLowerCase()} {userData.vchAPaterno.toLowerCase()} {userData.vchAMaterno.toLowerCase()}
             </span>
               <span className="text-start text-sm text-gray-500 dark:text-gray-400 truncate">{userData.vchNombreRol}</span>
             </div>
           </div>
+
+
 
         )
         :

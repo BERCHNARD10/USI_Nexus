@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class', // Usa clases para activar el modo oscuro
   content: [
     './src/**/*.{js,jsx,ts,tsx}',
     './public/index.html',
@@ -9,6 +10,15 @@ export default {
     extend: {
       colors: {
         primary: '#009944',
+        background_400: '#374151',
+        background_500: '#2b2b30',
+        background_600: '#1f2937 ',
+
+        background_base: '#1f2937',      // fondo base general
+        background_card: '#2b2b30',           // fondo de tarjetas/componentes
+        border_or_header: '#374151',          // bordes, headers o separadores
+
+//1b1c21
         //#23262d
         secondary: '#02233a',
       },
