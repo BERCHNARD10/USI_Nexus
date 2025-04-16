@@ -119,7 +119,7 @@ function FooterSection() {
 
           {/* Copyright */}
           <div className="w-full text-center sm:text-left">
-            <Footer.Copyright href="#" by="UTHH" year={2024} />
+            <Footer.Copyright href="#" by="USI NEXUS" year={2024} />
           </div>
         </div>
       </Footer>
